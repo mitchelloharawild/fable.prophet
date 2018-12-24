@@ -1,6 +1,6 @@
-# global reference to prophet (will be initialized in .onLoad)
-prophet <- NULL
+# global reference to fbprophet (will be initialized in .onLoad)
+fbprophet <- NULL
 
 .onLoad <- function(libname, pkgname) {
-  prophet <<- reticulate::import("fbprophet", delay_load = TRUE)
+  fbprophet <<- reticulate::import("fbprophet", delay_load = TRUE)
 }
