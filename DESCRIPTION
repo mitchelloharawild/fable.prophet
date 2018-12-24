@@ -13,7 +13,8 @@ Imports:
     R6,
     purrr,
     rlang,
-    tsibble
+    tsibble,
+    lubridate
 ByteCompile: true
 License: GPL-3
 Encoding: UTF-8

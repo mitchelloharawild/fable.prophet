@@ -78,6 +78,7 @@ specials_prophet <- new_specials_env(
   season = function(period, order, prior_scale = 10,
                     type = c("additive", "multiplicative"),
                     name = as.character(period)){
+    period <- parse_period(period)
     type <- match.arg(type)
     as.list(environment())
   },
@@ -133,7 +134,7 @@ forecast.prophet <- function(object, new_data, times = 1000, ...){
   sim <- mdl$sample_posterior_predictive(new_data)$yhat
   sim <- split(sim, row(sim))
 
-  ## Exogenous Regressors (for some reason, this must happen after simulation)
+  # Exogenous Regressors (for some reason, this must happen after simulation)
   for(regressor in specials$xreg){
     for(nm in colnames(regressor$xreg)){
       new_data[nm] <- regressor$xreg[,nm]
