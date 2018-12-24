@@ -9,8 +9,8 @@ train_prophet <- function(.data, formula, specials, holidays, quietly = FALSE){
   }
 
   # Prepare data for modelling
-  cn <- colnames(.data)
-  colnames(.data) <- c("ds", "y")
+  model_data <- .data
+  colnames(model_data) <- c("ds", "y")
 
   # Growth
   growth <- specials$growth[[1]]
@@ -42,16 +42,24 @@ train_prophet <- function(.data, formula, specials, holidays, quietly = FALSE){
                         mode = season$type)
   }
 
+  # Exogenous Regressors
+  for(regressor in specials$xreg){
+    for(nm in colnames(regressor$xreg)){
+      model_data[nm] <- regressor$xreg[,nm]
+      mdl$add_regressor(name = nm, prior_scale = regressor$prior_scale,
+                        standardize = regressor$standardize, mode = regressor$mode)
+    }
+  }
+
   # Train model
-  mdl$fit(.data)
-  fits <- mdl$predict(.data)
+  mdl$fit(model_data)
+  fits <- mdl$predict(model_data)
 
   # Return model
-  colnames(.data) <- cn
   structure(
     list(
       model = mdl,
-      est = .data %>% mutate(.fitted = fits$yhat, .resid = !!sym(cn[2]) - fits$yhat),
+      est = .data %>% mutate(.fitted = fits$yhat, .resid = !!sym(measured_vars(.data)) - fits$yhat),
       components = .data %>% transmute(trend = !!!(fits[c("trend", names(mdl$seasonalities))])),
       formula = formula),
     class = "prophet")
@@ -81,7 +89,12 @@ specials_prophet <- new_specials_env(
       lhs = NULL,
       rhs = purrr::reduce(c(0, enexprs(...)), ~ call2("+", .x, .y))
     )
-    eval_tidy(model.matrix(model_formula), data = .data)
+    list(
+      xreg = eval_tidy(model.matrix(model_formula), data = .data),
+      prior_scale = prior_scale,
+      standardize = standardize,
+      mode = type
+    )
   },
   .required_specials = c("growth", "holiday")
 )
