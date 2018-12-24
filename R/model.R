@@ -113,20 +113,31 @@ prophet <- prophet_model$new
 
 #' @export
 forecast.prophet <- function(object, new_data, times = 1000, ...){
-  # Prepare data and model
   mdl <- object$model
+
+  # Prepare data
+  specials <- parse_model_rhs(
+    list(formula = object$formula, specials = specials_prophet), data = new_data
+  )$specials
   new_data <- rename(new_data, ds = !!index(new_data))
   new_data <- mdl$setup_dataframe(new_data)
   new_data$trend <- mdl$predict_trend(new_data)
-
-  # Compute predictions without intervals
-  mdl$uncertainty_samples <- 0
-  pred <- mdl$predict(new_data)
 
   # Simulate future paths
   mdl$uncertainty_samples <- times
   sim <- mdl$sample_posterior_predictive(new_data)$yhat
   sim <- split(sim, row(sim))
+
+  ## Exogenous Regressors
+  for(regressor in specials$xreg){
+    for(nm in colnames(regressor$xreg)){
+      new_data[nm] <- regressor$xreg[,nm]
+    }
+  }
+
+  # Compute predictions without intervals
+  mdl$uncertainty_samples <- 0
+  pred <- mdl$predict(new_data)
 
   # Return forecasts
   fablelite::construct_fc(pred$yhat, purrr::map_dbl(sim, sd), dist_sim(sim))
