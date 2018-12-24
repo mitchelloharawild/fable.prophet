@@ -90,7 +90,7 @@ specials_prophet <- new_specials_env(
       rhs = purrr::reduce(c(0, enexprs(...)), ~ call2("+", .x, .y))
     )
     list(
-      xreg = eval_tidy(model.matrix(model_formula), data = .data),
+      xreg = model.matrix(model_formula, .data),
       prior_scale = prior_scale,
       standardize = standardize,
       mode = type
