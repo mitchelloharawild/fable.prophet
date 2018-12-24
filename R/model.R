@@ -123,12 +123,17 @@ forecast.prophet <- function(object, new_data, times = 1000, ...){
   new_data <- mdl$setup_dataframe(new_data)
   new_data$trend <- mdl$predict_trend(new_data)
 
+  # Growth
+  growth <- specials$growth[[1]]
+  .data$cap <- growth$capacity
+  .data$floor <- growth$floor
+
   # Simulate future paths
   mdl$uncertainty_samples <- times
   sim <- mdl$sample_posterior_predictive(new_data)$yhat
   sim <- split(sim, row(sim))
 
-  ## Exogenous Regressors
+  ## Exogenous Regressors (for some reason, this must happen after simulation)
   for(regressor in specials$xreg){
     for(nm in colnames(regressor$xreg)){
       new_data[nm] <- regressor$xreg[,nm]
