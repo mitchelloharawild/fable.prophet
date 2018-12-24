@@ -8,16 +8,46 @@ train_prophet <- function(.data, formula, specials, holidays, quietly = FALSE){
     abort("Only univariate responses are supported by Prophet")
   }
 
+  # Prepare data for modelling
   cn <- colnames(.data)
   colnames(.data) <- c("ds", "y")
 
-  mdl <- fbprophet$Prophet()
-  mdl$fit(.data)
+  # Growth
+  growth <- specials$growth[[1]]
+  .data$cap <- growth$capacity
+  .data$floor <- growth$floor
 
+  # Holidays
+  holiday <- specials$holiday[[1]]
+
+  # Build model
+  mdl <- fbprophet$Prophet(
+    growth = growth$type,
+    changepoint_prior_scale = growth$changepoint_prior_scale,
+    n_changepoints = growth$n_changepoints,
+    changepoints = growth$changepoints,
+    changepoint_range = growth$changepoint_range,
+    holidays = holiday$holidays,
+    holidays_prior_scale = holiday$prior_scale,
+    yearly_seasonality = FALSE,
+    weekly_seasonality = FALSE,
+    daily_seasonality = FALSE,
+    uncertainty_samples = 0
+  )
+
+  # Seasonality
+  for (season in specials$season){
+    mdl$add_seasonality(name = season$name, period = season$period,
+                        fourier_order = season$order, prior_scale = season$prior_scale,
+                        mode = season$type)
+  }
+
+  # Train model
+  mdl$fit(.data)
   fits <- mdl$predict(.data)
 
+  # Return model
   colnames(.data) <- cn
-
   structure(
     list(
       model = mdl,
@@ -28,10 +58,22 @@ train_prophet <- function(.data, formula, specials, holidays, quietly = FALSE){
 }
 
 specials_prophet <- new_specials_env(
-  trend = function(type = c("linear", "logistic"), changepoints = NULL, n_changepoints = 25, changepoint_prior_scale = 0.05){
+  growth = function(type = c("linear", "logistic"),
+                   capacity = NULL, floor = NULL,
+                   changepoints = NULL, n_changepoints = 25,
+                   changepoint_range = 0.8, changepoint_prior_scale = 0.05){
+    capacity <- eval_tidy(enquo(capacity), data = .data)
+    floor <- eval_tidy(enquo(floor), data = .data)
+    type <- match.arg(type)
     as.list(environment())
   },
-  season = function(period, order, prior_scale = 10, type = c("additive", "multiplicative")){
+  season = function(period, order, prior_scale = 10,
+                    type = c("additive", "multiplicative"),
+                    name = as.character(period)){
+    type <- match.arg(type)
+    as.list(environment())
+  },
+  holiday = function(holidays = NULL, prior_scale = 10L){
     as.list(environment())
   },
   xreg = function(..., prior_scale = NULL, standardize = "auto", type = NULL){
@@ -40,7 +82,8 @@ specials_prophet <- new_specials_env(
       rhs = purrr::reduce(c(0, enexprs(...)), ~ call2("+", .x, .y))
     )
     eval_tidy(model.matrix(model_formula), data = .data)
-  }
+  },
+  .required_specials = c("growth", "holiday")
 )
 
 prophet_model <- R6::R6Class("prophet",
