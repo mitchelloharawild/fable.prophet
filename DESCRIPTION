@@ -1,17 +1,21 @@
 Package: fable.prophet
-Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com")
-Description: What the package does (one paragraph).
-License: What license it uses
-Encoding: UTF-8
-LazyData: true
-Depends: 
+Title: Fable Interface for the Prophet Forecasting Procedure
+Description: Allows Prophet models to be produced using the fable modelling interface. This also allows Prophet models to be estimated, evaluated and combined with other models supported by fable.
+Authors@R: c(
+    person("Mitchell", "O'Hara-Wild", role = c("aut", "cre"), email = "mail@mitchelloharawild.com")
+    )
+Depends:
+    R (>= 3.1.3),
     fablelite
 Imports: 
     reticulate
+ByteCompile: true
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
 RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate', 'namespace'))
+Language: en-GB
+URL: https://github.com/mitchelloharawild/fable.prophet
+BugReports: https://github.com/mitchelloharawild/fable.prophet/issues
