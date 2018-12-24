@@ -135,6 +135,11 @@ augment.prophet <- function(x, ...){
 }
 
 #' @export
+components.prophet <- function(object, ...){
+  object$components
+}
+
+#' @export
 model_sum.prophet <- function(x){
   "prophet"
 }
