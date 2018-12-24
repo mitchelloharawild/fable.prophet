@@ -9,7 +9,11 @@ Depends:
     R (>= 3.1.3),
     fablelite
 Imports: 
-    reticulate
+    reticulate,
+    R6,
+    purrr,
+    rlang,
+    tsibble
 ByteCompile: true
 License: GPL-3
 Encoding: UTF-8
