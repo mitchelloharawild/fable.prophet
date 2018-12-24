@@ -2,4 +2,7 @@
 
 S3method(forecast,prophet)
 export(install_prophet)
+export(prophet)
 export(train_prophet)
+import(rlang)
+import(tsibble)
