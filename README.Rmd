@@ -1,0 +1,71 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# fable.prophet
+
+This package provides a tidy R interface to the Prophet forecasting framework using [fable](https://github.com/tidyverts/fable). This package makes use of the Python version of [Prophet](https://github.com/facebook/prophet) via the [reticulate](https://github.com/rstudio/reticulate) package.
+
+## Installation
+
+You can install the development version of fable.prophet from [Github](https://github.com/mitchelloharawild/fable.prophet) with:
+
+``` r
+devtools::install_github("mitchelloharawild/fable.prophet")
+fable.prophet::install_prophet()
+```
+
+## Example
+
+Suppose we wanted to model Australia's monthly turnover for cafes, restaurants and catering services. The data is available from the Australian Bureau of Statistics catalogue 8501.0, and in the [tsibbledata](https://github.com/tidyverts/tsibbledata) package.
+
+```{r data}
+library(tsibble)
+library(ggplot2)
+cafe <- tsibbledata::ausretail %>% 
+  filter(Industry == "Cafes, restaurants and catering services")
+```
+```{r plot, echo = FALSE}
+cafe %>% 
+  ggplot(aes(x = Month, y = Turnover, colour = State)) + 
+  geom_line() + 
+  ylab("Turnover (millions $AUD)")
+```
+
+Each series generally exhibits an increasing trend with an annual seasonal pattern that varies proportionally to the level of the series. At a monthly level, any holiday effects can be modelled using a seasonal term. A piecewise linear trend is included by default, and so it is not included in the model specification below.
+
+```{r model, dependson='plot'}
+library(fable.prophet)
+fit <- cafe %>% 
+  model(
+    prophet = prophet(Turnover ~ season("year", 4))
+  )
+```
+
+```{r mable}
+fit
+```
+
+The above output confirms that this Prophet model has been fitted to each of the time series. We can then produce forecasts for each of these series over the next two years.
+
+```{r forecast}
+fc <- fit %>% 
+  forecast(h = 24)
+```
+
+```{r fable, echo = FALSE}
+fc
+autoplot(fc, cafe) + 
+  guides(colour = FALSE)
+```
+
