@@ -98,10 +98,20 @@ components(fit)
 #> # ... with 3,422 more rows
 ```
 
+    #> 
+    #> Attaching package: 'lubridate'
+    #> The following objects are masked from 'package:tsibble':
+    #> 
+    #>     interval, new_interval
+    #> The following object is masked from 'package:base':
+    #> 
+    #>     date
+
 <img src="man/figures/README-components-plot-1.png" width="100%" /><img src="man/figures/README-components-plot-2.png" width="100%" />
 
-We can also produce forecasts for each of these series over the next two
-years.
+Note that the annual seasonal pattern does not change very quickly,
+although it does differ slightly between years. We can also produce
+forecasts for each of these series over the next two years.
 
 ``` r
 fc <- fit %>% 

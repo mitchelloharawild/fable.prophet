@@ -35,7 +35,7 @@ library(ggplot2)
 cafe <- tsibbledata::ausretail %>% 
   filter(Industry == "Cafes, restaurants and catering services")
 ```
-```{r plot, echo = FALSE}
+```{r plot, echo = FALSE, dependson='data'}
 cafe %>% 
   ggplot(aes(x = Month, y = Turnover, colour = State)) + 
   geom_line() + 
@@ -44,7 +44,7 @@ cafe %>%
 
 Each series generally exhibits an increasing trend with an annual seasonal pattern that varies proportionally to the level of the series. At a monthly level, any holiday effects can be modelled using a seasonal term. A piecewise linear trend is included by default, and so it is not included in the model specification below.
 
-```{r model, dependson='plot'}
+```{r model, dependson='data'}
 library(fable.prophet)
 fit <- cafe %>% 
   model(
@@ -52,33 +52,36 @@ fit <- cafe %>%
   )
 ```
 
-```{r mable}
+```{r mable, dependson='model'}
 fit
 ```
 
 The above output confirms that this Prophet model has been fitted to each of the time series. Components from this model can be extracted:
 
-```{r components}
+```{r components, dependson='model'}
 components(fit)
 ```
-```{r components-plot, echo = FALSE}
+```{r components-plot, echo = FALSE, dependson='model'}
+library(lubridate)
 components(fit) %>%
   ggplot(aes(x = Month, y = trend, colour = State)) + 
   geom_line()
 components(fit) %>%
-  ggplot(aes(x = lubridate::month(Month), y = year, colour = State)) + 
-  geom_line()
+  ggplot(aes(x = month(Month), y = year, 
+             colour = State, group = interaction(year(Month), State))) + 
+  geom_line() + 
+  scale_x_continuous(breaks = 1:12, labels = month.abb) + 
+  xlab("Month")
 ```
 
+Note that the annual seasonal pattern does not change very quickly, although it does differ slightly between years. We can also produce forecasts for each of these series over the next two years.
 
-We can also produce forecasts for each of these series over the next two years.
-
-```{r forecast}
+```{r forecast, dependson='model'}
 fc <- fit %>% 
   forecast(h = 24)
 ```
 
-```{r fable, echo = FALSE}
+```{r fable, echo = FALSE, dependson='forecast'}
 fc
 autoplot(fc, cafe) + 
   guides(colour = FALSE)
