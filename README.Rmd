@@ -48,7 +48,7 @@ Each series generally exhibits an increasing trend with an annual seasonal patte
 library(fable.prophet)
 fit <- cafe %>% 
   model(
-    prophet = prophet(Turnover ~ season("year", 4))
+    prophet = prophet(Turnover ~ season("year", 4, type = "multiplicative"))
   )
 ```
 
