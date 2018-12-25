@@ -79,6 +79,7 @@ specials_prophet <- new_specials_env(
                     type = c("additive", "multiplicative"),
                     name = as.character(period)){
     period <- parse_period(period)
+    order <- as.integer(order)
     type <- match.arg(type)
     as.list(environment())
   },
