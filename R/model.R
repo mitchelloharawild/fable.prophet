@@ -78,6 +78,7 @@ specials_prophet <- new_specials_env(
   season = function(period, order, prior_scale = 10,
                     type = c("additive", "multiplicative"),
                     name = as.character(period)){
+    force(name)
     period <- parse_period(period)
     order <- as.integer(order)
     type <- match.arg(type)
