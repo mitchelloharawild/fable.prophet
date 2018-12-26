@@ -61,11 +61,11 @@ train_prophet <- function(.data, formula, specials, holidays, quietly = FALSE){
       model = mdl,
       est = .data %>% mutate(.fitted = fits$yhat, .resid = !!sym(measured_vars(.data)) - fits$yhat),
       components = .data %>% transmute(trend = !!!(fits[c("trend", names(mdl$seasonalities))])),
-      formula = formula),
+      definition = self),
     class = "prophet")
 }
 
-specials_prophet <- new_specials_env(
+specials_prophet <- new_specials(
   growth = function(type = c("linear", "logistic"),
                    capacity = NULL, floor = NULL,
                    changepoints = NULL, n_changepoints = 25,
@@ -119,9 +119,8 @@ forecast.prophet <- function(object, new_data, times = 1000, ...){
   mdl <- object$model
 
   # Prepare data
-  specials <- parse_model_rhs(
-    list(formula = object$formula, specials = specials_prophet), data = new_data
-  )$specials
+  object$definition$data <- new_data
+  specials <- parse_model_rhs(object$definition)$specials
   new_data <- rename(new_data, ds = !!index(new_data))
   new_data <- mdl$setup_dataframe(new_data)
   new_data$trend <- mdl$predict_trend(new_data)

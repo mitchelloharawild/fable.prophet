@@ -31,11 +31,11 @@ Suppose we wanted to model Australia's monthly turnover for cafes, restaurants a
 
 ```{r data}
 library(tsibble)
-library(ggplot2)
 cafe <- tsibbledata::ausretail %>% 
   filter(Industry == "Cafes, restaurants and catering services")
 ```
 ```{r plot, echo = FALSE, dependson='data'}
+library(ggplot2)
 cafe %>% 
   ggplot(aes(x = Month, y = Turnover, colour = State)) + 
   geom_line() + 

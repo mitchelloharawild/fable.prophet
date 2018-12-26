@@ -33,7 +33,6 @@ library(tsibble)
 #> The following object is masked from 'package:stats':
 #> 
 #>     filter
-library(ggplot2)
 cafe <- tsibbledata::ausretail %>% 
   filter(Industry == "Cafes, restaurants and catering services")
 ```
