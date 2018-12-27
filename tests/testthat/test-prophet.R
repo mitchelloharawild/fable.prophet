@@ -1,6 +1,7 @@
 context("test-prophet")
 
 test_that("Prophet simple", {
+  skip_if_no_fbprophet()
   default <- model(tsibble::as_tsibble(USAccDeaths), prophet(value))
   expect_s3_class(default, "mdl_df")
   default_mdl <- default[[1]][[1]]$fit$model
@@ -14,6 +15,7 @@ test_that("Prophet simple", {
 })
 
 test_that("Prophet complex", {
+  skip_if_no_fbprophet()
   elec_tr <- head(tsibbledata::elecdemand, -48*31)
   elec_ts <- tail(tsibbledata::elecdemand, 48*31)
   aus_holidays <- as_tsibble(tsibble::holiday_aus(2014), index = date)
