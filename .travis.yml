@@ -2,4 +2,13 @@
 
 language: R
 sudo: false
-cache: packages
+
+cache:
+  packages: true
+  directories:
+    - $HOME/.cache/pip
+
+before_script:
+  - pip2.7 install --upgrade --ignore-installed --user travis pip setuptools wheel virtualenv
+  - R CMD INSTALL .
+  - R -e 'fable.prophet::install_prophet()'
