@@ -15,6 +15,9 @@ Imports:
     rlang,
     tsibble,
     lubridate
+Remotes:
+    tidyverts/tsibble,
+    tidyverts/fablelite
 ByteCompile: true
 License: GPL-3
 Encoding: UTF-8
