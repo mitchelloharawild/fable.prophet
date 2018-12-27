@@ -86,6 +86,9 @@ specials_prophet <- new_specials(
     as.list(environment())
   },
   holiday = function(holidays = NULL, prior_scale = 10L){
+    if(tsibble::is_tsibble(holidays)){
+      holidays <- tsibble::rename(holidays, ds = !!index(holidays))
+    }
     as.list(environment())
   },
   xreg = function(..., prior_scale = NULL, standardize = "auto", type = NULL){
