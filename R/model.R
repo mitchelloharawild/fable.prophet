@@ -1,3 +1,5 @@
+globalVariables("self")
+
 #' @export
 train_prophet <- function(.data, formula, specials, holidays, quietly = FALSE){
   if(!reticulate::py_module_available("fbprophet")){
@@ -147,7 +149,7 @@ forecast.prophet <- function(object, new_data, times = 1000, ...){
   pred <- mdl$predict(new_data)
 
   # Return forecasts
-  fablelite::construct_fc(pred$yhat, purrr::map_dbl(sim, sd), dist_sim(sim))
+  fablelite::construct_fc(pred$yhat, purrr::map_dbl(sim, stats::sd), dist_sim(sim))
 }
 
 #' @export
