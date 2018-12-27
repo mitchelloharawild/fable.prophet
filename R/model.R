@@ -122,6 +122,12 @@ prophet_model <- R6::R6Class("prophet",
 #'
 #' \subsection{growth}{
 #' The `growth` special is used to specify the trend parameters.
+#' \preformatted{
+#' growth(type = c("linear", "logistic"), capacity = NULL, floor = NULL,
+#'        changepoints = NULL, n_changepoints = 25, changepoint_range = 0.8,
+#'        changepoint_prior_scale = 0.05)
+#' }
+#'
 #' \tabular{ll}{
 #'   `type`                    \tab The type of seasonality.\cr
 #'   `capacity`                \tab The carrying capacity for when `type` is "logistic".\cr
@@ -133,6 +139,48 @@ prophet_model <- R6::R6Class("prophet",
 #' }
 #' }
 #'
+#' \subsection{season}{
+#' The `season` special is used to specify a seasonal component. This special can be used multiple times for different seasonalities.
+#' \preformatted{
+#' season(period, order, prior_scale = 10,
+#'        type = c("additive", "multiplicative"), name = as.character(period))
+#' }
+#'
+#' \tabular{ll}{
+#'   `period`      \tab The periodic nature of the seasonality. If a number is given, this will be treated as days in the seasonal period. If a character is given, it will be parsed using `lubridate::as.period`, allowing seasonal periods such as "2 years".\cr
+#'   `order`       \tab The number of terms in the partial Fourier sum. The higher the `order`, the more flexible the seasonality can be.\cr
+#'   `prior_scale` \tab Used to control the amount of regularisation applied. Reducing this will dampen the seasonal effect.\cr
+#'   `type`        \tab The nature of the seasonality. If "additive", the variability in the seasonal pattern is fixed. If "multiplicative", the seasonal pattern varies proportionally to the level of the series.\cr
+#'   `name`        \tab The name of the seasonal term (allowing you to name an annual pattern as 'annual' instead of 'year' or `365.25` for example).\cr
+#' }
+#' }
+#'
+#' \subsection{holiday}{
+#' The `holiday` special is used to specify a `tsibble` containing holidays for the model.
+#' \preformatted{
+#' holiday(holidays = NULL, prior_scale = 10L)
+#' }
+#'
+#' \tabular{ll}{
+#'   `holidays`    \tab A `tsibble` containing a set of holiday events. The event name is given in the 'holiday' column, and the event date is given via the index. Additionally, "lower_window" and "upper_window" columns can be used to include days before and after the holiday.\cr
+#'   `prior_scale` \tab Used to control the amount of regularisation applied. Reducing this will dampen the holiday effect.\cr
+#' }
+#' }
+#'
+#' \subsection{xreg}{
+#' The `xreg` special is used to include exogenous regressors in the model. This special can be used multiple times for different regressors with different arguments.
+#' Exogenous regressors can also be used in the formula without explicitly using the `xreg()` special, which will then use the default arguments.
+#' \preformatted{
+#' xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
+#' }
+#'
+#' \tabular{ll}{
+#'   `...`         \tab A set of bare expressions that are evaluated as exogenous regressors\cr
+#'   `prior_scale` \tab Used to control the amount of regularisation applied. Reducing this will dampen the regressor effect.\cr
+#'   `standardize` \tab Should the regressor be standardised before fitting? If "auto", it will standardise if the regressor is not binary.\cr
+#'   `type`        \tab Does the effect of the regressor vary proportionally to the level of the series? If so, "multiplicative" is best. Otherwise, use "additive"\cr
+#' }
+#' }
 #'
 #' @seealso
 #' - [Prophet homepage](https://facebook.github.io/prophet/)
