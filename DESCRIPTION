@@ -16,7 +16,8 @@ Imports:
     tsibble,
     lubridate
 Suggests: 
-    tsibbledata
+    tsibbledata,
+    testthat
 Remotes:
     tidyverts/tsibble,
     tidyverts/fablelite,
