@@ -2,7 +2,7 @@ globalVariables("self")
 
 train_prophet <- function(.data, formula, specials, holidays, quietly = FALSE){
   if(!reticulate::py_module_available("fbprophet")){
-    stop("prophet has not yet been installed. Run `install_prophet()` to get started.")
+    stop("Prophet has not yet been installed. Run `install_prophet()` to get started.")
   }
 
   if(length(tsibble::measured_vars(.data)) > 1){
@@ -15,8 +15,8 @@ train_prophet <- function(.data, formula, specials, holidays, quietly = FALSE){
 
   # Growth
   growth <- specials$growth[[1]]
-  .data$cap <- growth$capacity
-  .data$floor <- growth$floor
+  model_data$cap <- growth$capacity
+  model_data$floor <- growth$floor
 
   # Holidays
   holiday <- specials$holiday[[1]]
@@ -71,8 +71,8 @@ specials_prophet <- new_specials(
                    capacity = NULL, floor = NULL,
                    changepoints = NULL, n_changepoints = 25,
                    changepoint_range = 0.8, changepoint_prior_scale = 0.05){
-    capacity <- eval_tidy(enquo(capacity), data = .data)
-    floor <- eval_tidy(enquo(floor), data = .data)
+    capacity <- eval_tidy(enquo(capacity), data = self$data)
+    floor <- eval_tidy(enquo(floor), data = self$data)
     type <- match.arg(type)
     as.list(environment())
   },
@@ -94,7 +94,7 @@ specials_prophet <- new_specials(
       rhs = purrr::reduce(c(0, enexprs(...)), ~ call2("+", .x, .y))
     )
     list(
-      xreg = model.matrix(model_formula, .data),
+      xreg = model.matrix(model_formula, self$data),
       prior_scale = prior_scale,
       standardize = standardize,
       mode = type
@@ -212,8 +212,8 @@ forecast.prophet <- function(object, new_data, times = 1000, ...){
 
   # Growth
   growth <- specials$growth[[1]]
-  .data$cap <- growth$capacity
-  .data$floor <- growth$floor
+  new_data$cap <- growth$capacity
+  new_data$floor <- growth$floor
 
   # Simulate future paths
   mdl$uncertainty_samples <- times
