@@ -1,6 +1,5 @@
 globalVariables("self")
 
-#' @export
 train_prophet <- function(.data, formula, specials, holidays, quietly = FALSE){
   if(!reticulate::py_module_available("fbprophet")){
     stop("prophet has not yet been installed. Run `install_prophet()` to get started.")
@@ -113,6 +112,42 @@ prophet_model <- R6::R6Class("prophet",
                              )
 )
 
+#' Prophet framework modelling
+#'
+#' Prepares a Prophet model for use within the `fable` package.
+#'
+#' @param ... Arguments used to fit the model
+#'
+#' @section Specials:
+#'
+#' \subsection{growth}{
+#' The `growth` special is used to specify the trend parameters.
+#' \tabular{ll}{
+#'   `type`                    \tab The type of seasonality.\cr
+#'   `capacity`                \tab The carrying capacity for when `type` is "logistic".\cr
+#'   `floor`                   \tab The saturating minimum for when `type` is "logistic".\cr
+#'   `changepoints`            \tab A vector of dates/times for changepoints. If `NULL`, changepoints are automatically selected.\cr
+#'   `n_changepoints`          \tab The total number of changepoints to be selected if `changepoints` is `NULL`\cr
+#'   `changepoint_range`       \tab Proportion of the start of the time series where changepoints are automatically selected.\cr
+#'   `changepoint_prior_scale` \tab Controls the flexibility of the trend.
+#' }
+#' }
+#'
+#'
+#' @seealso
+#' - [Prophet homepage](https://facebook.github.io/prophet/)
+#' - [Prophet R package](https://cran.r-project.org/web/packages/prophet/index.html)
+#' - [Prophet Python package](https://pypi.org/project/fbprophet/)
+#'
+#' @examples
+#'
+#' library(tsibble)
+#' tsibbledata::ausretail %>%
+#'   filter(Industry == "Cafes, restaurants and catering services") %>%
+#'   model(
+#'     prophet = prophet(Turnover ~ season("year", 4, type = "multiplicative"))
+#'   )
+#'
 #' @export
 prophet <- prophet_model$new
 

@@ -15,9 +15,12 @@ Imports:
     rlang,
     tsibble,
     lubridate
+Suggests: 
+    tsibbledata
 Remotes:
     tidyverts/tsibble,
-    tidyverts/fablelite
+    tidyverts/fablelite,
+    tidyverts/tsibbledata
 ByteCompile: true
 License: GPL-3
 Encoding: UTF-8
