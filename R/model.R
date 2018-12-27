@@ -210,10 +210,8 @@ forecast.prophet <- function(object, new_data, times = 1000, ...){
   object$definition$data <- new_data
   specials <- parse_model_rhs(object$definition)$specials
   new_data <- rename(new_data, ds = !!index(new_data))
-  new_data <- mdl$setup_dataframe(new_data)
-  new_data$trend <- mdl$predict_trend(new_data)
 
-  # Growth
+  ## Growth
   growth <- specials$growth[[1]]
   if(!is.null(growth$capacity)){
     new_data$cap <- growth$capacity
@@ -222,17 +220,20 @@ forecast.prophet <- function(object, new_data, times = 1000, ...){
     new_data$floor <- growth$floor
   }
 
-  # Simulate future paths
-  mdl$uncertainty_samples <- times
-  sim <- mdl$sample_posterior_predictive(new_data)$yhat
-  sim <- split(sim, row(sim))
-
-  # Exogenous Regressors (for some reason, this must happen after simulation)
+  ## Exogenous Regressors
   for(regressor in specials$xreg){
     for(nm in colnames(regressor$xreg)){
       new_data[nm] <- regressor$xreg[,nm]
     }
   }
+
+  new_data <- mdl$setup_dataframe(new_data)
+  new_data$trend <- mdl$predict_trend(new_data)
+
+  # Simulate future paths
+  mdl$uncertainty_samples <- times
+  sim <- mdl$sample_posterior_predictive(new_data)$yhat
+  sim <- split(sim, row(sim))
 
   # Compute predictions without intervals
   mdl$uncertainty_samples <- 0
