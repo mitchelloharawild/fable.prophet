@@ -215,8 +215,12 @@ forecast.prophet <- function(object, new_data, times = 1000, ...){
 
   # Growth
   growth <- specials$growth[[1]]
-  new_data$cap <- growth$capacity
-  new_data$floor <- growth$floor
+  if(!is.null(growth$capacity)){
+    new_data$cap <- growth$capacity
+  }
+  if(!is.null(growth$floor)){
+    new_data$floor <- growth$floor
+  }
 
   # Simulate future paths
   mdl$uncertainty_samples <- times
