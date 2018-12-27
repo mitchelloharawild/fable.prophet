@@ -18,7 +18,7 @@ test_that("Prophet complex", {
   skip_if_no_fbprophet()
   elec_tr <- head(tsibbledata::elecdemand, -48*31)
   elec_ts <- tail(tsibbledata::elecdemand, 48*31)
-  aus_holidays <- as_tsibble(tsibble::holiday_aus(2014), index = date)
+  aus_holidays <- tsibble::as_tsibble(tsibble::holiday_aus(2014), index = date)
   complex <- model(elec_tr,
                    fit = prophet(Demand ~ growth('logistic', capacity = 10, floor = 2.5) +
                                    season("week", 3) + season(1, 12) + Temperature +

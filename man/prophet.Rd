@@ -4,10 +4,12 @@
 \alias{prophet}
 \title{Prophet framework modelling}
 \usage{
-prophet(...)
+prophet(formula, ...)
 }
 \arguments{
-\item{...}{Arguments used to fit the model}
+\item{formula}{A symbolic description of the model to be fitted of class \code{formula}.}
+
+\item{...}{Not used}
 }
 \description{
 Prepares a Prophet model for use within the \code{fable} package.

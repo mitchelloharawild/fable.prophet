@@ -1,6 +1,6 @@
 globalVariables("self")
 
-train_prophet <- function(.data, formula, specials, holidays, quietly = FALSE){
+train_prophet <- function(.data, formula, specials){
   if(!reticulate::py_module_available("fbprophet")){
     stop("Prophet has not yet been installed. Run `install_prophet()` to get started.")
   }
@@ -119,7 +119,8 @@ prophet_model <- R6::R6Class("prophet",
 #'
 #' Prepares a Prophet model for use within the `fable` package.
 #'
-#' @param ... Arguments used to fit the model
+#' @param formula A symbolic description of the model to be fitted of class `formula`.
+#' @param ... Not used
 #'
 #' @section Specials:
 #'
@@ -200,7 +201,9 @@ prophet_model <- R6::R6Class("prophet",
 #'   )
 #'
 #' @export
-prophet <- prophet_model$new
+prophet <- function(formula, ...){
+  prophet_model$new(!!enquo(formula), ...)
+}
 
 #' @export
 forecast.prophet <- function(object, new_data, times = 1000, ...){
