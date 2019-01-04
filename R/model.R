@@ -61,8 +61,7 @@ train_prophet <- function(.data, formula, specials){
     list(
       model = mdl,
       est = .data %>% mutate(.fitted = fits$yhat, .resid = !!sym(measured_vars(.data)) - fits$yhat),
-      components = .data %>% transmute(trend = !!!(fits[c("trend", names(mdl$seasonalities))])),
-      definition = self),
+      components = .data %>% transmute(trend = !!!(fits[c("trend", names(mdl$seasonalities))]))),
     class = "prophet")
 }
 
@@ -206,12 +205,10 @@ prophet <- function(formula, ...){
 }
 
 #' @export
-forecast.prophet <- function(object, new_data, times = 1000, ...){
+forecast.prophet <- function(object, new_data, specials = NULL, times = 1000, ...){
   mdl <- object$model
 
   # Prepare data
-  object$definition$data <- new_data
-  specials <- parse_model_rhs(object$definition)$specials
   new_data <- rename(new_data, ds = !!index(new_data))
 
   ## Growth
