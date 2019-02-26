@@ -75,11 +75,23 @@ specials_prophet <- new_specials(
     type <- match.arg(type)
     as.list(environment())
   },
-  season = function(period, order, prior_scale = 10,
+  season = function(period = NULL, order, prior_scale = 10,
                     type = c("additive", "multiplicative"),
                     name = as.character(period)){
     force(name)
-    period <- parse_period(period)
+
+    # Extract data interval
+    interval <- tsibble::interval(self$data)
+    interval <- with(interval, lubridate::years(year) +
+                       lubridate::period(3*quarter + month, units = "month") + lubridate::weeks(week) +
+                       lubridate::days(day) + lubridate::hours(hour) + lubridate::minutes(minute) +
+                       lubridate::seconds(second) + lubridate::milliseconds(millisecond) +
+                       lubridate::microseconds(microsecond) + lubridate::nanoseconds(nanosecond))
+
+    # Compute prophet interval
+    period <- get_frequencies(period, self$data, .auto = "smallest")
+    period <- suppressMessages(interval * period/lubridate::days(1))
+
     order <- as.integer(order)
     type <- match.arg(type)
     as.list(environment())
