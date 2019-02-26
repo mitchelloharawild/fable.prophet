@@ -34,9 +34,9 @@ Australian Bureau of Statistics catalogue 8501.0, and in the
 library(tsibble)
 #> 
 #> Attaching package: 'tsibble'
-#> The following object is masked from 'package:stats':
+#> The following objects are masked from 'package:stats':
 #> 
-#>     filter
+#>     filter, lag
 cafe <- tsibbledata::ausretail %>% 
   filter(Industry == "Cafes, restaurants and catering services")
 ```
@@ -52,11 +52,6 @@ included in the model specification below.
 ``` r
 library(fable.prophet)
 #> Loading required package: fablelite
-#> 
-#> Attaching package: 'fablelite'
-#> The following object is masked from 'package:stats':
-#> 
-#>     simulate
 fit <- cafe %>% 
   model(
     prophet = prophet(Turnover ~ season("year", 4, type = "multiplicative"))
@@ -65,18 +60,18 @@ fit <- cafe %>%
 
 ``` r
 fit
-#> # A mable: 8 models
+#> # A mable: 8 x 3
 #> # Key:     State, Industry [8]
-#>   State                       Industry                              prophet
-#>   <chr>                       <chr>                                 <model>
-#> 1 Australian Capital Territo… Cafes, restaurants and catering serv… prophet
-#> 2 New South Wales             Cafes, restaurants and catering serv… prophet
-#> 3 Northern Territory          Cafes, restaurants and catering serv… prophet
-#> 4 Queensland                  Cafes, restaurants and catering serv… prophet
-#> 5 South Australia             Cafes, restaurants and catering serv… prophet
-#> 6 Tasmania                    Cafes, restaurants and catering serv… prophet
-#> 7 Victoria                    Cafes, restaurants and catering serv… prophet
-#> 8 Western Australia           Cafes, restaurants and catering serv… prophet
+#>   State                      Industry                              prophet 
+#>   <chr>                      <chr>                                 <model> 
+#> 1 Australian Capital Territ… Cafes, restaurants and catering serv… <prophe…
+#> 2 New South Wales            Cafes, restaurants and catering serv… <prophe…
+#> 3 Northern Territory         Cafes, restaurants and catering serv… <prophe…
+#> 4 Queensland                 Cafes, restaurants and catering serv… <prophe…
+#> 5 South Australia            Cafes, restaurants and catering serv… <prophe…
+#> 6 Tasmania                   Cafes, restaurants and catering serv… <prophe…
+#> 7 Victoria                   Cafes, restaurants and catering serv… <prophe…
+#> 8 Western Australia          Cafes, restaurants and catering serv… <prophe…
 ```
 
 The above output confirms that this Prophet model has been fitted to
@@ -98,7 +93,7 @@ components(fit)
 #>  8 Australian Capi… Cafes, restaurants and… proph…  1982 Nov  4.93  0.0559 
 #>  9 Australian Capi… Cafes, restaurants and… proph…  1982 Dec  4.99  0.0316 
 #> 10 Australian Capi… Cafes, restaurants and… proph…  1983 Jan  5.05 -0.106  
-#> # ... with 3,422 more rows
+#> # … with 3,422 more rows
 ```
 
     #> 
@@ -123,18 +118,18 @@ fc <- fit %>%
 
     #> # A fable: 192 x 6 [1M]
     #> # Key:     State, Industry, .model [8]
-    #>    State         Industry           .model     Month Turnover .distribution
-    #>    <chr>         <chr>              <chr>      <mth>    <dbl> <dist>       
-    #>  1 Australian C… Cafes, restaurant… proph…  2018 Oct     45.0 sim(dbl[1000…
-    #>  2 Australian C… Cafes, restaurant… proph…  2018 Nov     47.6 sim(dbl[1000…
-    #>  3 Australian C… Cafes, restaurant… proph…  2018 Dec     46.6 sim(dbl[1000…
-    #>  4 Australian C… Cafes, restaurant… proph…  2019 Jan     40.5 sim(dbl[1000…
-    #>  5 Australian C… Cafes, restaurant… proph…  2019 Feb     42.9 sim(dbl[1000…
-    #>  6 Australian C… Cafes, restaurant… proph…  2019 Mar     48.0 sim(dbl[1000…
-    #>  7 Australian C… Cafes, restaurant… proph…  2019 Apr     46.4 sim(dbl[1000…
-    #>  8 Australian C… Cafes, restaurant… proph…  2019 May     45.2 sim(dbl[1000…
-    #>  9 Australian C… Cafes, restaurant… proph…  2019 Jun     46.5 sim(dbl[1000…
-    #> 10 Australian C… Cafes, restaurant… proph…  2019 Jul     45.6 sim(dbl[1000…
-    #> # ... with 182 more rows
+    #>    State        Industry           .model      Month Turnover .distribution
+    #>    <chr>        <chr>              <chr>       <mth>    <dbl> <dist>       
+    #>  1 Australian … Cafes, restaurant… prophet  2018 Oct     45.0 sim(=dbl[100…
+    #>  2 Australian … Cafes, restaurant… prophet  2018 Nov     47.6 sim(=dbl[100…
+    #>  3 Australian … Cafes, restaurant… prophet  2018 Dec     46.6 sim(=dbl[100…
+    #>  4 Australian … Cafes, restaurant… prophet  2019 Jan     40.5 sim(=dbl[100…
+    #>  5 Australian … Cafes, restaurant… prophet  2019 Feb     42.9 sim(=dbl[100…
+    #>  6 Australian … Cafes, restaurant… prophet  2019 Mar     48.0 sim(=dbl[100…
+    #>  7 Australian … Cafes, restaurant… prophet  2019 Apr     46.4 sim(=dbl[100…
+    #>  8 Australian … Cafes, restaurant… prophet  2019 May     45.2 sim(=dbl[100…
+    #>  9 Australian … Cafes, restaurant… prophet  2019 Jun     46.5 sim(=dbl[100…
+    #> 10 Australian … Cafes, restaurant… prophet  2019 Jul     45.6 sim(=dbl[100…
+    #> # … with 182 more rows
 
 <img src="man/figures/README-fable-1.png" width="100%" />

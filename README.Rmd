@@ -85,7 +85,9 @@ fc <- fit %>%
 
 ```{r fable, echo = FALSE, dependson='forecast'}
 fc
-autoplot(fc, cafe) + 
-  guides(colour = FALSE)
+cafe %>% 
+  ggplot(aes(x = Month, y = Turnover, colour = State)) + 
+  geom_line() + 
+  autolayer(fc)
 ```
 
