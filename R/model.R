@@ -98,7 +98,7 @@ specials_prophet <- new_specials(
   },
   holiday = function(holidays = NULL, prior_scale = 10L){
     if(tsibble::is_tsibble(holidays)){
-      holidays <- tsibble::rename(holidays, ds = !!index(holidays))
+      holidays <- rename(holidays, ds = !!index(holidays))
     }
     as.list(environment())
   },
@@ -203,9 +203,9 @@ prophet_model <- R6::R6Class("prophet",
 #' - [Prophet Python package](https://pypi.org/project/fbprophet/)
 #'
 #' @examples
-#'
 #' library(tsibble)
-#' tsibbledata::ausretail %>%
+#' library(dplyr)
+#' tsibbledata::aus_retail %>%
 #'   filter(Industry == "Cafes, restaurants and catering services") %>%
 #'   model(
 #'     prophet = prophet(Turnover ~ season("year", 4, type = "multiplicative"))
@@ -213,7 +213,8 @@ prophet_model <- R6::R6Class("prophet",
 #'
 #' @export
 prophet <- function(formula, ...){
-  prophet_model$new(!!enquo(formula), ...)
+  prophet_model <- new_model_class("prophet", train_prophet, specials_prophet)
+  new_model_definition(prophet_model, !!enquo(formula), ...)
 }
 
 #' @export

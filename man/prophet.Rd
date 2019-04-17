@@ -81,9 +81,9 @@ xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
 }
 
 \examples{
-
 library(tsibble)
-tsibbledata::ausretail \%>\%
+library(dplyr)
+tsibbledata::aus_retail \%>\%
   filter(Industry == "Cafes, restaurants and catering services") \%>\%
   model(
     prophet = prophet(Turnover ~ season("year", 4, type = "multiplicative"))

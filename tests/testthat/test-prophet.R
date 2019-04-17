@@ -1,4 +1,5 @@
 context("test-prophet")
+library(dplyr)
 
 test_that("Prophet simple", {
   skip_if_no_fbprophet()
@@ -16,8 +17,10 @@ test_that("Prophet simple", {
 
 test_that("Prophet complex", {
   skip_if_no_fbprophet()
-  elec_tr <- head(tsibbledata::elecdemand, -48*31)
-  elec_ts <- tail(tsibbledata::elecdemand, 48*31)
+  vic_elec <- tsibbledata::aus_elec %>%
+    filter(State == "Victoria", lubridate::year(Time) == 2014)
+  elec_tr <- head(vic_elec, -48*31)
+  elec_ts <- tail(vic_elec, 48*31)
   aus_holidays <- tsibble::as_tsibble(tsibble::holiday_aus(2014), index = date)
   complex <- model(elec_tr,
                    fit = prophet(Demand ~ growth('logistic', capacity = 10, floor = 2.5) +
@@ -26,7 +29,7 @@ test_that("Prophet complex", {
   )
 
   expect_s3_class(complex, "mdl_df")
-  complex_mdl <- complex[[1]][[1]]$fit$model
+  complex_mdl <- complex[["fit"]][[1]]$fit$model
   expect_named(complex_mdl$seasonalities, c("week", "1"))
   expect_length(complex_mdl$changepoints, 25)
   expect_named(complex_mdl$extra_regressors, "Temperature")

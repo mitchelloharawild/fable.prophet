@@ -14,7 +14,8 @@ Imports:
     purrr,
     rlang,
     tsibble,
-    lubridate
+    lubridate,
+    dplyr (>= 0.8.0)
 Suggests: 
     tsibbledata,
     testthat

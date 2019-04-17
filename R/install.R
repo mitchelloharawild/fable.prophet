@@ -11,6 +11,7 @@
 #' @param extra_packages Additional Python packages to install along with
 #'   Prophet.
 #'
+#'
 #' @export
 install_prophet <- function(method = c("auto", "virtualenv", "conda"),
                             conda = "auto",
