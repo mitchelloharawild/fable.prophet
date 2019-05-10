@@ -3,7 +3,9 @@ Version: 0.0.0.9000
 Title: Fable Interface for the Prophet Forecasting Procedure
 Description: Allows Prophet models to be produced using the fable modelling interface. This also allows Prophet models to be estimated, evaluated and combined with other models supported by fable.
 Authors@R: c(
-    person("Mitchell", "O'Hara-Wild", role = c("aut", "cre"), email = "mail@mitchelloharawild.com")
+    person("Mitchell", "O'Hara-Wild", role = c("aut", "cre"), email = "mail@mitchelloharawild.com"),
+    person("Sean", "Taylor", role = "ctb", comment = "Prophet library, https://facebook.github.io/prophet/"),
+    person("Ben", "Letham", role = "ctb", comment = "Prophet library, https://facebook.github.io/prophet/")
     )
 Depends:
     R (>= 3.1.3),
