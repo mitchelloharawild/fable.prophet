@@ -1,6 +1,6 @@
 globalVariables("self")
 
-train_prophet <- function(.data, formula, specials){
+train_prophet <- function(.data, specials){
   if(!reticulate::py_module_available("fbprophet")){
     stop("Prophet has not yet been installed. Run `install_prophet()` to get started.")
   }
