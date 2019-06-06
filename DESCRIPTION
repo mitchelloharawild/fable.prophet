@@ -12,7 +12,6 @@ Depends:
     fablelite
 Imports: 
     reticulate,
-    R6,
     purrr,
     rlang,
     tsibble,

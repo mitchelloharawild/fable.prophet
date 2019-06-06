@@ -117,15 +117,6 @@ specials_prophet <- new_specials(
   .required_specials = c("growth", "holiday")
 )
 
-prophet_model <- R6::R6Class("prophet",
-                             inherit = fablelite::model_definition,
-                             public = list(
-                               model = "Prophet",
-                               train = train_prophet,
-                               specials = specials_prophet
-                             )
-)
-
 #' Prophet framework modelling
 #'
 #' Prepares a Prophet model for use within the `fable` package.
