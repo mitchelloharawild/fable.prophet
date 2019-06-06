@@ -1,16 +1,13 @@
 globalVariables("self")
 
+#' @importFrom Rcpp cpp_object_initializer
 train_prophet <- function(.data, specials){
-  if(!reticulate::py_module_available("fbprophet")){
-    stop("Prophet has not yet been installed. Run `install_prophet()` to get started.")
-  }
-
   if(length(tsibble::measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by Prophet")
   }
 
   # Prepare data for modelling
-  model_data <- .data
+  model_data <- as_tibble(.data)[c(expr_text(index(.data)), measured_vars(.data))]
   colnames(model_data) <- c("ds", "y")
 
   # Growth
@@ -22,46 +19,49 @@ train_prophet <- function(.data, specials){
   holiday <- specials$holiday[[1]]
 
   # Build model
-  mdl <- fbprophet$Prophet(
+  mdl <- prophet::prophet(
     growth = growth$type,
-    changepoint_prior_scale = growth$changepoint_prior_scale,
-    n_changepoints = growth$n_changepoints,
     changepoints = growth$changepoints,
-    changepoint_range = growth$changepoint_range,
+    n.changepoints = growth$n_changepoints,
+    changepoint.range = growth$changepoint_range,
+    changepoint.prior.scale = growth$changepoint_prior_scale,
     holidays = holiday$holidays,
-    holidays_prior_scale = holiday$prior_scale,
-    yearly_seasonality = FALSE,
-    weekly_seasonality = FALSE,
-    daily_seasonality = FALSE,
+    holidays.prior.scale = holiday$prior_scale,
+    yearly.seasonality = FALSE,
+    weekly.seasonality = FALSE,
+    daily.seasonality = FALSE,
     uncertainty_samples = 0
   )
 
   # Seasonality
   for (season in specials$season){
-    mdl$add_seasonality(name = season$name, period = season$period,
-                        fourier_order = season$order, prior_scale = season$prior_scale,
-                        mode = season$type)
+    mdl <- prophet::add_seasonality(
+      mdl, name = season$name, period = season$period,
+      fourier.order = season$order, prior.scale = season$prior_scale,
+      mode = season$type)
   }
 
   # Exogenous Regressors
   for(regressor in specials$xreg){
     for(nm in colnames(regressor$xreg)){
       model_data[nm] <- regressor$xreg[,nm]
-      mdl$add_regressor(name = nm, prior_scale = regressor$prior_scale,
-                        standardize = regressor$standardize, mode = regressor$mode)
+      mdl <- prophet::add_regressor(
+        mdl, name = nm, prior.scale = regressor$prior_scale,
+        standardize = regressor$standardize, mode = regressor$mode)
     }
   }
 
   # Train model
-  mdl$fit(model_data)
-  fits <- mdl$predict(model_data)
+  mdl <- prophet::fit.prophet(mdl, model_data)
+  mdl$uncertainty_samples <- 1
+  fits <- predict(mdl, model_data)
 
   # Return model
   structure(
     list(
       model = mdl,
-      est = .data %>% mutate(.fitted = fits$yhat, .resid = !!sym(measured_vars(.data)) - fits$yhat),
-      components = .data %>% transmute(trend = !!!(fits[c("trend", names(mdl$seasonalities))]))),
+      est = tibble(.fitted = fits$yhat, .resid = model_data[["y"]] - fits$yhat),
+      components = .data %>% transmute(!!!(fits[c("trend", names(mdl$seasonalities))]))),
     class = "prophet")
 }
 
@@ -98,7 +98,7 @@ specials_prophet <- new_specials(
   },
   holiday = function(holidays = NULL, prior_scale = 10L){
     if(tsibble::is_tsibble(holidays)){
-      holidays <- rename(holidays, ds = !!index(holidays))
+      holidays <- rename(as_tibble(holidays), ds = !!index(holidays))
     }
     as.list(environment())
   },
@@ -213,7 +213,7 @@ forecast.prophet <- function(object, new_data, specials = NULL, times = 1000, ..
   mdl <- object$model
 
   # Prepare data
-  new_data <- rename(new_data, ds = !!index(new_data))
+  new_data <- rename(as.data.frame(new_data), ds = !!index(new_data))
 
   ## Growth
   growth <- specials$growth[[1]]
@@ -231,41 +231,40 @@ forecast.prophet <- function(object, new_data, specials = NULL, times = 1000, ..
     }
   }
 
-  new_data <- mdl$setup_dataframe(new_data)
-  new_data$trend <- mdl$predict_trend(new_data)
-
-  # Simulate future paths
-  mdl$uncertainty_samples <- times
-  sim <- mdl$sample_posterior_predictive(new_data)$yhat
-  sim <- split(sim, row(sim))
+  # new_data <- prophet:::setup_dataframe(mdl, new_data)
+  # new_data$trend <- prophet:::predict_trend(new_data)
+  #
+  # # Simulate future paths
+  # mdl$uncertainty_samples <- times
+  # sim <- prophet::sample_posterior_predictive(mdl, new_data)$yhat
+  # sim <- split(sim, row(sim))
 
   # Compute predictions without intervals
   mdl$uncertainty_samples <- 0
-  pred <- mdl$predict(new_data)
+  pred <- predict(mdl, new_data)
 
   # Return forecasts
-  fablelite::construct_fc(pred$yhat, purrr::map_dbl(sim, stats::sd), dist_sim(sim))
+  fablelite::construct_fc(
+    pred$yhat,
+    rep(0, length(pred$yhat)),
+    dist_unknown(length(pred$yhat))
+  )
 }
 
 #' @export
 fitted.prophet <- function(object, ...){
-  select(object$est, !!index(object$est), ".fitted")
+  object$est[[".fitted"]]
 }
 
 #' @export
 residuals.prophet <- function(object, ...){
-  select(object$est, !!index(object$est), ".resid")
+  object$est[[".resid"]]
 }
 
-#' @export
-augment.prophet <- function(x, ...){
-  x$est
-}
-
-#' @export
-components.prophet <- function(object, ...){
-  object$components
-}
+# #' @export
+# components.prophet <- function(object, ...){
+#   object$components
+# }
 
 #' @export
 model_sum.prophet <- function(x){

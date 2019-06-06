@@ -10,18 +10,18 @@ Authors@R: c(
 Depends:
     R (>= 3.1.3),
     fablelite
-Imports: 
-    reticulate,
+Imports:
     purrr,
     rlang,
     tsibble,
     lubridate,
+    Rcpp,
+    prophet,
     dplyr (>= 0.8.0)
 Suggests: 
     tsibbledata,
     testthat
 Remotes:
-    tidyverts/tsibble,
     tidyverts/fablelite,
     tidyverts/tsibbledata
 ByteCompile: true
