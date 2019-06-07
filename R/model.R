@@ -1,5 +1,6 @@
 globalVariables("self")
 
+#' @importFrom stats predict
 train_prophet <- function(.data, specials){
   if(length(tsibble::measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by Prophet")
@@ -267,7 +268,7 @@ components.prophet <- function(object, ...){
   mv <- measured_vars(cmp)
   as_dable(cmp, resp = !!sym(mv[1]), method = "Prophet",
            aliases = set_names(
-             list(expr(trend * (1 + multiplicative_terms) + additive_terms)),
+             list(expr(!!sym("trend") * (1 + !!sym("multiplicative_terms") + !!sym("additive_terms")))),
              mv[1]
            )
   )
