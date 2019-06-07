@@ -33,7 +33,7 @@ Australian Bureau of Statistics catalogue 8501.0, and in the
 
 ``` r
 library(tsibble)
-library(tidyverse)
+library(dplyr)
 cafe <- tsibbledata::aus_retail %>% 
   filter(Industry == "Cafes, restaurants and catering services")
 ```
@@ -96,15 +96,6 @@ components(fit)
 #> # … with 3,422 more rows, and 4 more variables:
 #> #   multiplicative_terms <dbl>, trend <dbl>, year <dbl>, .resid <dbl>
 ```
-
-    #> 
-    #> Attaching package: 'lubridate'
-    #> The following objects are masked from 'package:tsibble':
-    #> 
-    #>     interval, new_interval
-    #> The following object is masked from 'package:base':
-    #> 
-    #>     date
 
 <img src="man/figures/README-components-plot-1.png" width="100%" /><img src="man/figures/README-components-plot-2.png" width="100%" />
 

@@ -21,6 +21,7 @@ Imports:
 Suggests: 
     tsibbledata,
     testthat,
+    ggplot2,
     covr
 Remotes:
     tidyverts/fablelite,

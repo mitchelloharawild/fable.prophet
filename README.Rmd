@@ -34,11 +34,12 @@ Suppose we wanted to model Australia's monthly turnover for cafes, restaurants a
 
 ```{r data, message=FALSE}
 library(tsibble)
-library(tidyverse)
+library(dplyr)
 cafe <- tsibbledata::aus_retail %>% 
   filter(Industry == "Cafes, restaurants and catering services")
 ```
 ```{r plot, echo = FALSE}
+library(ggplot2)
 cafe %>% 
   ggplot(aes(x = Month, y = Turnover, colour = State)) + 
   geom_line() + 
@@ -64,7 +65,7 @@ The above output confirms that this Prophet model has been fitted to each of the
 ```{r components}
 components(fit)
 ```
-```{r components-plot, echo = FALSE}
+```{r components-plot, echo = FALSE, message = FALSE}
 library(lubridate)
 components(fit) %>%
   ggplot(aes(x = Month, y = trend, colour = State)) + 
