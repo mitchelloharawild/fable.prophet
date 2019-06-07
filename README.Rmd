@@ -16,28 +16,28 @@ knitr::opts_chunk$set(
 [![Travis build status](https://travis-ci.org/mitchelloharawild/fable.prophet.svg?branch=master)](https://travis-ci.org/mitchelloharawild/fable.prophet)
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-This package provides a tidy R interface to the Prophet forecasting framework using [fable](https://github.com/tidyverts/fable). This package makes use of the Python version of [Prophet](https://github.com/facebook/prophet) via the [reticulate](https://github.com/rstudio/reticulate) package.
+This package provides a tidy R interface to the Prophet forecasting framework using [fable](https://github.com/tidyverts/fable). This package makes use of the [prophet](https://github.com/facebook/prophet) package for R.
 
 ## Installation
 
 You can install the development version of fable.prophet from [Github](https://github.com/mitchelloharawild/fable.prophet) with:
 
 ``` r
-devtools::install_github("mitchelloharawild/fable.prophet")
-fable.prophet::install_prophet()
+# install.packages("remotes")
+remotes::install_github("mitchelloharawild/fable.prophet")
 ```
 
 ## Example
 
 Suppose we wanted to model Australia's monthly turnover for cafes, restaurants and catering services. The data is available from the Australian Bureau of Statistics catalogue 8501.0, and in the [tsibbledata](https://github.com/tidyverts/tsibbledata) package.
 
-```{r data}
+```{r data, message=FALSE}
 library(tsibble)
-cafe <- tsibbledata::ausretail %>% 
+library(tidyverse)
+cafe <- tsibbledata::aus_retail %>% 
   filter(Industry == "Cafes, restaurants and catering services")
 ```
-```{r plot, echo = FALSE, dependson='data'}
-library(ggplot2)
+```{r plot, echo = FALSE}
 cafe %>% 
   ggplot(aes(x = Month, y = Turnover, colour = State)) + 
   geom_line() + 
@@ -46,7 +46,7 @@ cafe %>%
 
 Each series generally exhibits an increasing trend with an annual seasonal pattern that varies proportionally to the level of the series. At a monthly level, any holiday effects can be modelled using a seasonal term. A piecewise linear trend is included by default, and so it is not included in the model specification below.
 
-```{r model, dependson='data'}
+```{r model}
 library(fable.prophet)
 fit <- cafe %>% 
   model(
@@ -54,16 +54,16 @@ fit <- cafe %>%
   )
 ```
 
-```{r mable, dependson='model'}
+```{r mable}
 fit
 ```
 
 The above output confirms that this Prophet model has been fitted to each of the time series. Components from this model can be extracted:
 
-```{r components, dependson='model'}
+```{r components}
 components(fit)
 ```
-```{r components-plot, echo = FALSE, dependson='model'}
+```{r components-plot, echo = FALSE}
 library(lubridate)
 components(fit) %>%
   ggplot(aes(x = Month, y = trend, colour = State)) + 
@@ -78,12 +78,12 @@ components(fit) %>%
 
 Note that the annual seasonal pattern does not change very quickly, although it does differ slightly between years. We can also produce forecasts for each of these series over the next two years.
 
-```{r forecast, dependson='model'}
+```{r forecast}
 fc <- fit %>% 
   forecast(h = 24)
 ```
 
-```{r fable, echo = FALSE, dependson='forecast'}
+```{r fable, echo = FALSE}
 fc
 cafe %>% 
   ggplot(aes(x = Month, y = Turnover, colour = State)) + 

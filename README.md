@@ -9,9 +9,8 @@ status](https://travis-ci.org/mitchelloharawild/fable.prophet.svg?branch=master)
 
 This package provides a tidy R interface to the Prophet forecasting
 framework using [fable](https://github.com/tidyverts/fable). This
-package makes use of the Python version of
-[Prophet](https://github.com/facebook/prophet) via the
-[reticulate](https://github.com/rstudio/reticulate) package.
+package makes use of the [prophet](https://github.com/facebook/prophet)
+package for R.
 
 ## Installation
 
@@ -19,8 +18,8 @@ You can install the development version of fable.prophet from
 [Github](https://github.com/mitchelloharawild/fable.prophet) with:
 
 ``` r
-devtools::install_github("mitchelloharawild/fable.prophet")
-fable.prophet::install_prophet()
+# install.packages("remotes")
+remotes::install_github("mitchelloharawild/fable.prophet")
 ```
 
 ## Example
@@ -32,12 +31,8 @@ Australian Bureau of Statistics catalogue 8501.0, and in the
 
 ``` r
 library(tsibble)
-#> 
-#> Attaching package: 'tsibble'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-cafe <- tsibbledata::ausretail %>% 
+library(tidyverse)
+cafe <- tsibbledata::aus_retail %>% 
   filter(Industry == "Cafes, restaurants and catering services")
 ```
 
@@ -51,6 +46,7 @@ included in the model specification below.
 
 ``` r
 library(fable.prophet)
+#> Loading required package: Rcpp
 #> Loading required package: fablelite
 fit <- cafe %>% 
   model(
@@ -79,21 +75,24 @@ each of the time series. Components from this model can be extracted:
 
 ``` r
 components(fit)
-#> # A tsibble: 3,432 x 6 [1M]
-#> # Key:       State, Industry, .model [8]
-#>    State            Industry                .model     Month trend     year
-#>    <chr>            <chr>                   <chr>      <mth> <dbl>    <dbl>
-#>  1 Australian Capi… Cafes, restaurants and… proph…  1982 Apr  4.50  0.0129 
-#>  2 Australian Capi… Cafes, restaurants and… proph…  1982 May  4.56 -0.0161 
-#>  3 Australian Capi… Cafes, restaurants and… proph…  1982 Jun  4.62  0.00864
-#>  4 Australian Capi… Cafes, restaurants and… proph…  1982 Jul  4.68 -0.0155 
-#>  5 Australian Capi… Cafes, restaurants and… proph…  1982 Aug  4.74  0.00690
-#>  6 Australian Capi… Cafes, restaurants and… proph…  1982 Sep  4.80  0.0277 
-#>  7 Australian Capi… Cafes, restaurants and… proph…  1982 Oct  4.86  0.00397
-#>  8 Australian Capi… Cafes, restaurants and… proph…  1982 Nov  4.93  0.0559 
-#>  9 Australian Capi… Cafes, restaurants and… proph…  1982 Dec  4.99  0.0316 
-#> 10 Australian Capi… Cafes, restaurants and… proph…  1983 Jan  5.05 -0.106  
-#> # … with 3,422 more rows
+#> # A dable:               3,432 x 10 [1M]
+#> # Key:                   State, Industry, .model [8]
+#> # Prophet Decomposition: Turnover = trend * (1 + multiplicative_terms) +
+#> #   additive_terms
+#>    State Industry .model      Month Turnover additive_terms
+#>    <chr> <chr>    <chr>       <mth>    <dbl>          <dbl>
+#>  1 Aust… Cafes, … proph…   1982 Apr      4.4              0
+#>  2 Aust… Cafes, … proph…   1982 May      3.4              0
+#>  3 Aust… Cafes, … proph…   1982 Jun      3.6              0
+#>  4 Aust… Cafes, … proph…   1982 Jul      4                0
+#>  5 Aust… Cafes, … proph…   1982 Aug      3.6              0
+#>  6 Aust… Cafes, … proph…   1982 Sep      4.2              0
+#>  7 Aust… Cafes, … proph…   1982 Oct      4.8              0
+#>  8 Aust… Cafes, … proph…   1982 Nov      5.4              0
+#>  9 Aust… Cafes, … proph…   1982 Dec      6.9              0
+#> 10 Aust… Cafes, … proph…   1983 Jan      3.8              0
+#> # … with 3,422 more rows, and 4 more variables:
+#> #   multiplicative_terms <dbl>, trend <dbl>, year <dbl>, .resid <dbl>
 ```
 
     #> 
@@ -118,18 +117,18 @@ fc <- fit %>%
 
     #> # A fable: 192 x 6 [1M]
     #> # Key:     State, Industry, .model [8]
-    #>    State        Industry           .model      Month Turnover .distribution
-    #>    <chr>        <chr>              <chr>       <mth>    <dbl> <dist>       
-    #>  1 Australian … Cafes, restaurant… prophet  2018 Oct     45.0 sim(=dbl[100…
-    #>  2 Australian … Cafes, restaurant… prophet  2018 Nov     47.6 sim(=dbl[100…
-    #>  3 Australian … Cafes, restaurant… prophet  2018 Dec     46.6 sim(=dbl[100…
-    #>  4 Australian … Cafes, restaurant… prophet  2019 Jan     40.5 sim(=dbl[100…
-    #>  5 Australian … Cafes, restaurant… prophet  2019 Feb     42.9 sim(=dbl[100…
-    #>  6 Australian … Cafes, restaurant… prophet  2019 Mar     48.0 sim(=dbl[100…
-    #>  7 Australian … Cafes, restaurant… prophet  2019 Apr     46.4 sim(=dbl[100…
-    #>  8 Australian … Cafes, restaurant… prophet  2019 May     45.2 sim(=dbl[100…
-    #>  9 Australian … Cafes, restaurant… prophet  2019 Jun     46.5 sim(=dbl[100…
-    #> 10 Australian … Cafes, restaurant… prophet  2019 Jul     45.6 sim(=dbl[100…
+    #>    State         Industry           .model     Month Turnover .distribution
+    #>    <chr>         <chr>              <chr>      <mth>    <dbl> <dist>       
+    #>  1 Australian C… Cafes, restaurant… proph…  2018 Oct     45.1 ?            
+    #>  2 Australian C… Cafes, restaurant… proph…  2018 Nov     47.6 ?            
+    #>  3 Australian C… Cafes, restaurant… proph…  2018 Dec     46.6 ?            
+    #>  4 Australian C… Cafes, restaurant… proph…  2019 Jan     40.5 ?            
+    #>  5 Australian C… Cafes, restaurant… proph…  2019 Feb     42.9 ?            
+    #>  6 Australian C… Cafes, restaurant… proph…  2019 Mar     48.0 ?            
+    #>  7 Australian C… Cafes, restaurant… proph…  2019 Apr     46.5 ?            
+    #>  8 Australian C… Cafes, restaurant… proph…  2019 May     45.2 ?            
+    #>  9 Australian C… Cafes, restaurant… proph…  2019 Jun     46.5 ?            
+    #> 10 Australian C… Cafes, restaurant… proph…  2019 Jul     45.6 ?            
     #> # … with 182 more rows
 
 <img src="man/figures/README-fable-1.png" width="100%" />
