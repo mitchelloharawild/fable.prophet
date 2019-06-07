@@ -60,7 +60,7 @@ train_prophet <- function(.data, specials){
     list(
       model = mdl,
       est = tibble(.fitted = fits$yhat, .resid = model_data[["y"]] - fits$yhat),
-      components = .data %>% transmute(!!!(fits[c("trend", names(mdl$seasonalities))]))),
+      components = .data %>% mutate(!!!(fits[c("additive_terms", "multiplicative_terms", "trend", names(mdl$seasonalities))]))),
     class = "prophet")
 }
 
@@ -260,10 +260,18 @@ residuals.prophet <- function(object, ...){
   object$est[[".resid"]]
 }
 
-# #' @export
-# components.prophet <- function(object, ...){
-#   object$components
-# }
+#' @export
+components.prophet <- function(object, ...){
+  cmp <- object$components
+  cmp$.resid <- object$est$.resid
+  mv <- measured_vars(cmp)
+  as_dable(cmp, resp = !!sym(mv[1]), method = "Prophet",
+           aliases = set_names(
+             list(expr(trend * (1 + multiplicative_terms) + additive_terms)),
+             mv[1]
+           )
+  )
+}
 
 #' @export
 model_sum.prophet <- function(x){
