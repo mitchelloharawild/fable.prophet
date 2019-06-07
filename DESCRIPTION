@@ -20,7 +20,8 @@ Imports:
     dplyr (>= 0.8.0)
 Suggests: 
     tsibbledata,
-    testthat
+    testthat,
+    covr
 Remotes:
     tidyverts/fablelite,
     tidyverts/tsibbledata

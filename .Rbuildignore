@@ -4,3 +4,4 @@
 ^fable\.Rproj$
 ^\.Rproj\.user$
 fable.prophet.Rproj
+^codecov\.yml$
