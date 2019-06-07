@@ -1,6 +1,5 @@
 globalVariables("self")
 
-#' @importFrom Rcpp cpp_object_initializer
 train_prophet <- function(.data, specials){
   if(length(tsibble::measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by Prophet")

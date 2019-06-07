@@ -9,13 +9,13 @@ Authors@R: c(
     )
 Depends:
     R (>= 3.1.3),
+    Rcpp,
     fablelite
 Imports:
     purrr,
     rlang,
     tsibble,
     lubridate,
-    Rcpp,
     prophet,
     dplyr (>= 0.8.0)
 Suggests: 
