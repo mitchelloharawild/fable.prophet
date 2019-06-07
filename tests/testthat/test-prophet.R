@@ -17,9 +17,13 @@ test_that("Prophet simple", {
 test_that("Prophet complex", {
   vic_elec <- tsibbledata::aus_elec %>%
     filter(State == "Victoria", lubridate::year(Time) == 2014)
-  elec_tr <- head(vic_elec, -48*31)
-  elec_ts <- tail(vic_elec, 48*31)
-  aus_holidays <- tsibble::as_tsibble(tsibble::holiday_aus(2014), index = date)
+  elec_tr <- vic_elec[1:(24*7*5),]
+  elec_ts <- vic_elec[(24*7*5 + 1):(24*7*7),]
+  aus_holidays <- tsibble::tsibble(
+    holiday = c("New Year's Day", "Australia Day", "Good Friday",
+                "Easter Monday", "ANZAC Day", "Christmas Day", "Boxing Day"),
+    date = structure(c(16071, 16097, 16178, 16181, 16185, 16429, 16430), class = "Date"),
+    index = date)
   complex <- model(elec_tr,
                    fit = prophet(Demand ~ growth('logistic', capacity = 10, floor = 2.5) +
                                    season("week", 3) + season("year", 12) + Temperature +
@@ -35,5 +39,5 @@ test_that("Prophet complex", {
 
   complex_fc <- forecast(complex, elec_ts)
   expect_s3_class(complex_fc, "fbl_ts")
-  expect_equal(NROW(complex_fc), 48*31)
+  expect_equal(NROW(complex_fc), 24*7*2)
 })
