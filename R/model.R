@@ -105,7 +105,7 @@ specials_prophet <- new_specials(
   xreg = function(..., prior_scale = NULL, standardize = "auto", type = NULL){
     model_formula <- new_formula(
       lhs = NULL,
-      rhs = reduce(c(0, enexprs(...)), ~ call2("+", .x, .y))
+      rhs = reduce(c(0, enexprs(...)), function(.x, .y) call2("+", .x, .y))
     )
     list(
       xreg = model.matrix(model_formula, self$data),
