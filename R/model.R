@@ -105,7 +105,7 @@ specials_prophet <- new_specials(
   xreg = function(..., prior_scale = NULL, standardize = "auto", type = NULL){
     model_formula <- new_formula(
       lhs = NULL,
-      rhs = purrr::reduce(c(0, enexprs(...)), ~ call2("+", .x, .y))
+      rhs = reduce(c(0, enexprs(...)), ~ call2("+", .x, .y))
     )
     list(
       xreg = model.matrix(model_formula, self$data),
@@ -241,11 +241,7 @@ forecast.prophet <- function(object, new_data, specials = NULL, times = 1000, ..
   sim <- split(sim, row(sim))
 
   # Return forecasts
-  fablelite::construct_fc(
-    pred$yhat,
-    purrr::map_dbl(sim, sd),
-    dist_sim(sim)
-  )
+  fablelite::construct_fc(pred$yhat, map_dbl(sim, sd), dist_sim(sim))
 }
 
 #' @export
