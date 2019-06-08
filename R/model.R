@@ -53,7 +53,7 @@ train_prophet <- function(.data, specials){
 
   # Train model
   mdl <- prophet::fit.prophet(mdl, model_data)
-  mdl$uncertainty_samples <- 1
+  mdl$uncertainty_samples <- 0
   fits <- predict(mdl, model_data)
 
   # Return model
@@ -231,23 +231,20 @@ forecast.prophet <- function(object, new_data, specials = NULL, times = 1000, ..
     }
   }
 
-  # new_data <- prophet:::setup_dataframe(mdl, new_data)
-  # new_data$trend <- prophet:::predict_trend(new_data)
-  #
-  # # Simulate future paths
-  # mdl$uncertainty_samples <- times
-  # sim <- prophet::sample_posterior_predictive(mdl, new_data)$yhat
-  # sim <- split(sim, row(sim))
-
   # Compute predictions without intervals
   mdl$uncertainty_samples <- 0
   pred <- predict(mdl, new_data)
 
+  # Simulate future paths
+  mdl$uncertainty_samples <- times
+  sim <- prophet::predictive_samples(mdl, new_data)$yhat
+  sim <- split(sim, row(sim))
+
   # Return forecasts
   fablelite::construct_fc(
     pred$yhat,
-    rep(0, length(pred$yhat)),
-    dist_unknown(length(pred$yhat))
+    purrr::map_dbl(sim, sd),
+    dist_sim(sim)
   )
 }
 
