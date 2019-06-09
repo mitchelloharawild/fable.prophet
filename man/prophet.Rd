@@ -39,7 +39,7 @@ growth(type = c("linear", "logistic"), capacity = NULL, floor = NULL,
 \subsection{season}{
 The \code{season} special is used to specify a seasonal component. This special can be used multiple times for different seasonalities.
 \preformatted{
-season(period, order, prior_scale = 10,
+season(period = NULL, order = NULL, prior_scale = 10,
        type = c("additive", "multiplicative"), name = as.character(period))
 }
 

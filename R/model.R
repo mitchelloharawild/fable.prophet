@@ -75,7 +75,7 @@ specials_prophet <- new_specials(
     type <- match.arg(type)
     as.list(environment())
   },
-  season = function(period = NULL, order, prior_scale = 10,
+  season = function(period = NULL, order = NULL, prior_scale = 10,
                     type = c("additive", "multiplicative"),
                     name = as.character(period)){
     force(name)
@@ -92,6 +92,14 @@ specials_prophet <- new_specials(
     period <- get_frequencies(period, self$data, .auto = "smallest")
     period <- suppressMessages(interval * period/lubridate::days(1))
 
+    if(is.null(order)){
+      if(period %in% c(365.25, 7, 1)){
+        order <- c(10, 3, 4)[period == c(365.25, 7, 1)]
+      }
+      else{
+        abort(sprintf("Unable to add %s to the model. The fourier order has no default, and must be specified with `order = ?`.", match.call()))
+      }
+    }
     order <- as.integer(order)
     type <- match.arg(type)
     as.list(environment())
@@ -148,7 +156,7 @@ specials_prophet <- new_specials(
 #' \subsection{season}{
 #' The `season` special is used to specify a seasonal component. This special can be used multiple times for different seasonalities.
 #' \preformatted{
-#' season(period, order, prior_scale = 10,
+#' season(period = NULL, order = NULL, prior_scale = 10,
 #'        type = c("additive", "multiplicative"), name = as.character(period))
 #' }
 #'
@@ -241,7 +249,7 @@ forecast.prophet <- function(object, new_data, specials = NULL, times = 1000, ..
   sim <- split(sim, row(sim))
 
   # Return forecasts
-  fablelite::construct_fc(pred$yhat, map_dbl(sim, sd), dist_sim(sim))
+  fablelite::construct_fc(pred$yhat, unname(map_dbl(sim, sd)), dist_sim(sim))
 }
 
 #' @export

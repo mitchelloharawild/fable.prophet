@@ -2,10 +2,10 @@ context("test-prophet")
 library(dplyr)
 
 test_that("Prophet simple", {
-  default <- model(tsibble::as_tsibble(USAccDeaths), prophet(value))
+  default <- model(tsibble::as_tsibble(USAccDeaths), prophet(value ~ season("year")))
   expect_s3_class(default, "mdl_df")
   default_mdl <- default[[1]][[1]]$fit$model
-  expect_length(default_mdl$seasonalities, 0)
+  expect_length(default_mdl$seasonalities, 1)
   expect_length(default_mdl$changepoints, 25)
   expect_length(default_mdl$extra_regressors, 0)
 
