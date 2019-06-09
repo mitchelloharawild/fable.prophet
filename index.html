@@ -137,7 +137,7 @@
 <a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; # … with 3,422 more rows, and 4 more variables:</span></a>
 <a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; #   multiplicative_terms &lt;dbl&gt;, trend &lt;dbl&gt;, year &lt;dbl&gt;, .resid &lt;dbl&gt;</span></a></code></pre></div>
 <p><img src="reference/figures/README-components-plot-1.png" width="100%"><img src="reference/figures/README-components-plot-2.png" width="100%"></p>
-<p>Note that the annual seasonal pattern does not change very quickly, although it does differ slightly between years. We can also produce forecasts for each of these series over the next two years.</p>
+<p>Note that the annual seasonal pattern does not change very quickly, although it does differ slightly between years. A very differently seasonal pattern can be seen for the Northern Territory. We can also produce forecasts for each of these series over the next two years.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">fc &lt;-<span class="st"> </span>fit <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw">forecast</span>(<span class="dt">h =</span> <span class="dv">24</span>)</a></code></pre></div>
 <pre><code>#&gt; # A fable: 192 x 6 [1M]
