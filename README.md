@@ -79,8 +79,8 @@ each of the time series. Components from this model can be extracted:
 components(fit)
 #> # A dable:               3,432 x 10 [1M]
 #> # Key:                   State, Industry, .model [8]
-#> # Prophet Decomposition: Turnover = trend * (1 + multiplicative_terms) +
-#> #   additive_terms
+#> # Prophet Decomposition: Turnover = trend * (1 + multiplicative_terms +
+#> #   additive_terms)
 #>    State Industry .model      Month Turnover additive_terms
 #>    <chr> <chr>    <chr>       <mth>    <dbl>          <dbl>
 #>  1 Aust… Cafes, … proph…   1982 Apr      4.4              0
@@ -100,8 +100,9 @@ components(fit)
 <img src="man/figures/README-components-plot-1.png" width="100%" /><img src="man/figures/README-components-plot-2.png" width="100%" />
 
 Note that the annual seasonal pattern does not change very quickly,
-although it does differ slightly between years. We can also produce
-forecasts for each of these series over the next two years.
+although it does differ slightly between years. A very differently
+seasonal pattern can be seen for the Northern Territory. We can also
+produce forecasts for each of these series over the next two years.
 
 ``` r
 fc <- fit %>% 
@@ -110,18 +111,18 @@ fc <- fit %>%
 
     #> # A fable: 192 x 6 [1M]
     #> # Key:     State, Industry, .model [8]
-    #>    State         Industry           .model     Month Turnover .distribution
-    #>    <chr>         <chr>              <chr>      <mth>    <dbl> <dist>       
-    #>  1 Australian C… Cafes, restaurant… proph…  2018 Oct     45.1 ?            
-    #>  2 Australian C… Cafes, restaurant… proph…  2018 Nov     47.6 ?            
-    #>  3 Australian C… Cafes, restaurant… proph…  2018 Dec     46.6 ?            
-    #>  4 Australian C… Cafes, restaurant… proph…  2019 Jan     40.5 ?            
-    #>  5 Australian C… Cafes, restaurant… proph…  2019 Feb     42.9 ?            
-    #>  6 Australian C… Cafes, restaurant… proph…  2019 Mar     48.0 ?            
-    #>  7 Australian C… Cafes, restaurant… proph…  2019 Apr     46.5 ?            
-    #>  8 Australian C… Cafes, restaurant… proph…  2019 May     45.2 ?            
-    #>  9 Australian C… Cafes, restaurant… proph…  2019 Jun     46.5 ?            
-    #> 10 Australian C… Cafes, restaurant… proph…  2019 Jul     45.6 ?            
+    #>    State        Industry           .model      Month Turnover .distribution
+    #>    <chr>        <chr>              <chr>       <mth>    <dbl> <dist>       
+    #>  1 Australian … Cafes, restaurant… prophet  2018 Oct     45.1 sim(=dbl[100…
+    #>  2 Australian … Cafes, restaurant… prophet  2018 Nov     47.6 sim(=dbl[100…
+    #>  3 Australian … Cafes, restaurant… prophet  2018 Dec     46.6 sim(=dbl[100…
+    #>  4 Australian … Cafes, restaurant… prophet  2019 Jan     40.5 sim(=dbl[100…
+    #>  5 Australian … Cafes, restaurant… prophet  2019 Feb     42.9 sim(=dbl[100…
+    #>  6 Australian … Cafes, restaurant… prophet  2019 Mar     48.0 sim(=dbl[100…
+    #>  7 Australian … Cafes, restaurant… prophet  2019 Apr     46.5 sim(=dbl[100…
+    #>  8 Australian … Cafes, restaurant… prophet  2019 May     45.2 sim(=dbl[100…
+    #>  9 Australian … Cafes, restaurant… prophet  2019 Jun     46.5 sim(=dbl[100…
+    #> 10 Australian … Cafes, restaurant… prophet  2019 Jul     45.6 sim(=dbl[100…
     #> # … with 182 more rows
 
 <img src="man/figures/README-fable-1.png" width="100%" />
