@@ -23,8 +23,7 @@ Suggests:
     ggplot2,
     covr
 Remotes:
-    tidyverts/fablelite,
-    tidyverts/tsibbledata
+    tidyverts/fablelite
 ByteCompile: true
 License: GPL-3
 Encoding: UTF-8
