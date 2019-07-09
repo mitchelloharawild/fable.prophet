@@ -15,8 +15,8 @@ test_that("Prophet simple", {
 })
 
 test_that("Prophet complex", {
-  vic_elec <- tsibbledata::aus_elec %>%
-    filter(State == "Victoria", lubridate::year(Time) == 2014)
+  vic_elec <- tsibbledata::vic_elec %>%
+    filter(lubridate::year(Time) == 2014)
   elec_tr <- vic_elec[1:(24*7*5),]
   elec_ts <- vic_elec[(24*7*5 + 1):(24*7*7),]
   aus_holidays <- tsibble::tsibble(
