@@ -97,7 +97,10 @@ specials_prophet <- new_specials(
         order <- c(10, 3, 4)[period == c(365.25, 7, 1)]
       }
       else{
-        abort(sprintf("Unable to add %s to the model. The fourier order has no default, and must be specified with `order = ?`.", match.call()))
+        abort(
+          sprintf("Unable to add %s to the model. The fourier order has no default, and must be specified with `order = ?`.",
+                  deparse(match.call()))
+        )
       }
     }
     order <- as.integer(order)
