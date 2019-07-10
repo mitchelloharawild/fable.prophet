@@ -77,9 +77,7 @@ specials_prophet <- new_specials(
   },
   season = function(period = NULL, order = NULL, prior_scale = 10,
                     type = c("additive", "multiplicative"),
-                    name = as.character(period)){
-    force(name)
-
+                    name = NULL){
     # Extract data interval
     interval <- tsibble::interval(self$data)
     interval <- with(interval, lubridate::years(year) +
@@ -88,9 +86,17 @@ specials_prophet <- new_specials(
                        lubridate::seconds(second) + lubridate::milliseconds(millisecond) +
                        lubridate::microseconds(microsecond) + lubridate::nanoseconds(nanosecond))
 
+    if(is.null(name) & is.character(period)){
+      name <- period
+    }
+
     # Compute prophet interval
     period <- get_frequencies(period, self$data, .auto = "smallest")
     period <- suppressMessages(interval * period/lubridate::days(1))
+
+    if(is.null(name)){
+      name <- paste0("season", period)
+    }
 
     if(is.null(order)){
       if(period %in% c(365.25, 7, 1)){
@@ -160,7 +166,7 @@ specials_prophet <- new_specials(
 #' The `season` special is used to specify a seasonal component. This special can be used multiple times for different seasonalities.
 #' \preformatted{
 #' season(period = NULL, order = NULL, prior_scale = 10,
-#'        type = c("additive", "multiplicative"), name = as.character(period))
+#'        type = c("additive", "multiplicative"), name = NULL)
 #' }
 #'
 #' \tabular{ll}{
