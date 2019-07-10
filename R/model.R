@@ -92,7 +92,7 @@ specials_prophet <- new_specials(
 
     # Compute prophet interval
     period <- get_frequencies(period, self$data, .auto = "smallest")
-    period <- suppressMessages(interval * period/lubridate::days(1))
+    period <- period * suppressMessages(interval/lubridate::days(1))
 
     if(is.null(name)){
       name <- paste0("season", period)
