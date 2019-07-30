@@ -93,7 +93,7 @@
 <p>Each series generally exhibits an increasing trend with an annual seasonal pattern that varies proportionally to the level of the series. At a monthly level, any holiday effects can be modelled using a seasonal term. A piecewise linear trend is included by default, and so it is not included in the model specification below.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(fable.prophet)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; Loading required package: Rcpp</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; Loading required package: fablelite</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; Loading required package: fabletools</span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">fit &lt;-<span class="st"> </span>cafe <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span><span class="kw">model</span>(</a>
 <a class="sourceLine" id="cb3-6" data-line-number="6">    <span class="dt">prophet =</span> <span class="kw"><a href="reference/prophet.html">prophet</a></span>(Turnover <span class="op">~</span><span class="st"> </span><span class="kw">season</span>(<span class="st">"year"</span>, <span class="dv">4</span>, <span class="dt">type =</span> <span class="st">"multiplicative"</span>))</a>
