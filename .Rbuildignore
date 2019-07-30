@@ -5,3 +5,5 @@
 ^\.Rproj\.user$
 fable.prophet.Rproj
 ^codecov\.yml$
+^appveyor\.yml$
+^tic\.R$

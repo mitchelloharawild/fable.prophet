@@ -258,7 +258,7 @@ forecast.prophet <- function(object, new_data, specials = NULL, times = 1000, ..
   sim <- split(sim, row(sim))
 
   # Return forecasts
-  construct_fc(pred$yhat, unname(map_dbl(sim, sd)), dist_sim(sim))
+  construct_fc(pred$yhat, unname(map_dbl(sim, stats::sd)), dist_sim(sim))
 }
 
 #' @export
