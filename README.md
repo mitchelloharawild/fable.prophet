@@ -49,7 +49,7 @@ included in the model specification below.
 ``` r
 library(fable.prophet)
 #> Loading required package: Rcpp
-#> Loading required package: fablelite
+#> Loading required package: fabletools
 fit <- cafe %>% 
   model(
     prophet = prophet(Turnover ~ season("year", 4, type = "multiplicative"))
