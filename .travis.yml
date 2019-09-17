@@ -3,7 +3,11 @@
 # Usually you shouldn't need to change the first part of the file
 
 # DO NOT CHANGE THE CODE BELOW
-before_install: R -q -e 'install.packages(c("remotes", "curl")); remotes::install_github("ropenscilabs/tic"); tic::prepare_all_stages(); tic::before_install()'
+before_install:
+  - mkdir -p ~/.R/
+  - echo "CXX14 = g++-7 -fPIC -flto=2" >> ~/.R/Makevars
+  - echo "CXX14FLAGS = -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations -Wno-attributes -O3" >> ~/.R/Makevars
+  - R -q -e 'install.packages(c("remotes", "curl")); remotes::install_github("ropenscilabs/tic"); tic::prepare_all_stages(); tic::before_install()'
 install: R -q -e 'tic::install()'
 after_install: R -q -e 'tic::after_install()'
 before_script: R -q -e 'tic::before_script()'
@@ -21,6 +25,13 @@ after_script: R -q -e 'tic::after_script()'
 # DO NOT CHANGE THE CODE ABOVE
 
 # Custom parts:
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-7
 
 #stages: test, full
 stages:
@@ -54,6 +65,7 @@ env:
   global:
   - _R_CHECK_FORCE_SUGGESTS_=false
   - MAKEFLAGS="-j 2"
+  - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 
 #services
 services:
