@@ -22,8 +22,6 @@ Suggests:
     testthat,
     ggplot2,
     covr
-Remotes:
-    tidyverts/fabletools
 ByteCompile: true
 License: GPL-3
 Encoding: UTF-8
