@@ -94,7 +94,7 @@ tsibbledata::aus_production \%>\%
 \seealso{
 \itemize{
 \item \href{https://facebook.github.io/prophet/}{Prophet homepage}
-\item \href{https://cran.r-project.org/web/packages/prophet/index.html}{Prophet R package}
+\item \href{https://CRAN.R-project.org/package=prophet}{Prophet R package}
 \item \href{https://pypi.org/project/fbprophet/}{Prophet Python package}
 }
 }

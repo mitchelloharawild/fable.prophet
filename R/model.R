@@ -211,7 +211,7 @@ specials_prophet <- new_specials(
 #'
 #' @seealso
 #' - [Prophet homepage](https://facebook.github.io/prophet/)
-#' - [Prophet R package](https://cran.r-project.org/web/packages/prophet/index.html)
+#' - [Prophet R package](https://CRAN.R-project.org/package=prophet)
 #' - [Prophet Python package](https://pypi.org/project/fbprophet/)
 #'
 #' @examples
