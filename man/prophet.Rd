@@ -81,12 +81,14 @@ xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
 }
 
 \examples{
+\dontrun{
 library(tsibble)
 library(dplyr)
 tsibbledata::aus_production \%>\%
   model(
     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
   )
+}
 
 }
 \seealso{

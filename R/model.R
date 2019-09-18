@@ -215,12 +215,14 @@ specials_prophet <- new_specials(
 #' - [Prophet Python package](https://pypi.org/project/fbprophet/)
 #'
 #' @examples
+#' \dontrun{
 #' library(tsibble)
 #' library(dplyr)
 #' tsibbledata::aus_production %>%
 #'   model(
 #'     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
 #'   )
+#' }
 #'
 #' @export
 prophet <- function(formula, ...){
