@@ -10,3 +10,4 @@ fable.prophet.Rproj
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^cran-comments\.md$
