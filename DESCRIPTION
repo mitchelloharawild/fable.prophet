@@ -1,5 +1,5 @@
 Package: fable.prophet
-Version: 0.0.0.9000
+Version: 0.1.0
 Title: Fable Interface for the Prophet Forecasting Procedure
 Description: Allows Prophet models from the 'prophet' package to be used in a tidy workflow with the modelling interface of 'fabletools'. This extends 'prophet' to provide enhanced model specification and management, performance evaluation methods, and model combination tools.
 Authors@R: c(

@@ -1,4 +1,4 @@
-# fable.prophet DEV
+# fable.prophet 0.1.0
 
 * First release.
 
