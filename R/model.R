@@ -168,13 +168,16 @@ specials_prophet <- new_specials(
 #'
 #' \subsection{season}{
 #' The `season` special is used to specify a seasonal component. This special can be used multiple times for different seasonalities.
+#'
+#' **Warning: The inputs controlling the seasonal `period` is specified is different than [`prophet::prophet()`]. Numeric inputs are treated as the number of observations in each seasonal period, not the number of days.**
+#'
 #' \preformatted{
 #' season(period = NULL, order = NULL, prior_scale = 10,
 #'        type = c("additive", "multiplicative"), name = NULL)
 #' }
 #'
 #' \tabular{ll}{
-#'   `period`      \tab The periodic nature of the seasonality. If a number is given, this will be treated as days in the seasonal period. If a character is given, it will be parsed using `lubridate::as.period`, allowing seasonal periods such as "2 years".\cr
+#'   `period`      \tab The periodic nature of the seasonality. If a number is given, it will specify the number of observations in each seasonal period. If a character is given, it will be parsed using `lubridate::as.period`, allowing seasonal periods such as "2 years".\cr
 #'   `order`       \tab The number of terms in the partial Fourier sum. The higher the `order`, the more flexible the seasonality can be.\cr
 #'   `prior_scale` \tab Used to control the amount of regularisation applied. Reducing this will dampen the seasonal effect.\cr
 #'   `type`        \tab The nature of the seasonality. If "additive", the variability in the seasonal pattern is fixed. If "multiplicative", the seasonal pattern varies proportionally to the level of the series.\cr
