@@ -4,7 +4,7 @@
 \name{fable.prophet-package}
 \alias{fable.prophet}
 \alias{fable.prophet-package}
-\title{fable.prophet: Fable Interface for the Prophet Forecasting Procedure}
+\title{fable.prophet: Prophet Modelling Interface for 'fable'}
 \description{
 Allows Prophet models from the 'prophet' package to be used in a tidy workflow with the modelling interface of 'fabletools'. This extends 'prophet' to provide enhanced model specification and management, performance evaluation methods, and model combination tools.
 }
