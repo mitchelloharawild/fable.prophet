@@ -247,6 +247,8 @@ prophet <- function(formula, ...){
 #'
 #' @return A list of forecasts.
 #'
+#' @examples
+#'
 #' \dontrun{
 #' library(tsibble)
 #' library(dplyr)

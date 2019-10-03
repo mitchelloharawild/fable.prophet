@@ -20,21 +20,24 @@
 }
 \value{
 A list of forecasts.
-
-\dontrun{
-library(tsibble)
-library(dplyr)
-tsibbledata::aus_production %>%
-  model(
-    prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
-  ) %>%
-  forecast()
-}
 }
 \description{
 If additional future information is required (such as exogenous variables or
 carrying capacities) by the model, then they should be included as variables
 of the \code{new_data} argument.
+}
+\examples{
+
+\dontrun{
+library(tsibble)
+library(dplyr)
+tsibbledata::aus_production \%>\%
+  model(
+    prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
+  ) \%>\%
+  forecast()
+}
+
 }
 \seealso{
 \code{\link[prophet:predict.prophet]{prophet::predict.prophet()}}
