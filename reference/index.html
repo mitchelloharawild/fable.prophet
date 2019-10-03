@@ -50,6 +50,16 @@
 <![endif]-->
 
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-149365901-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-149365901-1');
+</script>
+
 
   </head>
 
@@ -120,28 +130,16 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-prophet" class="hasAnchor"><a href="#section-prophet" class="anchor"></a>Prophet</h2>
+          <p class="section-desc"><p>The prophet model and its supported methods.</p></p>
         </th>
       </tr>
       <tr>
         
         <td>
-          <p><code><a href="components.prophet.html">components(<i>&lt;prophet&gt;</i>)</a></code> </p>
+          <p><code><a href="prophet.html">prophet()</a></code> </p>
         </td>
-        <td><p>Extract meaningful components</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fable.prophet-package.html">fable.prophet-package</a></code> </p>
-        </td>
-        <td><p>fable.prophet: Prophet Modelling Interface for 'fable'</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="fitted.prophet.html">fitted(<i>&lt;prophet&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Extract fitted values</p></td>
+        <td><p>Prophet framework modelling</p></td>
       </tr><tr>
         
         <td>
@@ -151,9 +149,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="prophet.html">prophet()</a></code> </p>
+          <p><code><a href="components.prophet.html">components(<i>&lt;prophet&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Prophet framework modelling</p></td>
+        <td><p>Extract meaningful components</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="fitted.prophet.html">fitted(<i>&lt;prophet&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Extract fitted values</p></td>
       </tr><tr>
         
         <td>
@@ -168,7 +172,7 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-prophet">Prophet</a></li>
     </ul>
   </div>
 </div>
@@ -176,7 +180,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Mitchell O'Hara-Wild.</p>
+  <p>Developed by <a href='https://mitchelloharawild.com'>Mitchell O'Hara-Wild</a>.</p>
 </div>
 
 <div class="pkgdown">
