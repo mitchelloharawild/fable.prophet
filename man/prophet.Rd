@@ -12,7 +12,7 @@ prophet(formula, ...)
 \item{...}{Not used}
 }
 \description{
-Prepares a Prophet model for use within the \code{fable} package.
+Prepares a Prophet model specification for use within the \code{fable} package.
 }
 \section{Specials}{
 
@@ -96,6 +96,7 @@ tsibbledata::aus_production \%>\%
 }
 \seealso{
 \itemize{
+\item \code{\link[prophet:prophet]{prophet::prophet()}}
 \item \href{https://facebook.github.io/prophet/}{Prophet homepage}
 \item \href{https://CRAN.R-project.org/package=prophet}{Prophet R package}
 \item \href{https://pypi.org/project/fbprophet/}{Prophet Python package}

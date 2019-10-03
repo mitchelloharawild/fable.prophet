@@ -140,7 +140,7 @@ specials_prophet <- new_specials(
 
 #' Prophet framework modelling
 #'
-#' Prepares a Prophet model for use within the `fable` package.
+#' Prepares a Prophet model specification for use within the `fable` package.
 #'
 #' @param formula A symbolic description of the model to be fitted of class `formula`.
 #' @param ... Not used
@@ -213,6 +213,7 @@ specials_prophet <- new_specials(
 #' }
 #'
 #' @seealso
+#' - [`prophet::prophet()`]
 #' - [Prophet homepage](https://facebook.github.io/prophet/)
 #' - [Prophet R package](https://CRAN.R-project.org/package=prophet)
 #' - [Prophet Python package](https://pypi.org/project/fbprophet/)
@@ -233,6 +234,29 @@ prophet <- function(formula, ...){
   new_model_definition(prophet_model, !!enquo(formula), ...)
 }
 
+#' Produce forecasts from the prophet model
+#'
+#' If additional future information is required (such as exogenous variables or
+#' carrying capacities) by the model, then they should be included as variables
+#' of the `new_data` argument.
+#'
+#' @inheritParams fable::forecast.ARIMA
+#' @param ... Additional arguments passed to [`prophet::predict.prophet()`].
+#'
+#' @seealso [`prophet::predict.prophet()`]
+#'
+#' @return A list of forecasts.
+#'
+#' \dontrun{
+#' library(tsibble)
+#' library(dplyr)
+#' tsibbledata::aus_production %>%
+#'   model(
+#'     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
+#'   ) %>%
+#'   forecast()
+#' }
+#'
 #' @export
 forecast.prophet <- function(object, new_data, specials = NULL, times = 1000, ...){
   mdl <- object$model
@@ -262,23 +286,73 @@ forecast.prophet <- function(object, new_data, specials = NULL, times = 1000, ..
 
   # Simulate future paths
   mdl$uncertainty_samples <- times
-  sim <- prophet::predictive_samples(mdl, new_data)$yhat
+  sim <- prophet::predictive_samples(mdl, new_data, ...)$yhat
   sim <- split(sim, row(sim))
 
   # Return forecasts
   construct_fc(pred$yhat, unname(map_dbl(sim, stats::sd)), dist_sim(sim))
 }
 
+#' Extract fitted values
+#'
+#' Extracts the fitted values from an estimated Prophet model.
+#'
+#' @inheritParams fable::fitted.ARIMA
+#'
+#' @return A vector of fitted values.
+#'
 #' @export
 fitted.prophet <- function(object, ...){
   object$est[[".fitted"]]
 }
 
+#' Extract model residuals
+#'
+#' Extracts the residuals from an estimated Prophet model.
+#'
+#' @inheritParams fable::residuals.ARIMA
+#'
+#' @return A vector of residuals.
+#'
 #' @export
 residuals.prophet <- function(object, ...){
   object$est[[".resid"]]
 }
 
+#' Extract meaningful components
+#'
+#' A prophet model consists of terms which are additively or multiplicatively
+#' included in the model. Multiplicative terms are scaled proportionally to the
+#' estimated trend, while additive terms are not.
+#'
+#' Extracting a prophet model's components using this function allows you to
+#' visualise the components in a similar way to [`prophet::prophet_plot_components()`].
+#'
+#' @inheritParams fable::components.ETS
+#'
+#' @return A [`fabletools::dable()`] containing estimated states.
+#'
+#' @examples
+#' \dontrun{
+#' library(tsibble)
+#' library(dplyr)
+#' beer_components <- tsibbledata::aus_production %>%
+#'   model(
+#'     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
+#'   ) %>%
+#'   components()
+#'
+#' beer_components
+#'
+#' autoplot(beer_components)
+#'
+#' library(ggplot2)
+#' library(lubridate)
+#' beer_components %>%
+#'   ggplot(aes(x = quarter(Quarter), y = year, group = year(Quarter))) +
+#'   geom_line()
+#' }
+#'
 #' @export
 components.prophet <- function(object, ...){
   cmp <- object$components
@@ -300,9 +374,4 @@ model_sum.prophet <- function(x){
 #' @export
 format.prophet <- function(x, ...){
   "Prophet Model"
-}
-
-#' @export
-print.prophet <- function(x, ...){
-  cat(format(x))
 }
