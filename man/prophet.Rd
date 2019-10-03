@@ -26,7 +26,7 @@ growth(type = c("linear", "logistic"), capacity = NULL, floor = NULL,
 }
 
 \tabular{ll}{
-\code{type}                    \tab The type of seasonality.\cr
+\code{type}                    \tab The type of trend (linear or logistic).\cr
 \code{capacity}                \tab The carrying capacity for when \code{type} is "logistic".\cr
 \code{floor}                   \tab The saturating minimum for when \code{type} is "logistic".\cr
 \code{changepoints}            \tab A vector of dates/times for changepoints. If \code{NULL}, changepoints are automatically selected.\cr
@@ -62,7 +62,7 @@ holiday(holidays = NULL, prior_scale = 10L)
 }
 
 \tabular{ll}{
-\code{holidays}    \tab A \code{tsibble} containing a set of holiday events. The event name is given in the 'holiday' column, and the event date is given via the index. Additionally, "lower_window" and "upper_window" columns can be used to include days before and after the holiday.\cr
+\code{holidays}    \tab A \href{https://tsibble.tidyverts.org/}{tsibble} containing a set of holiday events. The event name is given in the 'holiday' column, and the event date is given via the index. Additionally, "lower_window" and "upper_window" columns can be used to include days before and after the holiday.\cr
 \code{prior_scale} \tab Used to control the amount of regularisation applied. Reducing this will dampen the holiday effect.\cr
 }
 }

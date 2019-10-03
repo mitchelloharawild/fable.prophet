@@ -138,9 +138,9 @@ specials_prophet <- new_specials(
   .required_specials = c("growth", "holiday")
 )
 
-#' Prophet framework modelling
+#' Prophet procedure modelling
 #'
-#' Prepares a Prophet model specification for use within the `fable` package.
+#' Prepares a prophet model specification for use within the `fable` package.
 #'
 #' @param formula A symbolic description of the model to be fitted of class `formula`.
 #' @param ... Not used
@@ -156,7 +156,7 @@ specials_prophet <- new_specials(
 #' }
 #'
 #' \tabular{ll}{
-#'   `type`                    \tab The type of seasonality.\cr
+#'   `type`                    \tab The type of trend (linear or logistic).\cr
 #'   `capacity`                \tab The carrying capacity for when `type` is "logistic".\cr
 #'   `floor`                   \tab The saturating minimum for when `type` is "logistic".\cr
 #'   `changepoints`            \tab A vector of dates/times for changepoints. If `NULL`, changepoints are automatically selected.\cr
@@ -192,7 +192,7 @@ specials_prophet <- new_specials(
 #' }
 #'
 #' \tabular{ll}{
-#'   `holidays`    \tab A `tsibble` containing a set of holiday events. The event name is given in the 'holiday' column, and the event date is given via the index. Additionally, "lower_window" and "upper_window" columns can be used to include days before and after the holiday.\cr
+#'   `holidays`    \tab A [`tsibble`](https://tsibble.tidyverts.org/) containing a set of holiday events. The event name is given in the 'holiday' column, and the event date is given via the index. Additionally, "lower_window" and "upper_window" columns can be used to include days before and after the holiday.\cr
 #'   `prior_scale` \tab Used to control the amount of regularisation applied. Reducing this will dampen the holiday effect.\cr
 #' }
 #' }
