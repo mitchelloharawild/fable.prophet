@@ -36,7 +36,7 @@
 
 
 <meta property="og:title" content="Prophet framework modelling — prophet" />
-<meta property="og:description" content="Prepares a Prophet model for use within the fable package." />
+<meta property="og:description" content="Prepares a Prophet model specification for use within the fable package." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,7 +114,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Prepares a Prophet model for use within the <code>fable</code> package.</p>
+    <p>Prepares a Prophet model specification for use within the <code>fable</code> package.</p>
     </div>
 
     <pre class="usage"><span class='fu'>prophet</span>(<span class='no'>formula</span>, <span class='no'>...</span>)</pre>
@@ -205,6 +205,7 @@ xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
 
     <div class='dont-index'>
 <ul>
+<li><p><code><a href='https://rdrr.io/pkg/prophet/man/prophet.html'>prophet::prophet()</a></code></p></li>
 <li><p><a href='https://facebook.github.io/prophet/'>Prophet homepage</a></p></li>
 <li><p><a href='https://CRAN.R-project.org/package=prophet'>Prophet R package</a></p></li>
 <li><p><a href='https://pypi.org/project/fbprophet/'>Prophet Python package</a></p></li>
@@ -214,14 +215,8 @@ xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:tsibble’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    id</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/aus_production.html'>aus_production</a></span> <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/aus_production.html'>aus_production</a></span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(
     <span class='kw'>prophet</span> <span class='kw'>=</span> <span class='fu'>prophet</span>(<span class='no'>Beer</span> ~ <span class='fu'>season</span>(<span class='st'>"year"</span>, <span class='fl'>4</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"multiplicative"</span>))
   )</div><div class='output co'>#&gt; # A mable: 1 x 1
