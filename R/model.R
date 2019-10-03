@@ -286,7 +286,7 @@ components.prophet <- function(object, ...){
   mv <- measured_vars(cmp)
   as_dable(cmp, resp = !!sym(mv[1]), method = "Prophet",
            aliases = set_names(
-             list(expr(!!sym("trend") * (1 + !!sym("multiplicative_terms") + !!sym("additive_terms")))),
+             list(expr(!!sym("trend") * (1 + !!sym("multiplicative_terms")) + !!sym("additive_terms") + !!sym(".resid"))),
              mv[1]
            )
   )
