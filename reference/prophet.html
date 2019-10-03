@@ -155,7 +155,7 @@ growth(type = c("linear", "logistic"), capacity = NULL, floor = NULL,
 </pre>
 
 <table class='table'>
-<tr><td><code>type</code></td><td>The type of seasonality.</td></tr>
+<tr><td><code>type</code></td><td>The type of trend (linear or logistic).</td></tr>
 <tr><td><code>capacity</code></td><td>The carrying capacity for when <code>type</code> is "logistic".</td></tr>
 <tr><td><code>floor</code></td><td>The saturating minimum for when <code>type</code> is "logistic".</td></tr>
 <tr><td><code>changepoints</code></td><td>A vector of dates/times for changepoints. If <code>NULL</code>, changepoints are automatically selected.</td></tr>
@@ -190,7 +190,7 @@ holiday(holidays = NULL, prior_scale = 10L)
 </pre>
 
 <table class='table'>
-<tr><td><code>holidays</code></td><td>A <code>tsibble</code> containing a set of holiday events. The event name is given in the 'holiday' column, and the event date is given via the index. Additionally, "lower_window" and "upper_window" columns can be used to include days before and after the holiday.</td></tr>
+<tr><td><code>holidays</code></td><td>A <a href='https://tsibble.tidyverts.org/'>tsibble</a> containing a set of holiday events. The event name is given in the 'holiday' column, and the event date is given via the index. Additionally, "lower_window" and "upper_window" columns can be used to include days before and after the holiday.</td></tr>
 <tr><td><code>prior_scale</code></td><td>Used to control the amount of regularisation applied. Reducing this will dampen the holiday effect.</td></tr>
 </table>
 
