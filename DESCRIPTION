@@ -1,7 +1,7 @@
 Package: fable.prophet
 Version: 0.1.0
 Title: Prophet Modelling Interface for 'fable'
-Description: Allows Prophet models from the 'prophet' package to be used in a tidy workflow with the modelling interface of 'fabletools'. This extends 'prophet' to provide enhanced model specification and management, performance evaluation methods, and model combination tools.
+Description: Allows prophet models from the 'prophet' package to be used in a tidy workflow with the modelling interface of 'fabletools'. This extends 'prophet' to provide enhanced model specification and management, performance evaluation methods, and model combination tools.
 Authors@R: c(
     person("Mitchell", "O'Hara-Wild", role = c("aut", "cre"), email = "mail@mitchelloharawild.com"),
     person("Sean", "Taylor", role = "ctb", comment = "Prophet library, https://facebook.github.io/prophet/"),

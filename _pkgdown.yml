@@ -1,3 +1,19 @@
 template:
   params:
     bootswatch: cosmo
+    ganalytics: UA-149365901-1
+
+authors:
+  Mitchell O'Hara-Wild:
+    href: https://mitchelloharawild.com
+
+reference:
+- title: Prophet
+  desc: >
+    The prophet model and its supported methods.
+  contents:
+    - prophet
+    - forecast.prophet
+    - components.prophet
+    - fitted.prophet
+    - residuals.prophet
