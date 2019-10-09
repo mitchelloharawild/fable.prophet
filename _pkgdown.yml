@@ -7,6 +7,16 @@ authors:
   Mitchell O'Hara-Wild:
     href: https://mitchelloharawild.com
 
+navbar:
+  type: default
+  left:
+  - text: Introduction
+    href: articles/fable_prophet.html
+  - text: Reference
+    href: reference/index.html
+  - text: Changelog
+    href: news/index.html
+
 reference:
 - title: Prophet
   desc: >
