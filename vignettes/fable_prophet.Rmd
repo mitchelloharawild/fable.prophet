@@ -124,7 +124,7 @@ components(fit) %>%
   geom_line()
 ```
 
-Peak monthly passenger counts seem to occur in July, and the miminum is in February (although be wary of differences in the number of days in each month!). You can see that the model's seasonal term changes slightly from year to year, especially for domestic passengers in March and November.
+Peak monthly passenger counts seem to occur in July, and the minimum is in February (although be wary of differences in the number of days in each month!). You can see that the model's seasonal term changes slightly from year to year, especially for domestic passengers in March and November.
 
 ## Forecasting with prophet
 
