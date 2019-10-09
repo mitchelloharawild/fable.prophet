@@ -11,3 +11,4 @@ fable.prophet.Rproj
 ^docs$
 ^pkgdown$
 ^cran-comments\.md$
+^data-raw$
