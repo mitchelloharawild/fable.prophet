@@ -21,7 +21,9 @@ Suggests:
     tsibbledata,
     testthat,
     ggplot2,
-    covr
+    covr,
+    knitr,
+    rmarkdown
 ByteCompile: true
 License: GPL-3
 Encoding: UTF-8
@@ -31,3 +33,4 @@ Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate', 'namespace'))
 Language: en-GB
 URL: https://github.com/mitchelloharawild/fable.prophet
 BugReports: https://github.com/mitchelloharawild/fable.prophet/issues
+VignetteBuilder: knitr

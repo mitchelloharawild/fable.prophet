@@ -1,0 +1,159 @@
+---
+title: "Introduction to the fable interface for prophet"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{fable_prophet}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(tsibble)
+library(fable)
+library(fable.prophet)
+```
+
+The `fable.prophet` package provides an interface allowing the [prophet forecasting procedure](https://facebook.github.io/prophet/) to be used within the [fable framework](http://fable.tidyverts.org/). This allows you to use prophet to forecast multiple time series within the same workflow as other forecasting models. The interface provides a compact and flexible model specification, allowing you to create prophet models using a model formula.
+
+## Tidy temporal data
+
+The tidy temporal data structure [tsibble](http://tsibbledata.tidyverts.org/) is used to represent time series data. A `tsibble` is extends the `data.frame` used in the [prophet](https://cran.r-project.org/package=prophet) package with the concepts of `index` and `key` variables. The `index` refers to the column of data containing the observations measurement time (the `ds` column in prophet). The `key` variables are used to uniquely identify each time series in the dataset, allowing separate prophet models to be applied on each time series.
+
+For this analysis let's compare the number of domestic and international passengers passing through Los Angeles International Airport. The data is published by data.lacity.org and available on [data.gov](https://catalog.data.gov/dataset/los-angeles-international-airport-passenger-traffic-by-terminal-756ee). The data is re-hosted in this package's GitHub repository for reproducibility.
+
+```{r data}
+# Read in the data
+lax_passengers <- read.csv("https://raw.githubusercontent.com/mitchelloharawild/fable.prophet/master/data-raw/lax_passengers.csv")
+
+# Tidy and summarise the data for comparison of international and domestic passenger counts
+library(dplyr)
+library(lubridate)
+lax_passengers <- lax_passengers %>%
+  mutate(datetime = mdy_hms(ReportPeriod)) %>%
+  group_by(month = yearmonth(datetime), type = Domestic_International) %>%
+  summarise(passengers = sum(Passenger_Count)) %>%
+  ungroup()
+
+lax_passengers
+```
+
+The `data.frame` created contains two time series, one for domestic and another for international passenger counts. A `data.frame` can be converted to a `tsibble` using `as_tsibble()` and specifying the `index` and `key` variable(s). In this case the time variable (the `index`) is `date`, and the `type` variable is the key as it uniquely identifies each time series.
+
+```{r tsibble}
+# Convert to a tsibble
+library(tsibble)
+lax_passengers <- as_tsibble(lax_passengers, index = month, key = type)
+lax_passengers
+```
+
+When using `fable.prophet`, it is not necessary to have the time column named `ds` and the response column called `y`.
+
+## Data exploration
+
+Before modelling, we should first have a look at the data. There are many ways in which time series data can be visualised, and as a `tsibble` is in a tabular format you can easily create informative graphics with [ggplot2](https://cran.r-project.org/package=ggplot2). The easiest way to have a quickly see your data is with a time series plot via `autoplot()`.
+
+```{r plot}
+lax_passengers %>% 
+  autoplot(passengers)
+```
+
+Each series appears to have a piecewise linear trend and multiplicative seasonality, which we should consider when creating our prophet model. The [feasts](https://cran.r-project.org/package=feasts) and [sugrrants](https://cran.r-project.org/package=sugrrants) packages provide additional plotting tools for time series data.
+
+## Prophet modelling
+
+A prophet model is specified using the `prophet()` function. If you've loaded both `prophet` and `fable.prophet` packages, you should refer to this function explicitly with `fable.prophet::prophet()`. This function uses a formula based model specification (`y ~ x`), where the left of the formula specifies the response variable, and the right specifies the model's predictive terms.
+
+A prophet model supports piecewise linear or exponential growth (trend), additive or multiplicative seasonality, holiday effects and exogenous regressors. More details about how to specify these terms can be found in the help file, `?prophet`.
+
+To specify a linear growth and a annual multiplicative seasonal pattern for the passengers data above, you would use:
+
+```{r spec}
+prophet(passengers ~ growth("linear") + season("year", type = "multiplicative"))
+```
+
+The `model()` function is used to estimate a specified model using the data.
+
+```{r model}
+fit <- lax_passengers %>% 
+  model(
+    mdl = prophet(passengers ~ growth("linear") + season("year", type = "multiplicative"))
+  )
+fit
+```
+
+You can see that two prophet models have been estimated, one for each of the time series in the dataset.
+
+## Prophet components
+
+The components of an estimated prophet model can be extracted using the `components()` function. This allows you to visualise the terms of the model.
+
+```{r components}
+components(fit)
+```
+
+The resulting decomposition table (a `dable`) can be visualised using `autoplot()`.
+
+```{r components-plot}
+components(fit) %>% 
+  autoplot()
+```
+
+The models for each series appear to have similar characteristics, with the domestic passenger counts being more seasonal than international counts.
+
+As a `dable` is in a tabular structure, it is also possible to use [ggplot2](https://cran.r-project.org/package=ggplot2) or other plotting libraries to make more sophisticated graphics. Here I produce a plot of seasonality that is wrapped over each year, yielding a very similar result to `prophet::prophet_plot_components()`.
+
+```{r components-seasonal}
+library(ggplot2)
+components(fit) %>% 
+  ggplot(aes(
+    # Plot the month of the time index (month) on the x-axis
+    x = month(month, label = TRUE),
+    # Plot the annual seasonal term (year) on the y-axis
+    y = year, 
+    # Colour by the passenger type
+    colour = type,
+    # Draw separate lines for each type and year
+    group = interaction(type, year(month))
+  )) +  
+  geom_line()
+```
+
+Peak monthly passenger counts seem to occur in July, and the miminum is in February (although be wary of differences in the number of days in each month!). You can see that the model's seasonal term changes slightly from year to year, especially for domestic passengers in March and November.
+
+## Forecasting with prophet
+
+Forecasts from an estimated model can be produced using the `forecast()` function. If the model has not used exogenous regressors, the number of forecasts (forecast horizon) can be easily specified using the `h` argument. If exogenous regressors have been used, these will need to be included in a tsibble passed to the `new_data` argument.
+
+To forecast three years into the future, we can set `h = "3 years"`.
+
+```{r forecast}
+fc <- fit %>% 
+  forecast(h = "3 years")
+fc
+```
+
+The point forecasts are provided in the `passengers` column, and a set of simulated future paths are stored in the `.distribution` column. To visualise these forecasts, we can again use the `autoplot()` function.
+
+```{r forecast-plot}
+fc %>% 
+  autoplot(lax_passengers)
+```
+
+## Evaluating accuracy
+
+Much like any model in the fable framework, model and forecast accuracy can be evaluated using the `accuracy()` function.
+
+```{r train-accuracy}
+accuracy(fit)
+```
+
+When comparing accuracy between series on different scales, it is important to use a scale independent accuracy measure. A summary of accuracy measures can be found in the [*Forecasting: Principles and Practice* - Evaluating forecast accuracy](https://otexts.com/fpp3/accuracy.html). An appropriate accuracy measure for comparing these models is the mean absolute scaled error (MASE). We can interpret the model for domestic passenger counts as being slightly more accurate on the training data as it has a slightly lower MASE.
+
+Comparing in-sample (training) accuracy may misrepresent the accuracy of a model, as it is based on predicting one-step ahead using all available data. In many senses this is unrealistic, and there are other approaches such as out-of-sample (test) accuracy and cross-validation which can be used. The freely available online textbook also details how to compute these more realistic accuracy measures.
