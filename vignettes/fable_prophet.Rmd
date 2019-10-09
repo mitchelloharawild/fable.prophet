@@ -82,7 +82,8 @@ The `model()` function is used to estimate a specified model using the data.
 ```{r model}
 fit <- lax_passengers %>% 
   model(
-    mdl = prophet(passengers ~ growth("linear") + season("year", type = "multiplicative"))
+    mdl = prophet(passengers ~ growth("linear") + season("year", type = "multiplicative")),
+    .safely = FALSE
   )
 fit
 ```
