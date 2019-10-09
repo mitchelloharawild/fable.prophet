@@ -16,7 +16,6 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(tsibble)
-library(fable)
 library(fable.prophet)
 ```
 
