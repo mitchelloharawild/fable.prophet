@@ -11,7 +11,7 @@ navbar:
   type: default
   left:
   - text: Introduction
-    href: articles/fable_prophet.html
+    href: articles/intro.html
   - text: Reference
     href: reference/index.html
   - text: Changelog

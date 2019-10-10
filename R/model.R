@@ -31,9 +31,9 @@ train_prophet <- function(.data, specials){
     changepoint.prior.scale = growth$changepoint_prior_scale,
     holidays = holiday$holidays,
     holidays.prior.scale = holiday$prior_scale,
-    yearly.seasonality = FALSE,
-    weekly.seasonality = FALSE,
-    daily.seasonality = FALSE,
+    yearly.seasonality = is.name(self$formula),
+    weekly.seasonality = is.name(self$formula),
+    daily.seasonality = is.name(self$formula),
     uncertainty_samples = 0
   )
 
@@ -141,6 +141,17 @@ specials_prophet <- new_specials(
 #' Prophet procedure modelling
 #'
 #' Prepares a prophet model specification for use within the `fable` package.
+#'
+#' The prophet modelling interface uses a `formula` based model specification
+#' (`y ~ x`), where the left of the formula specifies the response variable,
+#' and the right specifies the model's predictive terms. Like any model in the
+#' fable framework, it is possible to specify transformations on the response.
+#'
+#' A prophet model supports piecewise linear or exponential growth (trend),
+#' additive or multiplicative seasonality, holiday effects and exogenous
+#' regressors. These can be specified using the 'specials' functions detailed
+#' below. The introduction vignette provides more details on how to model data
+#' using this interface to prophet: `vignette("intro", package="fable.prophet")`.
 #'
 #' @param formula A symbolic description of the model to be fitted of class `formula`.
 #' @param ... Not used

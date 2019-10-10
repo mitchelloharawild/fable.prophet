@@ -2,7 +2,7 @@
 title: "Introduction to the fable interface for prophet"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{fable_prophet}
+  %\VignetteIndexEntry{intro}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -10,10 +10,11 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 7
 )
 ```
-
+ 
 ```{r setup}
 library(tsibble)
 library(fable.prophet)
@@ -77,13 +78,14 @@ To specify a linear growth and a annual multiplicative seasonal pattern for the 
 prophet(passengers ~ growth("linear") + season("year", type = "multiplicative"))
 ```
 
+You can also use prophet's automatic model specification by not specifying the right hand side, i.e. `prophet(passengers)`.
+
 The `model()` function is used to estimate a specified model using the data.
 
 ```{r model}
 fit <- lax_passengers %>% 
   model(
     mdl = prophet(passengers ~ growth("linear") + season("year", type = "multiplicative")),
-    .safely = FALSE
   )
 fit
 ```
