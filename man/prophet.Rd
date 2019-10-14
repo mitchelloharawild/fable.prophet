@@ -2,7 +2,7 @@
 % Please edit documentation in R/model.R
 \name{prophet}
 \alias{prophet}
-\title{Prophet framework modelling}
+\title{Prophet procedure modelling}
 \usage{
 prophet(formula, ...)
 }
@@ -12,7 +12,19 @@ prophet(formula, ...)
 \item{...}{Not used}
 }
 \description{
-Prepares a Prophet model specification for use within the \code{fable} package.
+Prepares a prophet model specification for use within the \code{fable} package.
+}
+\details{
+The prophet modelling interface uses a \code{formula} based model specification
+(\code{y ~ x}), where the left of the formula specifies the response variable,
+and the right specifies the model's predictive terms. Like any model in the
+fable framework, it is possible to specify transformations on the response.
+
+A prophet model supports piecewise linear or exponential growth (trend),
+additive or multiplicative seasonality, holiday effects and exogenous
+regressors. These can be specified using the 'specials' functions detailed
+below. The introduction vignette provides more details on how to model data
+using this interface to prophet: \code{vignette("intro", package="fable.prophet")}.
 }
 \section{Specials}{
 
