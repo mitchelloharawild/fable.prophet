@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Prophet framework modelling — prophet • fable.prophet</title>
+<title>Prophet procedure modelling — prophet • fable.prophet</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Prophet framework modelling — prophet" />
-<meta property="og:description" content="Prepares a Prophet model specification for use within the fable package." />
+<meta property="og:title" content="Prophet procedure modelling — prophet" />
+<meta property="og:description" content="Prepares a prophet model specification for use within the fable package." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -86,10 +86,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
+  <a href="../articles/intro.html">Introduction</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -99,12 +96,7 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/mitchelloharawild/fable.prophet">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -118,13 +110,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Prophet framework modelling</h1>
-    <small class="dont-index">Source: <a href='https://github.com/mitchelloharawild/fable.prophet/blob/master/R/model.R'><code>R/model.R</code></a></small>
+    <h1>Prophet procedure modelling</h1>
+    
     <div class="hidden name"><code>prophet.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Prepares a Prophet model specification for use within the <code>fable</code> package.</p>
+    <p>Prepares a prophet model specification for use within the <code>fable</code> package.</p>
     </div>
 
     <pre class="usage"><span class='fu'>prophet</span>(<span class='no'>formula</span>, <span class='no'>...</span>)</pre>
@@ -142,6 +134,17 @@
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The prophet modelling interface uses a <code>formula</code> based model specification
+(<code>y ~ x</code>), where the left of the formula specifies the response variable,
+and the right specifies the model's predictive terms. Like any model in the
+fable framework, it is possible to specify transformations on the response.</p>
+<p>A prophet model supports piecewise linear or exponential growth (trend),
+additive or multiplicative seasonality, holiday effects and exogenous
+regressors. These can be specified using the 'specials' functions detailed
+below. The introduction vignette provides more details on how to model data
+using this interface to prophet: <code>vignette("intro", package="fable.prophet")</code>.</p>
     <h2 class="hasAnchor" id="specials"><a class="anchor" href="#specials"></a>Specials</h2>
 
     
@@ -240,6 +243,7 @@ xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#specials">Specials</a></li>
       <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
