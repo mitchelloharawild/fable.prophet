@@ -11,7 +11,7 @@ Allows prophet models from the 'prophet' package to be used in a tidy workflow w
 \seealso{
 Useful links:
 \itemize{
-  \item \url{http://pkg.mitchelloharawild.com/fable.prophet}
+  \item \url{https://pkg.mitchelloharawild.com/fable.prophet}
   \item Report bugs at \url{https://github.com/mitchelloharawild/fable.prophet/issues}
 }
 

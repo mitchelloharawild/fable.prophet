@@ -31,6 +31,6 @@ LazyData: true
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate', 'namespace'))
 Language: en-GB
-URL: http://pkg.mitchelloharawild.com/fable.prophet
+URL: https://pkg.mitchelloharawild.com/fable.prophet
 BugReports: https://github.com/mitchelloharawild/fable.prophet/issues
 VignetteBuilder: knitr
