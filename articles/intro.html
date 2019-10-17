@@ -70,7 +70,7 @@
             
       
       
-      <div class="hidden name"><code>fable_prophet.Rmd</code></div>
+      <div class="hidden name"><code>intro.Rmd</code></div>
 
     </div>
 
@@ -165,7 +165,7 @@
 <p>Before modelling, we should first have a look at the data. There are many ways in which time series data can be visualised, and as a <code>tsibble</code> is in a tabular format you can easily create informative graphics with <a href="https://cran.r-project.org/package=ggplot2">ggplot2</a>. The easiest way to have a quickly see your data is with a time series plot via <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">lax_passengers <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw">autoplot</span>(passengers)</a></code></pre></div>
-<p><img src="fable_prophet_files/figure-html/plot-1.png" width="672"></p>
+<p><img src="intro_files/figure-html/plot-1.png" width="672"></p>
 <p>Each series appears to have a piecewise linear trend and multiplicative seasonality, which we should consider when creating our prophet model. The <a href="https://cran.r-project.org/package=feasts">feasts</a> and <a href="https://cran.r-project.org/package=sugrrants">sugrrants</a> packages provide additional plotting tools for time series data.</p>
 </div>
 <div id="prophet-modelling" class="section level2">
@@ -217,7 +217,7 @@
 <p>The resulting decomposition table (a <code>dable</code>) can be visualised using <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">components</span>(fit) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw">autoplot</span>()</a></code></pre></div>
-<p><img src="fable_prophet_files/figure-html/components-plot-1.png" width="672"></p>
+<p><img src="intro_files/figure-html/components-plot-1.png" width="672"></p>
 <p>The models for each series appear to have similar characteristics, with the domestic passenger counts being more seasonal than international counts.</p>
 <p>As a <code>dable</code> is in a tabular structure, it is also possible to use <a href="https://cran.r-project.org/package=ggplot2">ggplot2</a> or other plotting libraries to make more sophisticated graphics. Here I produce a plot of seasonality that is wrapped over each year, yielding a very similar result to <code><a href="https://rdrr.io/pkg/prophet/man/prophet_plot_components.html">prophet::prophet_plot_components()</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
@@ -233,7 +233,7 @@
 <a class="sourceLine" id="cb9-11" data-line-number="11">    <span class="dt">group =</span> <span class="kw"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span>(type, <span class="kw"><a href="http://lubridate.tidyverse.org/reference/year.html">year</a></span>(month))</a>
 <a class="sourceLine" id="cb9-12" data-line-number="12">  )) <span class="op">+</span><span class="st">  </span></a>
 <a class="sourceLine" id="cb9-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>()</a></code></pre></div>
-<p><img src="fable_prophet_files/figure-html/components-seasonal-1.png" width="672"></p>
+<p><img src="intro_files/figure-html/components-seasonal-1.png" width="672"></p>
 <p>Peak monthly passenger counts seem to occur in July, and the minimum is in February (although be wary of differences in the number of days in each month!). You can see that the model’s seasonal term changes slightly from year to year, especially for domestic passengers in March and November.</p>
 </div>
 <div id="forecasting-with-prophet" class="section level2">
@@ -262,7 +262,7 @@
 <p>The point forecasts are provided in the <code>passengers</code> column, and a set of simulated future paths are stored in the <code>.distribution</code> column. To visualise these forecasts, we can again use the <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> function.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">fc <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span>(lax_passengers)</a></code></pre></div>
-<p><img src="fable_prophet_files/figure-html/forecast-plot-1.png" width="672"></p>
+<p><img src="intro_files/figure-html/forecast-plot-1.png" width="672"></p>
 </div>
 <div id="evaluating-accuracy" class="section level2">
 <h2 class="hasAnchor">

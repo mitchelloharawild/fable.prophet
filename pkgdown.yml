@@ -2,5 +2,5 @@ pandoc: '2.2'
 pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
-  fable_prophet: fable_prophet.html
+  intro: intro.html
 
