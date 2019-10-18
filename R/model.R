@@ -66,7 +66,7 @@ train_prophet <- function(.data, specials){
       model = mdl,
       est = list(.fitted = fits$yhat, .resid = model_data[["y"]] - fits$yhat),
       components = .data %>% mutate(!!!(fits[c("additive_terms", "multiplicative_terms", "trend", names(mdl$seasonalities))]))),
-    class = "prophet")
+    class = "fbl_prophet")
 }
 
 specials_prophet <- new_specials(
@@ -271,7 +271,7 @@ prophet <- function(formula, ...){
 #' }
 #'
 #' @export
-forecast.prophet <- function(object, new_data, specials = NULL, times = 1000, ...){
+forecast.fbl_prophet <- function(object, new_data, specials = NULL, times = 1000, ...){
   mdl <- object$model
 
   # Prepare data
@@ -315,7 +315,7 @@ forecast.prophet <- function(object, new_data, specials = NULL, times = 1000, ..
 #' @return A vector of fitted values.
 #'
 #' @export
-fitted.prophet <- function(object, ...){
+fitted.fbl_prophet <- function(object, ...){
   object$est[[".fitted"]]
 }
 
@@ -328,7 +328,7 @@ fitted.prophet <- function(object, ...){
 #' @return A vector of residuals.
 #'
 #' @export
-residuals.prophet <- function(object, ...){
+residuals.fbl_prophet <- function(object, ...){
   object$est[[".resid"]]
 }
 
@@ -367,7 +367,7 @@ residuals.prophet <- function(object, ...){
 #' }
 #'
 #' @export
-components.prophet <- function(object, ...){
+components.fbl_prophet <- function(object, ...){
   cmp <- object$components
   cmp$.resid <- object$est$.resid
   mv <- measured_vars(cmp)
@@ -384,7 +384,7 @@ components.prophet <- function(object, ...){
 #' @inheritParams fable::tidy.ARIMA
 #'
 #' @export
-tidy.prophet <- function(x, ...){
+tidy.fbl_prophet <- function(x, ...){
   growth_terms <- c("base_growth", "trend_offset")
 
   seas_terms <- map2(
@@ -413,11 +413,11 @@ tidy.prophet <- function(x, ...){
 }
 
 #' @export
-model_sum.prophet <- function(x){
+model_sum.fbl_prophet <- function(x){
   "prophet"
 }
 
 #' @export
-format.prophet <- function(x, ...){
+format.fbl_prophet <- function(x, ...){
   "Prophet Model"
 }
