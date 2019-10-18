@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Produce forecasts from the prophet model — forecast.prophet • fable.prophet</title>
+<title>Extract model residuals — residuals.fbl_prophet • fable.prophet</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,8 @@
 
 
 
-<meta property="og:title" content="Produce forecasts from the prophet model — forecast.prophet" />
-<meta property="og:description" content="If additional future information is required (such as exogenous variables or
-carrying capacities) by the model, then they should be included as variables
-of the new_data argument." />
+<meta property="og:title" content="Extract model residuals — residuals.fbl_prophet" />
+<meta property="og:description" content="Extracts the residuals from an estimated Prophet model." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -112,20 +110,17 @@ of the new_data argument." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Produce forecasts from the prophet model</h1>
+    <h1>Extract model residuals</h1>
     
-    <div class="hidden name"><code>forecast.prophet.Rd</code></div>
+    <div class="hidden name"><code>residuals.fbl_prophet.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>If additional future information is required (such as exogenous variables or
-carrying capacities) by the model, then they should be included as variables
-of the <code>new_data</code> argument.</p>
+    <p>Extracts the residuals from an estimated Prophet model.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for prophet</span>
-<span class='fu'>forecast</span>(<span class='no'>object</span>, <span class='no'>new_data</span>, <span class='kw'>specials</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>times</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for fbl_prophet</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,61 +130,21 @@ of the <code>new_data</code> argument.</p>
       <td><p>The time series model used to produce the forecasts</p></td>
     </tr>
     <tr>
-      <th>new_data</th>
-      <td><p>A <code>tsibble</code> containing future information used to forecast.</p></td>
-    </tr>
-    <tr>
-      <th>specials</th>
-      <td><p>(passed by <code><a href='https://fabletools.tidyverts.org/reference/forecast.html'>fabletools::forecast.mdl_df()</a></code>).</p></td>
-    </tr>
-    <tr>
-      <th>times</th>
-      <td><p>The number of sample paths to use in estimating the forecast distribution when <code>boostrap = TRUE</code>.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>Additional arguments passed to <code><a href='https://rdrr.io/pkg/prophet/man/predict.prophet.html'>prophet::predict.prophet()</a></code>.</p></td>
+      <td><p>Additional arguments for forecast model methods.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of forecasts.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>A vector of residuals.</p>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/prophet/man/predict.prophet.html'>prophet::predict.prophet()</a></code></p></div>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># \dontrun{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/aus_production.html'>aus_production</a></span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(
-    <span class='kw'>prophet</span> <span class='kw'>=</span> <span class='fu'><a href='prophet.html'>prophet</a></span>(<span class='no'>Beer</span> ~ <span class='fu'>season</span>(<span class='st'>"year"</span>, <span class='fl'>4</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"multiplicative"</span>))
-  ) <span class='kw'>%&gt;%</span>
-  <span class='fu'>forecast</span>()</div><div class='output co'>#&gt; # A fable: 8 x 4 [1Q]
-#&gt; # Key:     .model [1]
-#&gt;   .model  Quarter  Beer .distribution  
-#&gt;   &lt;chr&gt;     &lt;qtr&gt; &lt;dbl&gt; &lt;dist&gt;         
-#&gt; 1 prophet 2010 Q3  392. sim(=dbl[1000])
-#&gt; 2 prophet 2010 Q4  490. sim(=dbl[1000])
-#&gt; 3 prophet 2011 Q1  422. sim(=dbl[1000])
-#&gt; 4 prophet 2011 Q2  377. sim(=dbl[1000])
-#&gt; 5 prophet 2011 Q3  390. sim(=dbl[1000])
-#&gt; 6 prophet 2011 Q4  488. sim(=dbl[1000])
-#&gt; 7 prophet 2012 Q1  420. sim(=dbl[1000])
-#&gt; 8 prophet 2012 Q2  376. sim(=dbl[1000])</div><div class='input'># }
-
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

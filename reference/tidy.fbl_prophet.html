@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract model residuals — residuals.prophet • fable.prophet</title>
+<title>Extract estimated coefficients from a prophet model — tidy.fbl_prophet • fable.prophet</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Extract model residuals — residuals.prophet" />
-<meta property="og:description" content="Extracts the residuals from an estimated Prophet model." />
+<meta property="og:title" content="Extract estimated coefficients from a prophet model — tidy.fbl_prophet" />
+<meta property="og:description" content="Extract estimated coefficients from a prophet model" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,41 +110,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract model residuals</h1>
+    <h1>Extract estimated coefficients from a prophet model</h1>
     
-    <div class="hidden name"><code>residuals.prophet.Rd</code></div>
+    <div class="hidden name"><code>tidy.fbl_prophet.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extracts the residuals from an estimated Prophet model.</p>
+    <p>Extract estimated coefficients from a prophet model</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for prophet</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/residuals.html'>residuals</a></span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for fbl_prophet</span>
+<span class='fu'>tidy</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>The time series model used to produce the forecasts</p></td>
+      <th>x</th>
+      <td><p>An object to be converted into a tidy <code><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble::tibble()</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments for forecast model methods.</p></td>
+      <td><p>Additional arguments to tidying method.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A vector of residuals.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
     </ul>
 
   </div>

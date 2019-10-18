@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract meaningful components — components.prophet • fable.prophet</title>
+<title>Extract meaningful components — components.fbl_prophet • fable.prophet</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,7 @@
 
 
 
-<meta property="og:title" content="Extract meaningful components — components.prophet" />
+<meta property="og:title" content="Extract meaningful components — components.fbl_prophet" />
 <meta property="og:description" content="A prophet model consists of terms which are additively or multiplicatively
 included in the model. Multiplicative terms are scaled proportionally to the
 estimated trend, while additive terms are not." />
@@ -114,7 +114,7 @@ estimated trend, while additive terms are not." />
     <div class="page-header">
     <h1>Extract meaningful components</h1>
     
-    <div class="hidden name"><code>components.prophet.Rd</code></div>
+    <div class="hidden name"><code>components.fbl_prophet.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -123,7 +123,7 @@ included in the model. Multiplicative terms are scaled proportionally to the
 estimated trend, while additive terms are not.</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for prophet</span>
+    <pre class="usage"><span class='co'># S3 method for fbl_prophet</span>
 <span class='fu'>components</span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -180,7 +180,7 @@ visualise the components in a similar way to <code><a href='https://rdrr.io/pkg/
 #&gt;  9 prophet 1958 Q1   272              0                 2.77  69.8  2.77   8.50
 #&gt; 10 prophet 1958 Q2   233              0                 2.38  70.1  2.38  -3.84
 #&gt; # … with 208 more rows</div><div class='input'>
-<span class='fu'>autoplot</span>(<span class='no'>beer_components</span>)</div><div class='img'><img src='components.prophet-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>autoplot</span>(<span class='no'>beer_components</span>)</div><div class='img'><img src='components.fbl_prophet-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lubridate</span>)</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘lubridate’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:tsibble’:</span>
@@ -189,7 +189,7 @@ visualise the components in a similar way to <code><a href='https://rdrr.io/pkg/
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    date</span></div><div class='input'><span class='no'>beer_components</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/quarter.html'>quarter</a></span>(<span class='no'>Quarter</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/year.html'>year</a></span>(<span class='no'>Quarter</span>))) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>()</div><div class='img'><img src='components.prophet-2.png' alt='' width='700' height='433' /></div><div class='input'># }
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>()</div><div class='img'><img src='components.fbl_prophet-2.png' alt='' width='700' height='433' /></div><div class='input'># }
 
 </div></pre>
   </div>
