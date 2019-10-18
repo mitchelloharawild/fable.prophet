@@ -19,7 +19,7 @@ map_dbl <- function(.x, .f, ...) {
   map_mold(.x, .f, double(1), ...)
 }
 
-map_dbl <- function(.x, .f, ...) {
+map_chr <- function(.x, .f, ...) {
   map_mold(.x, .f, character(1), ...)
 }
 

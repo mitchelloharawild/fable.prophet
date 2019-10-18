@@ -294,11 +294,11 @@ forecast.prophet <- function(object, new_data, specials = NULL, times = 1000, ..
   }
 
   # Compute predictions without intervals
-  mdl$uncertainty_samples <- 0
+  mdl$uncertainty.samples <- 0
   pred <- predict(mdl, new_data)
 
   # Simulate future paths
-  mdl$uncertainty_samples <- times
+  mdl$uncertainty.samples <- times
   sim <- prophet::predictive_samples(mdl, new_data, ...)$yhat
   sim <- split(sim, row(sim))
 
