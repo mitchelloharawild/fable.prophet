@@ -27,3 +27,5 @@ reference:
     - components.fbl_prophet
     - fitted.fbl_prophet
     - residuals.fbl_prophet
+    - tidy.fbl_prophet
+    - glance.fbl_prophet

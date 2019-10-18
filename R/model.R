@@ -413,6 +413,20 @@ glance.fbl_prophet <- function(x, ...){
 #'
 #' @inheritParams fable::tidy.ARIMA
 #'
+#' @return A tibble containing the model's estimated parameters.
+#'
+#' @examples
+#' \dontrun{
+#' library(tsibble)
+#' library(dplyr)
+#' fit <- tsibbledata::aus_production %>%
+#'   model(
+#'     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
+#'   )
+#'
+#' tidy(fit) # coef(fit) or coefficients(fit) can also be used
+#' }
+#'
 #' @export
 tidy.fbl_prophet <- function(x, ...){
   growth_terms <- c("base_growth", "trend_offset")

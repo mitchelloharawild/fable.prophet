@@ -11,6 +11,22 @@
 
 \item{...}{Additional arguments to tidying method.}
 }
+\value{
+A tibble containing the model's estimated parameters.
+}
 \description{
 Extract estimated coefficients from a prophet model
+}
+\examples{
+\dontrun{
+library(tsibble)
+library(dplyr)
+fit <- tsibbledata::aus_production \%>\%
+  model(
+    prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
+  )
+
+tidy(fit) # coef(fit) or coefficients(fit) can also be used
+}
+
 }
