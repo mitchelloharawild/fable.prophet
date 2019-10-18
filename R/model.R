@@ -57,14 +57,14 @@ train_prophet <- function(.data, specials){
 
   # Train model
   mdl <- prophet::fit.prophet(mdl, model_data)
-  mdl$uncertainty_samples <- 0
+  mdl$uncertainty.samples <- 0
   fits <- predict(mdl, model_data)
 
   # Return model
   structure(
     list(
       model = mdl,
-      est = tibble(.fitted = fits$yhat, .resid = model_data[["y"]] - fits$yhat),
+      est = list(.fitted = fits$yhat, .resid = model_data[["y"]] - fits$yhat),
       components = .data %>% mutate(!!!(fits[c("additive_terms", "multiplicative_terms", "trend", names(mdl$seasonalities))]))),
     class = "prophet")
 }
