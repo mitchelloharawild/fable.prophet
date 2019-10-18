@@ -385,6 +385,8 @@ components.prophet <- function(object, ...){
 #'
 #' @export
 tidy.prophet <- function(x, ...){
+  growth_terms <- c("base_growth", "trend_offset")
+
   seas_terms <- map2(
     x$model$seasonalities, names(x$model$seasonalities),
     function(seas, nm){
@@ -405,8 +407,8 @@ tidy.prophet <- function(x, ...){
   xreg_terms <- names(x$model$extra_regressors)
 
   tibble(
-    term = invoke(c, c(seas_terms, hol_terms, xreg_terms)),
-    estimate = as.numeric(x$model$params$beta)
+    term = invoke(c, c(growth_terms, seas_terms, hol_terms, xreg_terms)),
+    estimate = c(x$model$params$k, x$model$params$m, x$model$params$beta)
   )
 }
 
