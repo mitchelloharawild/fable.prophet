@@ -23,7 +23,7 @@ reference:
     The prophet model and its supported methods.
   contents:
     - prophet
-    - forecast.prophet
-    - components.prophet
-    - fitted.prophet
-    - residuals.prophet
+    - forecast.fbl_prophet
+    - components.fbl_prophet
+    - fitted.fbl_prophet
+    - residuals.fbl_prophet
