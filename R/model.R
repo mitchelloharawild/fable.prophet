@@ -379,6 +379,36 @@ components.fbl_prophet <- function(object, ...){
   )
 }
 
+#' Glance a prophet model
+#'
+#' A glance of a prophet provides the residual's standard deviation (sigma), and
+#' a tibble containing the selected changepoints with their trend adjustments.
+#'
+#' @inheritParams fable::glance.ARIMA
+#'
+#' @return A one row tibble summarising the model's fit.
+#'
+#' @examples
+#' \dontrun{
+#' library(tsibble)
+#' library(dplyr)
+#' fit <- tsibbledata::aus_production %>%
+#'   model(
+#'     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
+#'   )
+#'
+#' glance(fit)
+#' }
+#'
+#' @export
+glance.fbl_prophet <- function(x, ...){
+  changepoints <- tibble(
+    changepoints = x$model$changepoints,
+    adjustment = as.numeric(x$model$params$delta)
+  )
+  tibble(sigma = sd(x$est$.resid, na.rm = TRUE), changepoints = list(changepoints))
+}
+
 #' Extract estimated coefficients from a prophet model
 #'
 #' @inheritParams fable::tidy.ARIMA
