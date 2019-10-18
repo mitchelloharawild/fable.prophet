@@ -19,6 +19,18 @@ map_dbl <- function(.x, .f, ...) {
   map_mold(.x, .f, double(1), ...)
 }
 
+map_dbl <- function(.x, .f, ...) {
+  map_mold(.x, .f, character(1), ...)
+}
+
+map2 <- function(.x, .y, .f, ...) {
+  mapply(.f, .x, .y, MoreArgs = list(...), SIMPLIFY = FALSE)
+}
+
+map2_chr <- function(.x, .y, .f, ...) {
+  as.vector(map2(.x, .y, .f, ...), "character")
+}
+
 reduce <- function(.x, .f, ..., .init) {
   f <- function(x, y) .f(x, y, ...)
   Reduce(f, .x, init = .init)
