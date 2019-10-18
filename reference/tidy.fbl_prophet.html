@@ -135,12 +135,29 @@
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A tibble containing the model's estimated parameters.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/aus_production.html'>aus_production</a></span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(
+    <span class='kw'>prophet</span> <span class='kw'>=</span> <span class='fu'><a href='prophet.html'>prophet</a></span>(<span class='no'>Beer</span> ~ <span class='fu'>season</span>(<span class='st'>"year"</span>, <span class='fl'>4</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"multiplicative"</span>))
+  )
+
+<span class='fu'>tidy</span>(<span class='no'>fit</span>) <span class='co'># coef(fit) or coefficients(fit) can also be used</span></div><div class='output co'>#&gt; <span class='error'>Error in mapply(.f, .x, .y, MoreArgs = list(...), SIMPLIFY = FALSE): zero-length inputs cannot be mixed with those of non-zero length</span></div><div class='input'># }
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
