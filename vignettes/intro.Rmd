@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
  
-```{r setup}
+```{r setup, results = 'hide'}
 library(tsibble)
 library(fable.prophet)
 ```
@@ -28,7 +28,7 @@ The tidy temporal data structure [tsibble](http://tsibbledata.tidyverts.org/) is
 
 For this analysis let's compare the number of domestic and international passengers passing through Los Angeles International Airport. The data is published by data.lacity.org and available on [data.gov](https://catalog.data.gov/dataset/los-angeles-international-airport-passenger-traffic-by-terminal-756ee). The data is re-hosted in this package's GitHub repository for reproducibility.
 
-```{r data}
+```{r data, message = FALSE}
 # Read in the data
 lax_passengers <- read.csv("https://raw.githubusercontent.com/mitchelloharawild/fable.prophet/master/data-raw/lax_passengers.csv")
 
