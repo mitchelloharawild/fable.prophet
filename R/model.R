@@ -406,7 +406,7 @@ glance.fbl_prophet <- function(x, ...){
     changepoints = x$model$changepoints,
     adjustment = as.numeric(x$model$params$delta)
   )
-  tibble(sigma = sd(x$est$.resid, na.rm = TRUE), changepoints = list(changepoints))
+  tibble(sigma = stats::sd(x$est$.resid, na.rm = TRUE), changepoints = list(changepoints))
 }
 
 #' Extract estimated coefficients from a prophet model
