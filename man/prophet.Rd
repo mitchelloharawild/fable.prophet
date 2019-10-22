@@ -9,7 +9,8 @@ prophet(formula, ...)
 \arguments{
 \item{formula}{A symbolic description of the model to be fitted of class \code{formula}.}
 
-\item{...}{Not used}
+\item{...}{Additional arguments passed to the \code{optimizing} or
+\code{sampling} functions in Stan.}
 }
 \description{
 Prepares a prophet model specification for use within the \code{fable} package.

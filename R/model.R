@@ -5,7 +5,7 @@
 globalVariables("self")
 
 #' @importFrom stats predict
-train_prophet <- function(.data, specials){
+train_prophet <- function(.data, specials, ...){
   if(length(tsibble::measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by Prophet")
   }
@@ -56,7 +56,7 @@ train_prophet <- function(.data, specials){
   }
 
   # Train model
-  mdl <- prophet::fit.prophet(mdl, model_data)
+  mdl <- prophet::fit.prophet(mdl, model_data, ...)
   mdl$uncertainty.samples <- 0
   fits <- predict(mdl, model_data)
 
@@ -154,7 +154,7 @@ specials_prophet <- new_specials(
 #' using this interface to prophet: `vignette("intro", package="fable.prophet")`.
 #'
 #' @param formula A symbolic description of the model to be fitted of class `formula`.
-#' @param ... Not used
+#' @inheritParams prophet::fit.prophet
 #'
 #' @section Specials:
 #'
