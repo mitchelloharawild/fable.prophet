@@ -28,7 +28,6 @@ of the \code{new_data} argument.
 }
 \examples{
 
-\dontrun{
 library(tsibble)
 library(dplyr)
 tsibbledata::aus_production \%>\%
@@ -36,7 +35,6 @@ tsibbledata::aus_production \%>\%
     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
   ) \%>\%
   forecast()
-}
 
 }
 \seealso{

@@ -230,14 +230,12 @@ specials_prophet <- new_specials(
 #' - [Prophet Python package](https://pypi.org/project/fbprophet/)
 #'
 #' @examples
-#' \dontrun{
 #' library(tsibble)
 #' library(dplyr)
 #' tsibbledata::aus_production %>%
 #'   model(
 #'     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
 #'   )
-#' }
 #'
 #' @export
 prophet <- function(formula, ...){
@@ -260,7 +258,6 @@ prophet <- function(formula, ...){
 #'
 #' @examples
 #'
-#' \dontrun{
 #' library(tsibble)
 #' library(dplyr)
 #' tsibbledata::aus_production %>%
@@ -268,7 +265,6 @@ prophet <- function(formula, ...){
 #'     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
 #'   ) %>%
 #'   forecast()
-#' }
 #'
 #' @export
 forecast.fbl_prophet <- function(object, new_data, specials = NULL, times = 1000, ...){
@@ -346,7 +342,6 @@ residuals.fbl_prophet <- function(object, ...){
 #' @return A [`fabletools::dable()`] containing estimated states.
 #'
 #' @examples
-#' \dontrun{
 #' library(tsibble)
 #' library(dplyr)
 #' beer_components <- tsibbledata::aus_production %>%
@@ -364,7 +359,6 @@ residuals.fbl_prophet <- function(object, ...){
 #' beer_components %>%
 #'   ggplot(aes(x = quarter(Quarter), y = year, group = year(Quarter))) +
 #'   geom_line()
-#' }
 #'
 #' @export
 components.fbl_prophet <- function(object, ...){
@@ -389,7 +383,6 @@ components.fbl_prophet <- function(object, ...){
 #' @return A one row tibble summarising the model's fit.
 #'
 #' @examples
-#' \dontrun{
 #' library(tsibble)
 #' library(dplyr)
 #' fit <- tsibbledata::aus_production %>%
@@ -398,7 +391,6 @@ components.fbl_prophet <- function(object, ...){
 #'   )
 #'
 #' glance(fit)
-#' }
 #'
 #' @export
 glance.fbl_prophet <- function(x, ...){
@@ -416,7 +408,6 @@ glance.fbl_prophet <- function(x, ...){
 #' @return A tibble containing the model's estimated parameters.
 #'
 #' @examples
-#' \dontrun{
 #' library(tsibble)
 #' library(dplyr)
 #' fit <- tsibbledata::aus_production %>%
@@ -425,7 +416,6 @@ glance.fbl_prophet <- function(x, ...){
 #'   )
 #'
 #' tidy(fit) # coef(fit) or coefficients(fit) can also be used
-#' }
 #'
 #' @export
 tidy.fbl_prophet <- function(x, ...){
@@ -439,14 +429,18 @@ tidy.fbl_prophet <- function(x, ...){
     }
   )
 
-  hol_terms <- map2(
-    x$model$holidays$holiday,
-    map2(x$model$holidays[["lower_window"]]%||%0, x$model$holidays[["upper_window"]]%||%0, seq),
-    function(nm, window){
-      window <- ifelse(sign(window) == 1, paste0("_+", window), ifelse(sign(window) == -1, paste0("_", window), ""))
-      paste0(nm, window)
+  hol_terms <- if (is.null(x$model$holidays)) {
+    NULL
+    } else {
+      map2(
+        x$model$holidays$holiday,
+        map2(x$model$holidays[["lower_window"]]%||%0, x$model$holidays[["upper_window"]]%||%0, seq),
+        function(nm, window){
+          window <- ifelse(sign(window) == 1, paste0("_+", window), ifelse(sign(window) == -1, paste0("_", window), ""))
+          paste0(nm, window)
+        }
+      )
     }
-  )
 
   xreg_terms <- names(x$model$extra_regressors)
 

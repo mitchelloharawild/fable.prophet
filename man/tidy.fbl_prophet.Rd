@@ -18,7 +18,6 @@ A tibble containing the model's estimated parameters.
 Extract estimated coefficients from a prophet model
 }
 \examples{
-\dontrun{
 library(tsibble)
 library(dplyr)
 fit <- tsibbledata::aus_production \%>\%
@@ -27,6 +26,5 @@ fit <- tsibbledata::aus_production \%>\%
   )
 
 tidy(fit) # coef(fit) or coefficients(fit) can also be used
-}
 
 }
