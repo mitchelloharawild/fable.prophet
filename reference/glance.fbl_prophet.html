@@ -142,8 +142,7 @@ a tibble containing the selected changepoints with their trend adjustments.</p>
     <p>A one row tibble summarising the model's fit.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># \dontrun{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/aus_production.html'>aus_production</a></span> <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(
@@ -153,8 +152,7 @@ a tibble containing the selected changepoints with their trend adjustments.</p>
 <span class='fu'>glance</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 3
 #&gt;   .model  sigma changepoints     
 #&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;list&gt;           
-#&gt; 1 prophet  14.4 &lt;tibble [25 × 2]&gt;</div><div class='input'># }
-
+#&gt; 1 prophet  14.4 &lt;tibble [25 × 2]&gt;</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
