@@ -179,6 +179,7 @@ visualise the components in a similar way to <code><a href='https://rdrr.io/pkg/
 #&gt;  9 prophet 1958 Q1   272              0                 2.77  69.8  2.77   8.50
 #&gt; 10 prophet 1958 Q2   233              0                 2.38  70.1  2.38  -3.84
 #&gt; # … with 208 more rows</div><div class='input'>
+<span class='co'># \dontrun{</span>
 <span class='fu'>autoplot</span>(<span class='no'>beer_components</span>)</div><div class='img'><img src='components.fbl_prophet-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lubridate</span>)</div><div class='output co'>#&gt; <span class='message'></span>
@@ -188,7 +189,8 @@ visualise the components in a similar way to <code><a href='https://rdrr.io/pkg/
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    date</span></div><div class='input'><span class='no'>beer_components</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/quarter.html'>quarter</a></span>(<span class='no'>Quarter</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/year.html'>year</a></span>(<span class='no'>Quarter</span>))) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>()</div><div class='img'><img src='components.fbl_prophet-2.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>()</div><div class='img'><img src='components.fbl_prophet-2.png' alt='' width='700' height='433' /></div><div class='input'># }
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
