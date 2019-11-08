@@ -34,6 +34,7 @@ beer_components <- tsibbledata::aus_production \%>\%
 
 beer_components
 
+\dontrun{
 autoplot(beer_components)
 
 library(ggplot2)
@@ -41,5 +42,6 @@ library(lubridate)
 beer_components \%>\%
   ggplot(aes(x = quarter(Quarter), y = year, group = year(Quarter))) +
   geom_line()
+}
 
 }
