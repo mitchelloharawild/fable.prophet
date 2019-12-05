@@ -148,49 +148,40 @@ estimated trend, while additive terms are not.</p>
 visualise the components in a similar way to <code><a href='https://rdrr.io/pkg/prophet/man/prophet_plot_components.html'>prophet::prophet_plot_components()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+    <pre class="examples"><div class='input'>
+<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"tsibbledata"</span>)) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='no'>beer_components</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/aus_production.html'>aus_production</a></span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>model</span>(
+    <span class='kw'>prophet</span> <span class='kw'>=</span> <span class='fu'><a href='prophet.html'>prophet</a></span>(<span class='no'>Beer</span> ~ <span class='fu'>season</span>(<span class='st'>"year"</span>, <span class='fl'>4</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"multiplicative"</span>))
+  ) <span class='kw'>%&gt;%</span>
+  <span class='fu'>components</span>()
+
+<span class='no'>beer_components</span>
+
+<span class='co'># \dontrun{</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/autoplot.html'>autoplot</a></span>(<span class='no'>beer_components</span>)
+
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lubridate</span>)
+<span class='no'>beer_components</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/quarter.html'>quarter</a></span>(<span class='no'>Quarter</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/year.html'>year</a></span>(<span class='no'>Quarter</span>))) +
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>()
+<span class='co'># }</span>
+}</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: tsibbledata</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:tsibble’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    id</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='no'>beer_components</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/aus_production.html'>aus_production</a></span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>model</span>(
-    <span class='kw'>prophet</span> <span class='kw'>=</span> <span class='fu'><a href='prophet.html'>prophet</a></span>(<span class='no'>Beer</span> ~ <span class='fu'>season</span>(<span class='st'>"year"</span>, <span class='fl'>4</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"multiplicative"</span>))
-  ) <span class='kw'>%&gt;%</span>
-  <span class='fu'>components</span>()
-
-<span class='no'>beer_components</span></div><div class='output co'>#&gt; # A dable:               218 x 8 [1Q]
-#&gt; # Key:                   .model [1]
-#&gt; # Prophet Decomposition: Beer = trend * (1 + multiplicative_terms) +
-#&gt; #   additive_terms + .resid
-#&gt;    .model  Quarter  Beer additive_terms multiplicative_terms trend  year .resid
-#&gt;    &lt;chr&gt;     &lt;qtr&gt; &lt;dbl&gt;          &lt;dbl&gt;                &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-#&gt;  1 prophet 1956 Q1   284              0                 2.77  67.3  2.77  30.6 
-#&gt;  2 prophet 1956 Q2   213              0                 2.38  67.6  2.38 -15.4 
-#&gt;  3 prophet 1956 Q3   227              0                 2.50  67.9  2.50 -10.6 
-#&gt;  4 prophet 1956 Q4   308              0                 3.37  68.2  3.37  10.1 
-#&gt;  5 prophet 1957 Q1   262              0                 2.78  68.5  2.78   3.17
-#&gt;  6 prophet 1957 Q2   228              0                 2.38  68.9  2.38  -4.63
-#&gt;  7 prophet 1957 Q3   236              0                 2.50  69.2  2.50  -6.04
-#&gt;  8 prophet 1957 Q4   320              0                 3.37  69.5  3.37  16.2 
-#&gt;  9 prophet 1958 Q1   272              0                 2.77  69.8  2.77   8.50
-#&gt; 10 prophet 1958 Q2   233              0                 2.38  70.1  2.38  -3.84
-#&gt; # … with 208 more rows</div><div class='input'>
-<span class='co'># \dontrun{</span>
-<span class='fu'>autoplot</span>(<span class='no'>beer_components</span>)</div><div class='img'><img src='components.fbl_prophet-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lubridate</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘lubridate’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:tsibble’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    interval, new_interval</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    date</span></div><div class='input'><span class='no'>beer_components</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/quarter.html'>quarter</a></span>(<span class='no'>Quarter</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>group</span> <span class='kw'>=</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/year.html'>year</a></span>(<span class='no'>Quarter</span>))) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>()</div><div class='img'><img src='components.fbl_prophet-2.png' alt='' width='700' height='433' /></div><div class='input'># }
-
+#&gt; <span class='message'>    date</span></div><div class='img'><img src='components.fbl_prophet-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -79,12 +79,7 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tsibble)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(fable.prophet)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Loading required package: Rcpp</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; Loading required package: fabletools</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; Attaching package: 'fabletools'</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; The following object is masked from 'package:stats':</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;     decompose</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; Loading required package: fabletools</span></a></code></pre></div>
 <p>The <code>fable.prophet</code> package provides an interface allowing the <a href="https://facebook.github.io/prophet/">prophet forecasting procedure</a> to be used within the <a href="http://fable.tidyverts.org/">fable framework</a>. This allows you to use prophet to forecast multiple time series within the same workflow as other forecasting models. The interface provides a compact and flexible model specification, allowing you to create prophet models using a model formula.</p>
 <div id="tidy-temporal-data" class="section level2">
 <h2 class="hasAnchor">
@@ -181,20 +176,19 @@
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; # Key:                   type, .model [2]</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; # Prophet Decomposition: passengers = trend * (1 + multiplicative_terms) +</span></a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; #   additive_terms + .resid</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;    type  .model      month passengers additive_terms multiplicative_…</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;    &lt;fct&gt; &lt;chr&gt;       &lt;mth&gt;      &lt;int&gt;          &lt;dbl&gt;            &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  1 Dome… mdl      2006 Jan    3315937              0        -0.0962  </span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  2 Dome… mdl      2006 Feb    3045963              0        -0.177   </span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  3 Dome… mdl      2006 Mar    3711057              0         0.000769</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  4 Dome… mdl      2006 Apr    3683040              0        -0.0180  </span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  5 Dome… mdl      2006 May    3743141              0         0.0317  </span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  6 Dome… mdl      2006 Jun    3994798              0         0.0946  </span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  7 Dome… mdl      2006 Jul    4236581              0         0.150   </span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  8 Dome… mdl      2006 Aug    4128492              0         0.117   </span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  9 Dome… mdl      2006 Sep    3386421              0        -0.0687  </span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; 10 Dome… mdl      2006 Oct    3598030              0        -0.00806 </span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; # … with 308 more rows, and 3 more variables: trend &lt;dbl&gt;, year &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; #   .resid &lt;dbl&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;    type  .model      month passengers additive_terms multiplicative_…  trend</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;    &lt;fct&gt; &lt;chr&gt;       &lt;mth&gt;      &lt;int&gt;          &lt;dbl&gt;            &lt;dbl&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  1 Dome… mdl      2006 Jan    3315937              0        -0.0962   3.71e6</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  2 Dome… mdl      2006 Feb    3045963              0        -0.177    3.71e6</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  3 Dome… mdl      2006 Mar    3711057              0         0.000769 3.71e6</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  4 Dome… mdl      2006 Apr    3683040              0        -0.0180   3.72e6</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  5 Dome… mdl      2006 May    3743141              0         0.0317   3.72e6</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  6 Dome… mdl      2006 Jun    3994798              0         0.0946   3.72e6</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  7 Dome… mdl      2006 Jul    4236581              0         0.150    3.72e6</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  8 Dome… mdl      2006 Aug    4128492              0         0.117    3.73e6</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  9 Dome… mdl      2006 Sep    3386421              0        -0.0687   3.73e6</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; 10 Dome… mdl      2006 Oct    3598030              0        -0.00806  3.73e6</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; # … with 308 more rows, and 2 more variables: year &lt;dbl&gt;, .resid &lt;dbl&gt;</span></a></code></pre></div>
 <p>The resulting decomposition table (a <code>dable</code>) can be visualised using <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">components</span>(fit) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw">autoplot</span>()</a></code></pre></div>
@@ -251,10 +245,10 @@
 <p>Much like any model in the fable framework, model and forecast accuracy can be evaluated using the <code>accuracy()</code> function.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">accuracy</span>(fit)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; # A tibble: 2 x 10</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;   type         .model .type      ME   RMSE    MAE     MPE  MAPE  MASE  ACF1</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;   &lt;fct&gt;        &lt;chr&gt;  &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; 1 Domestic     mdl    Traini… -181. 77251. 62175. -0.0664  1.56 0.343 0.440</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; 2 Internation… mdl    Traini…  171. 46292. 34798. -0.0683  2.26 0.357 0.729</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;   type          .model .type       ME   RMSE    MAE     MPE  MAPE  MASE  ACF1</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;   &lt;fct&gt;         &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; 1 Domestic      mdl    Training -181. 77251. 62175. -0.0664  1.56 0.343 0.440</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; 2 International mdl    Training  171. 46292. 34798. -0.0683  2.26 0.357 0.729</span></a></code></pre></div>
 <p>When comparing accuracy between series on different scales, it is important to use a scale independent accuracy measure. A summary of accuracy measures can be found in the <a href="https://otexts.com/fpp3/accuracy.html"><em>Forecasting: Principles and Practice</em> - Evaluating forecast accuracy</a>. An appropriate accuracy measure for comparing these models is the mean absolute scaled error (MASE). We can interpret the model for domestic passenger counts as being slightly more accurate on the training data as it has a slightly lower MASE.</p>
 <p>Comparing in-sample (training) accuracy may misrepresent the accuracy of a model, as it is based on predicting one-step ahead using all available data. In many senses this is unrealistic, and there are other approaches such as out-of-sample (test) accuracy and cross-validation which can be used. The freely available online textbook also details how to compute these more realistic accuracy measures.</p>
 </div>
