@@ -15,6 +15,7 @@ test_that("Prophet simple", {
 })
 
 test_that("Prophet complex", {
+  skip_if_not_installed("tsibbledata")
   vic_elec <- tsibbledata::vic_elec %>%
     filter(lubridate::year(Time) == 2014)
   elec_tr <- vic_elec[1:(24*7*5),]

@@ -4,8 +4,7 @@
 \alias{forecast.fbl_prophet}
 \title{Produce forecasts from the prophet model}
 \usage{
-\method{forecast}{fbl_prophet}(object, new_data, specials = NULL,
-  times = 1000, ...)
+\method{forecast}{fbl_prophet}(object, new_data, specials = NULL, times = 1000, ...)
 }
 \arguments{
 \item{object}{The time series model used to produce the forecasts}
@@ -28,6 +27,7 @@ of the \code{new_data} argument.
 }
 \examples{
 
+if (requireNamespace("tsibbledata")) {
 library(tsibble)
 library(dplyr)
 tsibbledata::aus_production \%>\%
@@ -35,6 +35,7 @@ tsibbledata::aus_production \%>\%
     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
   ) \%>\%
   forecast()
+}
 
 }
 \seealso{

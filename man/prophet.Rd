@@ -75,7 +75,7 @@ holiday(holidays = NULL, prior_scale = 10L)
 }
 
 \tabular{ll}{
-\code{holidays}    \tab A \href{https://tsibble.tidyverts.org/}{tsibble} containing a set of holiday events. The event name is given in the 'holiday' column, and the event date is given via the index. Additionally, "lower_window" and "upper_window" columns can be used to include days before and after the holiday.\cr
+\code{holidays}    \tab A \href{https://tsibble.tidyverts.org/}{\code{tsibble}} containing a set of holiday events. The event name is given in the 'holiday' column, and the event date is given via the index. Additionally, "lower_window" and "upper_window" columns can be used to include days before and after the holiday.\cr
 \code{prior_scale} \tab Used to control the amount of regularisation applied. Reducing this will dampen the holiday effect.\cr
 }
 }
@@ -97,12 +97,15 @@ xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
 }
 
 \examples{
+
+if (requireNamespace("tsibbledata")) {
 library(tsibble)
 library(dplyr)
 tsibbledata::aus_production \%>\%
   model(
     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
   )
+}
 
 }
 \seealso{

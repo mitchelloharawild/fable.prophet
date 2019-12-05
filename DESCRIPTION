@@ -28,7 +28,7 @@ ByteCompile: true
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate', 'namespace'))
 Language: en-GB
 URL: https://pkg.mitchelloharawild.com/fable.prophet

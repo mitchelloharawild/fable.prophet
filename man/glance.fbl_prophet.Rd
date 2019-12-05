@@ -19,6 +19,8 @@ A glance of a prophet provides the residual's standard deviation (sigma), and
 a tibble containing the selected changepoints with their trend adjustments.
 }
 \examples{
+
+if (requireNamespace("tsibbledata")) {
 library(tsibble)
 library(dplyr)
 fit <- tsibbledata::aus_production \%>\%
@@ -27,5 +29,6 @@ fit <- tsibbledata::aus_production \%>\%
   )
 
 glance(fit)
+}
 
 }

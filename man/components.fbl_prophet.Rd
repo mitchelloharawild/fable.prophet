@@ -24,6 +24,8 @@ Extracting a prophet model's components using this function allows you to
 visualise the components in a similar way to \code{\link[prophet:prophet_plot_components]{prophet::prophet_plot_components()}}.
 }
 \examples{
+
+if (requireNamespace("tsibbledata")) {
 library(tsibble)
 library(dplyr)
 beer_components <- tsibbledata::aus_production \%>\%
@@ -42,6 +44,7 @@ library(lubridate)
 beer_components \%>\%
   ggplot(aes(x = quarter(Quarter), y = year, group = year(Quarter))) +
   geom_line()
+}
 }
 
 }
