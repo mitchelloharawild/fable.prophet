@@ -11,6 +11,9 @@
 
 * This is a new release.
 
+On win-builder, examples may have a long elapsed time.
+I am unsure why this occurs, as they run quickly in all other test environments.
+
 ## Resubmission
 
 * Removed \dontrun{} from examples
