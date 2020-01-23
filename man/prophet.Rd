@@ -100,10 +100,9 @@ xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
 
 if (requireNamespace("tsibbledata")) {
 library(tsibble)
-library(dplyr)
-tsibbledata::aus_production \%>\%
+as_tsibble(USAccDeaths) \%>\%
   model(
-    prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
+    prophet = prophet(value ~ season("year", 4, type = "multiplicative"))
   )
 }
 

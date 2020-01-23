@@ -19,6 +19,7 @@ Extract estimated coefficients from a prophet model
 }
 \examples{
 
+\donttest{
 if (requireNamespace("tsibbledata")) {
 library(tsibble)
 library(dplyr)
@@ -28,6 +29,7 @@ fit <- tsibbledata::aus_production \%>\%
   )
 
 tidy(fit) # coef(fit) or coefficients(fit) can also be used
+}
 }
 
 }

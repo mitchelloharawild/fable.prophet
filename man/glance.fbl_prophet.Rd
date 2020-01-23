@@ -20,6 +20,7 @@ a tibble containing the selected changepoints with their trend adjustments.
 }
 \examples{
 
+\donttest{
 if (requireNamespace("tsibbledata")) {
 library(tsibble)
 library(dplyr)
@@ -29,6 +30,7 @@ fit <- tsibbledata::aus_production \%>\%
   )
 
 glance(fit)
+}
 }
 
 }

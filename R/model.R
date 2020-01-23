@@ -229,10 +229,9 @@ specials_prophet <- new_specials(
 #'
 #' if (requireNamespace("tsibbledata")) {
 #' library(tsibble)
-#' library(dplyr)
-#' tsibbledata::aus_production %>%
+#' as_tsibble(USAccDeaths) %>%
 #'   model(
-#'     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
+#'     prophet = prophet(value ~ season("year", 4, type = "multiplicative"))
 #'   )
 #' }
 #'
@@ -257,6 +256,7 @@ prophet <- function(formula, ...){
 #'
 #' @examples
 #'
+#' \donttest{
 #' if (requireNamespace("tsibbledata")) {
 #' library(tsibble)
 #' library(dplyr)
@@ -265,6 +265,7 @@ prophet <- function(formula, ...){
 #'     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
 #'   ) %>%
 #'   forecast()
+#' }
 #' }
 #'
 #' @export
@@ -344,6 +345,7 @@ residuals.fbl_prophet <- function(object, ...){
 #'
 #' @examples
 #'
+#' \donttest{
 #' if (requireNamespace("tsibbledata")) {
 #' library(tsibble)
 #' library(dplyr)
@@ -355,7 +357,6 @@ residuals.fbl_prophet <- function(object, ...){
 #'
 #' beer_components
 #'
-#' \dontrun{
 #' autoplot(beer_components)
 #'
 #' library(ggplot2)
@@ -390,6 +391,7 @@ components.fbl_prophet <- function(object, ...){
 #'
 #' @examples
 #'
+#' \donttest{
 #' if (requireNamespace("tsibbledata")) {
 #' library(tsibble)
 #' library(dplyr)
@@ -399,6 +401,7 @@ components.fbl_prophet <- function(object, ...){
 #'   )
 #'
 #' glance(fit)
+#' }
 #' }
 #'
 #' @export
@@ -418,6 +421,7 @@ glance.fbl_prophet <- function(x, ...){
 #'
 #' @examples
 #'
+#' \donttest{
 #' if (requireNamespace("tsibbledata")) {
 #' library(tsibble)
 #' library(dplyr)
@@ -427,6 +431,7 @@ glance.fbl_prophet <- function(x, ...){
 #'   )
 #'
 #' tidy(fit) # coef(fit) or coefficients(fit) can also be used
+#' }
 #' }
 #'
 #' @export

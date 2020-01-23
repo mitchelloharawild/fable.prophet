@@ -25,6 +25,7 @@ visualise the components in a similar way to \code{\link[prophet:prophet_plot_co
 }
 \examples{
 
+\donttest{
 if (requireNamespace("tsibbledata")) {
 library(tsibble)
 library(dplyr)
@@ -36,7 +37,6 @@ beer_components <- tsibbledata::aus_production \%>\%
 
 beer_components
 
-\dontrun{
 autoplot(beer_components)
 
 library(ggplot2)
