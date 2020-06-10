@@ -10,13 +10,13 @@ Authors@R: c(
 Depends:
     R (>= 3.1.3),
     Rcpp,
-    fabletools
+    fabletools (>= 0.2.0)
 Imports:
     rlang,
     tsibble,
     lubridate,
     prophet,
-    dplyr (>= 0.8.0),
+    dplyr,
     distributional
 Suggests: 
     tsibbledata,
@@ -25,6 +25,8 @@ Suggests:
     covr,
     knitr,
     rmarkdown
+Remotes:
+    tidyverts/fabletools
 ByteCompile: true
 License: GPL-3
 Encoding: UTF-8
