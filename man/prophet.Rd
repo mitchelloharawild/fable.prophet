@@ -97,14 +97,11 @@ xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
 }
 
 \examples{
-
-if (requireNamespace("tsibbledata")) {
 library(tsibble)
 as_tsibble(USAccDeaths) \%>\%
   model(
     prophet = prophet(value ~ season("year", 4, type = "multiplicative"))
   )
-}
 
 }
 \seealso{

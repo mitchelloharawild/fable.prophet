@@ -226,14 +226,11 @@ specials_prophet <- new_specials(
 #' - [Prophet Python package](https://pypi.org/project/fbprophet/)
 #'
 #' @examples
-#'
-#' if (requireNamespace("tsibbledata")) {
 #' library(tsibble)
 #' as_tsibble(USAccDeaths) %>%
 #'   model(
 #'     prophet = prophet(value ~ season("year", 4, type = "multiplicative"))
 #'   )
-#' }
 #'
 #' @export
 prophet <- function(formula, ...){
@@ -259,7 +256,6 @@ prophet <- function(formula, ...){
 #' \donttest{
 #' if (requireNamespace("tsibbledata")) {
 #' library(tsibble)
-#' library(dplyr)
 #' tsibbledata::aus_production %>%
 #'   model(
 #'     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
@@ -348,7 +344,6 @@ residuals.fbl_prophet <- function(object, ...){
 #' \donttest{
 #' if (requireNamespace("tsibbledata")) {
 #' library(tsibble)
-#' library(dplyr)
 #' beer_components <- tsibbledata::aus_production %>%
 #'   model(
 #'     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))

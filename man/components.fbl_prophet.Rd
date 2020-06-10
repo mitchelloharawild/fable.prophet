@@ -28,7 +28,6 @@ visualise the components in a similar way to \code{\link[prophet:prophet_plot_co
 \donttest{
 if (requireNamespace("tsibbledata")) {
 library(tsibble)
-library(dplyr)
 beer_components <- tsibbledata::aus_production \%>\%
   model(
     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))

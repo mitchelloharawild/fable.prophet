@@ -30,7 +30,6 @@ of the \code{new_data} argument.
 \donttest{
 if (requireNamespace("tsibbledata")) {
 library(tsibble)
-library(dplyr)
 tsibbledata::aus_production \%>\%
   model(
     prophet = prophet(Beer ~ season("year", 4, type = "multiplicative"))
