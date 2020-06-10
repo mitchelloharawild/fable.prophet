@@ -1,19 +1,22 @@
+Examples may have a long elapsed time (especially on win-builder). This is due
+because the prophet model (which this package provides a wrapper to) compiles a
+stan model the first time a model is ran. The prophet package gets around this 
+check issue by wrapping all examples in \dontrun{}, this submission does instead
+wraps long-running examples in \donttest{} as requested in a previous submission
+attempt.
+
 ## Test environments
-* local ubuntu 18.04 install, R 3.5.3, R 3.6.2
-* ubuntu 14.04 (on travis-ci), R-devel, R 3.6.2, R 3.5.3
-* macOS 10.13 (on travis-ci), R 3.6.1
-* windows server 2012 R2 (on AppVeyor), R 3.6.1
-* win-builder, R-devel, R 3.6.1, R 3.5.3
+* local ubuntu 18.04 install, R 3.6.3
+* ubuntu 16.04 (on GitHub actions), R 4.0.0, R 3.6.3, R 3.5.3
+* macOS (on GitHub actions), R-devel, R 4.0.0
+* windows (on GitHub actions), R 3.6.3
+* win-builder, R-devel, R-release, R-oldrelease
 
 ## R CMD check results
 
 0 errors | 0 warnings | 1 note
 
 * This is a new release.
-
-On win-builder, examples may have a long elapsed time.
-I am unsure why this occurs, as they run quickly in all other test environments including a Windows VM.
-I expect that these long example durations are from the prophet package (of which fable.prophet wraps), in which all examples are wrapped in \dontrun{}
 
 ## Resubmission
 
