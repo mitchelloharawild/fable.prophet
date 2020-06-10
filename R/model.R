@@ -297,7 +297,7 @@ forecast.fbl_prophet <- function(object, new_data, specials = NULL, times = 1000
   sim <- split(sim, row(sim))
 
   # Return forecasts
-  construct_fc(pred$yhat, unname(map_dbl(sim, stats::sd)), dist_sim(sim))
+  distributional::dist_sample(sim)
 }
 
 #' Extract fitted values

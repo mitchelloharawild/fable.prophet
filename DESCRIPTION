@@ -16,7 +16,8 @@ Imports:
     tsibble,
     lubridate,
     prophet,
-    dplyr (>= 0.8.0)
+    dplyr (>= 0.8.0),
+    distributional
 Suggests: 
     tsibbledata,
     testthat,
@@ -28,7 +29,7 @@ ByteCompile: true
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate', 'namespace'))
 Language: en-GB
 URL: https://pkg.mitchelloharawild.com/fable.prophet
