@@ -24,7 +24,7 @@ The `fable.prophet` package provides an interface allowing the [prophet forecast
 
 ## Tidy temporal data
 
-The tidy temporal data structure [tsibble](http://tsibbledata.tidyverts.org/) is used to represent time series data. A `tsibble` is extends the `data.frame` used in the [prophet](https://cran.r-project.org/package=prophet) package with the concepts of `index` and `key` variables. The `index` refers to the column of data containing the observations measurement time (the `ds` column in prophet). The `key` variables are used to uniquely identify each time series in the dataset, allowing separate prophet models to be applied on each time series.
+The tidy temporal data structure [tsibble](https://tsibbledata.tidyverts.org/) is used to represent time series data. A `tsibble` is extends the `data.frame` used in the [prophet](https://cran.r-project.org/package=prophet) package with the concepts of `index` and `key` variables. The `index` refers to the column of data containing the observations measurement time (the `ds` column in prophet). The `key` variables are used to uniquely identify each time series in the dataset, allowing separate prophet models to be applied on each time series.
 
 For this analysis let's compare the number of domestic and international passengers passing through Los Angeles International Airport. The data is published by data.lacity.org and available on [data.gov](https://catalog.data.gov/dataset/los-angeles-international-airport-passenger-traffic-by-terminal-756ee). The data is re-hosted in this package's GitHub repository for reproducibility.
 
