@@ -7,6 +7,7 @@
 status](https://github.com/mitchelloharawild/fable.prophet/workflows/R-CMD-check/badge.svg)](https://github.com/mitchelloharawild/fable.prophet)
 [![Codecov test
 coverage](https://codecov.io/gh/mitchelloharawild/fable.prophet/branch/master/graph/badge.svg)](https://codecov.io/gh/mitchelloharawild/fable.prophet?branch=master)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fable.prophet)](https://cran.r-project.org/package=fable.prophet)
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
 This package provides a tidy R interface to the prophet forecasting
