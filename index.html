@@ -6,13 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prophet Modelling Interface for fable • fable.prophet</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Prophet Modelling Interface for fable">
 <meta property="og:description" content="Allows prophet models from the prophet package to be used in a tidy workflow with the modelling interface of fabletools. This extends prophet to provide enhanced model specification and management, performance evaluation methods, and model combination tools.">
-<meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -24,7 +24,7 @@
   gtag('config', 'UA-149365901-1');
 </script>
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">fable.prophet</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
       </span>
     </div>
 
@@ -53,7 +53,14 @@
   <a href="news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/mitchelloharawild/fable.prophet/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -65,96 +72,101 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="fable-prophet" class="section level1">
+<div id="fableprophet" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#fable-prophet" class="anchor"></a>fable.prophet</h1></div>
+<a href="#fableprophet" class="anchor"></a>fable.prophet</h1></div>
 
 <p>This package provides a tidy R interface to the prophet forecasting procedure using <a href="https://github.com/tidyverts/fable">fable</a>. This package makes use of the <a href="https://cran.r-project.org/package=prophet">prophet package</a> for R.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the development version of fable.prophet from <a href="https://github.com/mitchelloharawild/fable.prophet">Github</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"mitchelloharawild/fable.prophet"</span>)</a></code></pre></div>
+<p>The can install the <strong>stable</strong> version from <a href="https://cran.r-project.org/package=fable.prophet">CRAN</a>:</p>
+<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"fable.prophet"</span>)</pre></div>
+<p>You can install the <strong>development</strong> version from <a href="https://github.com/mitchelloharawild/fable.prophet">Github</a> with:</p>
+<div class="sourceCode" id="cb2"><pre class="r"><span class="co"># install.packages("remotes")</span>
+<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"mitchelloharawild/fable.prophet"</span>)</pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>Suppose we wanted to model Australia’s monthly turnover for cafes, restaurants and catering services. The data is available from the Australian Bureau of Statistics catalogue 8501.0, and in the <a href="https://github.com/tidyverts/tsibbledata">tsibbledata</a> package.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tsibble)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">cafe &lt;-<span class="st"> </span>tsibbledata<span class="op">::</span>aus_retail <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(Industry <span class="op">==</span><span class="st"> "Cafes, restaurants and catering services"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tsibble</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
+<span class="no">cafe</span> <span class="kw">&lt;-</span> <span class="kw pkg">tsibbledata</span><span class="kw ns">::</span><span class="no"><a href="https://tsibbledata.tidyverts.org/reference/aus_retail.html">aus_retail</a></span> <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">Industry</span> <span class="kw">==</span> <span class="st">"Cafes, restaurants and catering services"</span>)</pre></div>
 <p><img src="reference/figures/README-plot-1.png" width="100%"></p>
 <p>Each series generally exhibits an increasing trend with an annual seasonal pattern that varies proportionally to the level of the series. At a monthly level, any holiday effects can be modelled using a seasonal term. A piecewise linear trend is included by default, and so it is not included in the model specification below.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(fable.prophet)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; Loading required package: Rcpp</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; Loading required package: fabletools</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">fit &lt;-<span class="st"> </span>cafe <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span><span class="kw">model</span>(</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">    <span class="dt">prophet =</span> <span class="kw"><a href="reference/prophet.html">prophet</a></span>(Turnover <span class="op">~</span><span class="st"> </span><span class="kw">season</span>(<span class="st">"year"</span>, <span class="dv">4</span>, <span class="dt">type =</span> <span class="st">"multiplicative"</span>))</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">  )</a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">fit</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; # A mable: 8 x 3</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; # Key:     State, Industry [8]</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;   State                      Industry                              prophet </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt;                      &lt;chr&gt;                                 &lt;model&gt; </span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; 1 Australian Capital Territ… Cafes, restaurants and catering serv… &lt;prophe…</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; 2 New South Wales            Cafes, restaurants and catering serv… &lt;prophe…</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; 3 Northern Territory         Cafes, restaurants and catering serv… &lt;prophe…</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; 4 Queensland                 Cafes, restaurants and catering serv… &lt;prophe…</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; 5 South Australia            Cafes, restaurants and catering serv… &lt;prophe…</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; 6 Tasmania                   Cafes, restaurants and catering serv… &lt;prophe…</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; 7 Victoria                   Cafes, restaurants and catering serv… &lt;prophe…</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; 8 Western Australia          Cafes, restaurants and catering serv… &lt;prophe…</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">fable.prophet</span>)
+<span class="co">#&gt; Loading required package: Rcpp</span>
+<span class="co">#&gt; Loading required package: fabletools</span>
+<span class="no">fit</span> <span class="kw">&lt;-</span> <span class="no">cafe</span> <span class="kw">%&gt;%</span>
+  <span class="fu">model</span>(
+    <span class="kw">prophet</span> <span class="kw">=</span> <span class="fu"><a href="reference/prophet.html">prophet</a></span>(<span class="no">Turnover</span> ~ <span class="fu">season</span>(<span class="st">"year"</span>, <span class="fl">4</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"multiplicative"</span>))
+  )</pre></div>
+<div class="sourceCode" id="cb5"><pre class="r"><span class="no">fit</span>
+<span class="co">#&gt; # A mable: 8 x 3</span>
+<span class="co">#&gt; # Key:     State, Industry [8]</span>
+<span class="co">#&gt;   State                        Industry                                  prophet</span>
+<span class="co">#&gt;   &lt;chr&gt;                        &lt;chr&gt;                                     &lt;model&gt;</span>
+<span class="co">#&gt; 1 Australian Capital Territory Cafes, restaurants and catering servic… &lt;prophet&gt;</span>
+<span class="co">#&gt; 2 New South Wales              Cafes, restaurants and catering servic… &lt;prophet&gt;</span>
+<span class="co">#&gt; 3 Northern Territory           Cafes, restaurants and catering servic… &lt;prophet&gt;</span>
+<span class="co">#&gt; 4 Queensland                   Cafes, restaurants and catering servic… &lt;prophet&gt;</span>
+<span class="co">#&gt; 5 South Australia              Cafes, restaurants and catering servic… &lt;prophet&gt;</span>
+<span class="co">#&gt; 6 Tasmania                     Cafes, restaurants and catering servic… &lt;prophet&gt;</span>
+<span class="co">#&gt; 7 Victoria                     Cafes, restaurants and catering servic… &lt;prophet&gt;</span>
+<span class="co">#&gt; 8 Western Australia            Cafes, restaurants and catering servic… &lt;prophet&gt;</span></pre></div>
 <p>The above output confirms that this Prophet model has been fitted to each of the time series. Components from this model can be extracted:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">components</span>(fit)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A dable:               3,456 x 10 [1M]</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; # Key:                   State, Industry, .model [8]</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; # Prophet Decomposition: Turnover = trend * (1 + multiplicative_terms) +</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; #   additive_terms + .resid</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;    State Industry .model      Month Turnover additive_terms</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;       &lt;mth&gt;    &lt;dbl&gt;          &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt;  1 Aust… Cafes, … proph…   1982 Apr      4.4              0</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;  2 Aust… Cafes, … proph…   1982 May      3.4              0</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;  3 Aust… Cafes, … proph…   1982 Jun      3.6              0</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;  4 Aust… Cafes, … proph…   1982 Jul      4                0</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;  5 Aust… Cafes, … proph…   1982 Aug      3.6              0</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;  6 Aust… Cafes, … proph…   1982 Sep      4.2              0</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt;  7 Aust… Cafes, … proph…   1982 Oct      4.8              0</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;  8 Aust… Cafes, … proph…   1982 Nov      5.4              0</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt;  9 Aust… Cafes, … proph…   1982 Dec      6.9              0</span></a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt; 10 Aust… Cafes, … proph…   1983 Jan      3.8              0</span></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt; # … with 3,446 more rows, and 4 more variables:</span></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt; #   multiplicative_terms &lt;dbl&gt;, trend &lt;dbl&gt;, year &lt;dbl&gt;, .resid &lt;dbl&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="r"><span class="fu">components</span>(<span class="no">fit</span>)
+<span class="co">#&gt; # A dable:               3,456 x 10 [1M]</span>
+<span class="co">#&gt; # Key:                   State, Industry, .model [8]</span>
+<span class="co">#&gt; # Prophet Decomposition: Turnover = trend * (1 + multiplicative_terms) +</span>
+<span class="co">#&gt; #   additive_terms + .resid</span>
+<span class="co">#&gt;    State Industry .model    Month Turnover additive_terms multiplicative_… trend</span>
+<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;     &lt;mth&gt;    &lt;dbl&gt;          &lt;dbl&gt;            &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 Aust… Cafes, … proph… 1982 Apr      4.4              0          0.0148   4.44</span>
+<span class="co">#&gt;  2 Aust… Cafes, … proph… 1982 May      3.4              0         -0.0132   4.50</span>
+<span class="co">#&gt;  3 Aust… Cafes, … proph… 1982 Jun      3.6              0          0.0104   4.57</span>
+<span class="co">#&gt;  4 Aust… Cafes, … proph… 1982 Jul      4                0         -0.0132   4.63</span>
+<span class="co">#&gt;  5 Aust… Cafes, … proph… 1982 Aug      3.6              0          0.00988  4.69</span>
+<span class="co">#&gt;  6 Aust… Cafes, … proph… 1982 Sep      4.2              0          0.0287   4.75</span>
+<span class="co">#&gt;  7 Aust… Cafes, … proph… 1982 Oct      4.8              0          0.00126  4.81</span>
+<span class="co">#&gt;  8 Aust… Cafes, … proph… 1982 Nov      5.4              0          0.0481   4.87</span>
+<span class="co">#&gt;  9 Aust… Cafes, … proph… 1982 Dec      6.9              0          0.0240   4.93</span>
+<span class="co">#&gt; 10 Aust… Cafes, … proph… 1983 Jan      3.8              0         -0.106    5.00</span>
+<span class="co">#&gt; # … with 3,446 more rows, and 2 more variables: year &lt;dbl&gt;, .resid &lt;dbl&gt;</span></pre></div>
 <p><img src="reference/figures/README-components-plot-1.png" width="100%"><img src="reference/figures/README-components-plot-2.png" width="100%"></p>
 <p>Note that the annual seasonal pattern does not change very quickly, although it does differ slightly between years. A very differently seasonal pattern can be seen for the Northern Territory. We can also produce forecasts for each of these series over the next two years.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">fc &lt;-<span class="st"> </span>fit <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">forecast</span>(<span class="dt">h =</span> <span class="dv">24</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co">#&gt; # A fable: 192 x 6 [1M]</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; # Key:     State, Industry, .model [8]</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;    State        Industry           .model      Month Turnover .distribution</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;        &lt;chr&gt;              &lt;chr&gt;       &lt;mth&gt;    &lt;dbl&gt; &lt;dist&gt;       </span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;  1 Australian … Cafes, restaurant… prophet  2019 Jan     40.2 sim(=dbl[100…</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;  2 Australian … Cafes, restaurant… prophet  2019 Feb     42.7 sim(=dbl[100…</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;  3 Australian … Cafes, restaurant… prophet  2019 Mar     47.7 sim(=dbl[100…</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  4 Australian … Cafes, restaurant… prophet  2019 Apr     46.2 sim(=dbl[100…</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  5 Australian … Cafes, restaurant… prophet  2019 May     45.0 sim(=dbl[100…</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  6 Australian … Cafes, restaurant… prophet  2019 Jun     46.2 sim(=dbl[100…</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  7 Australian … Cafes, restaurant… prophet  2019 Jul     45.3 sim(=dbl[100…</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  8 Australian … Cafes, restaurant… prophet  2019 Aug     46.5 sim(=dbl[100…</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  9 Australian … Cafes, restaurant… prophet  2019 Sep     47.6 sim(=dbl[100…</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; 10 Australian … Cafes, restaurant… prophet  2019 Oct     46.4 sim(=dbl[100…</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; # … with 182 more rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="r"><span class="no">fc</span> <span class="kw">&lt;-</span> <span class="no">fit</span> <span class="kw">%&gt;%</span>
+  <span class="fu">forecast</span>(<span class="kw">h</span> <span class="kw">=</span> <span class="fl">24</span>)</pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">#&gt; # A fable: 192 x 6 [1M]</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt; # Key:     State, Industry, .model [8]</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt;    State             Industry                 .model    Month     Turnover .mean</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt;    &lt;chr&gt;             &lt;chr&gt;                    &lt;chr&gt;     &lt;mth&gt;       &lt;dist&gt; &lt;dbl&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt;  1 Australian Capit… Cafes, restaurants and … proph… 2019 Jan sample[1000]  40.2</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt;  2 Australian Capit… Cafes, restaurants and … proph… 2019 Feb sample[1000]  42.9</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt;  3 Australian Capit… Cafes, restaurants and … proph… 2019 Mar sample[1000]  47.9</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;  4 Australian Capit… Cafes, restaurants and … proph… 2019 Apr sample[1000]  46.2</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;  5 Australian Capit… Cafes, restaurants and … proph… 2019 May sample[1000]  45.3</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;  6 Australian Capit… Cafes, restaurants and … proph… 2019 Jun sample[1000]  46.2</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  7 Australian Capit… Cafes, restaurants and … proph… 2019 Jul sample[1000]  45.5</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  8 Australian Capit… Cafes, restaurants and … proph… 2019 Aug sample[1000]  46.7</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;  9 Australian Capit… Cafes, restaurants and … proph… 2019 Sep sample[1000]  47.7</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt; 10 Australian Capit… Cafes, restaurants and … proph… 2019 Oct sample[1000]  46.8</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt; # … with 182 more rows</span></span></code></pre></div>
 <p><img src="reference/figures/README-fable-1.png" width="100%"></p>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=fable.prophet">https://​cloud.r-project.org/​package=fable.prophet</a>
+</li>
+<li>Browse source code at <br><a href="https://github.com/mitchelloharawild/fable.prophet/">https://​github.com/​mitchelloharawild/​fable.prophet/​</a>
+</li>
 <li>Report a bug at <br><a href="https://github.com/mitchelloharawild/fable.prophet/issues">https://​github.com/​mitchelloharawild/​fable.prophet/​issues</a>
 </li>
 </ul>
@@ -184,7 +196,7 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/mitchelloharawild/fable.prophet"><img src="https://travis-ci.org/mitchelloharawild/fable.prophet.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://github.com/mitchelloharawild/fable.prophet"><img src="https://github.com/mitchelloharawild/fable.prophet/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 <li><a href="https://codecov.io/gh/mitchelloharawild/fable.prophet?branch=master"><img src="https://codecov.io/gh/mitchelloharawild/fable.prophet/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="lifecycle"></a></li>
 </ul>
@@ -198,7 +210,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

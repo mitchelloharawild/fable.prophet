@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -37,7 +41,6 @@
 
 <meta property="og:title" content="Prophet procedure modelling — prophet" />
 <meta property="og:description" content="Prepares a prophet model specification for use within the fable package." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -65,7 +68,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -79,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable.prophet</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
       </span>
     </div>
 
@@ -96,7 +99,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/mitchelloharawild/fable.prophet/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -111,7 +119,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Prophet procedure modelling</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/mitchelloharawild/fable.prophet/blob/master/R/model.R'><code>R/model.R</code></a></small>
     <div class="hidden name"><code>prophet.Rd</code></div>
     </div>
 
@@ -153,10 +161,9 @@ using this interface to prophet: <code><a href='../articles/intro.html'>vignette
 
 <h3>growth</h3>
 <p>The <code>growth</code> special is used to specify the trend parameters.</p><pre>
-growth(type = c("linear", "logistic"), capacity = NULL, floor = NULL,
-       changepoints = NULL, n_changepoints = 25, changepoint_range = 0.8,
-       changepoint_prior_scale = 0.05)
-</pre>
+<span class='fu'>growth</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"linear"</span>, <span class='st'>"logistic"</span>), <span class='kw'>capacity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>floor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+       <span class='kw'>changepoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_changepoints</span> <span class='kw'>=</span> <span class='fl'>25</span>, <span class='kw'>changepoint_range</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
+       <span class='kw'>changepoint_prior_scale</span> <span class='kw'>=</span> <span class='fl'>0.05</span>)</pre>
 
 <table class='table'>
 <tr><td><code>type</code></td><td>The type of trend (linear or logistic).</td></tr>
@@ -174,9 +181,8 @@ growth(type = c("linear", "logistic"), capacity = NULL, floor = NULL,
 <p>The <code>season</code> special is used to specify a seasonal component. This special can be used multiple times for different seasonalities.</p>
 <p><strong>Warning: The inputs controlling the seasonal <code>period</code> is specified is different than <code><a href='https://rdrr.io/pkg/prophet/man/prophet.html'>prophet::prophet()</a></code>. Numeric inputs are treated as the number of observations in each seasonal period, not the number of days.</strong></p>
 <pre>
-season(period = NULL, order = NULL, prior_scale = 10,
-       type = c("additive", "multiplicative"), name = NULL)
-</pre>
+<span class='fu'>season</span>(<span class='kw'>period</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>prior_scale</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+       <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"additive"</span>, <span class='st'>"multiplicative"</span>), <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
 <table class='table'>
 <tr><td><code>period</code></td><td>The periodic nature of the seasonality. If a number is given, it will specify the number of observations in each seasonal period. If a character is given, it will be parsed using <code><a href='http://lubridate.tidyverse.org/reference/as.period.html'>lubridate::as.period</a></code>, allowing seasonal periods such as "2 years".</td></tr>
@@ -190,8 +196,7 @@ season(period = NULL, order = NULL, prior_scale = 10,
 
 <h3>holiday</h3>
 <p>The <code>holiday</code> special is used to specify a <code>tsibble</code> containing holidays for the model.</p><pre>
-holiday(holidays = NULL, prior_scale = 10L)
-</pre>
+<span class='fu'>holiday</span>(<span class='kw'>holidays</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>prior_scale</span> <span class='kw'>=</span> <span class='fl'>10L</span>)</pre>
 
 <table class='table'>
 <tr><td><code>holidays</code></td><td>A <a href='https://tsibble.tidyverts.org/'><code>tsibble</code></a> containing a set of holiday events. The event name is given in the 'holiday' column, and the event date is given via the index. Additionally, "lower_window" and "upper_window" columns can be used to include days before and after the holiday.</td></tr>
@@ -203,8 +208,7 @@ holiday(holidays = NULL, prior_scale = 10L)
 <h3>xreg</h3>
 <p>The <code>xreg</code> special is used to include exogenous regressors in the model. This special can be used multiple times for different regressors with different arguments.
 Exogenous regressors can also be used in the formula without explicitly using the <code>xreg()</code> special, which will then use the default arguments.</p><pre>
-xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
-</pre>
+<span class='fu'>xreg</span>(<span class='no'>...</span>, <span class='kw'>prior_scale</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>standardize</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
 <table class='table'>
 <tr><td><code>...</code></td><td>A set of bare expressions that are evaluated as exogenous regressors</td></tr>
@@ -227,30 +231,20 @@ xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
 </div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"tsibbledata"</span>)) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/aus_production.html'>aus_production</a></span> <span class='kw'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
+<span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='no'>USAccDeaths</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>model</span>(
-    <span class='kw'>prophet</span> <span class='kw'>=</span> <span class='fu'>prophet</span>(<span class='no'>Beer</span> ~ <span class='fu'>season</span>(<span class='st'>"year"</span>, <span class='fl'>4</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"multiplicative"</span>))
-  )
-}</div><div class='output co'>#&gt; # A mable: 1 x 1
-#&gt;   prophet  
-#&gt;   &lt;model&gt;  
-#&gt; 1 &lt;prophet&gt;</div><div class='input'>
-</div></pre>
+    <span class='kw'>prophet</span> <span class='kw'>=</span> <span class='fu'>prophet</span>(<span class='no'>value</span> ~ <span class='fu'>season</span>(<span class='st'>"year"</span>, <span class='fl'>4</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"multiplicative"</span>))
+  )</div><div class='output co'>#&gt; <span style='color: #555555;'># A mable: 1 x 1</span><span>
+#&gt;     prophet
+#&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;model&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> &lt;prophet&gt;</div><div class='input'>
+</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#specials">Specials</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -261,7 +255,7 @@ xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
