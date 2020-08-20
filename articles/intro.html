@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fable.prophet</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -230,16 +230,16 @@
 <span class="co">#&gt; # Key:     type, .model [2]</span>
 <span class="co">#&gt;    type     .model    month   passengers    .mean</span>
 <span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;     &lt;mth&gt;       &lt;dist&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 Domestic mdl    2019 Apr sample[1000] 5219948.</span>
-<span class="co">#&gt;  2 Domestic mdl    2019 May sample[1000] 5497976.</span>
-<span class="co">#&gt;  3 Domestic mdl    2019 Jun sample[1000] 5810878.</span>
-<span class="co">#&gt;  4 Domestic mdl    2019 Jul sample[1000] 6152100.</span>
-<span class="co">#&gt;  5 Domestic mdl    2019 Aug sample[1000] 5993096.</span>
-<span class="co">#&gt;  6 Domestic mdl    2019 Sep sample[1000] 4996091.</span>
-<span class="co">#&gt;  7 Domestic mdl    2019 Oct sample[1000] 5348274.</span>
-<span class="co">#&gt;  8 Domestic mdl    2019 Nov sample[1000] 5139732.</span>
-<span class="co">#&gt;  9 Domestic mdl    2019 Dec sample[1000] 5321233.</span>
-<span class="co">#&gt; 10 Domestic mdl    2020 Jan sample[1000] 4872981.</span>
+<span class="co">#&gt;  1 Domestic mdl    2019 Apr sample[1000] 5215232.</span>
+<span class="co">#&gt;  2 Domestic mdl    2019 May sample[1000] 5496334.</span>
+<span class="co">#&gt;  3 Domestic mdl    2019 Jun sample[1000] 5812049.</span>
+<span class="co">#&gt;  4 Domestic mdl    2019 Jul sample[1000] 6151527.</span>
+<span class="co">#&gt;  5 Domestic mdl    2019 Aug sample[1000] 5990401.</span>
+<span class="co">#&gt;  6 Domestic mdl    2019 Sep sample[1000] 4998804.</span>
+<span class="co">#&gt;  7 Domestic mdl    2019 Oct sample[1000] 5341823.</span>
+<span class="co">#&gt;  8 Domestic mdl    2019 Nov sample[1000] 5145302.</span>
+<span class="co">#&gt;  9 Domestic mdl    2019 Dec sample[1000] 5323569.</span>
+<span class="co">#&gt; 10 Domestic mdl    2020 Jan sample[1000] 4870945.</span>
 <span class="co">#&gt; # … with 62 more rows</span></pre></body></html></div>
 <p>The point forecasts are provided in the <code>passengers</code> column, and a set of simulated future paths are stored in the <code>.distribution</code> column. To visualise these forecasts, we can again use the <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> function.</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">fc</span> <span class="kw">%&gt;%</span>
