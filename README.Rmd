@@ -22,9 +22,15 @@ This package provides a tidy R interface to the prophet forecasting procedure us
 
 ## Installation
 
-You can install the development version of fable.prophet from [Github](https://github.com/mitchelloharawild/fable.prophet) with:
+The can install the **stable** version from [CRAN](https://cran.r-project.org/package=fable.prophet):
 
-``` r
+```{r cran-installation, eval = FALSE}
+install.packages("fable.prophet")
+```
+
+You can install the **development** version from [Github](https://github.com/mitchelloharawild/fable.prophet) with:
+
+```{r gh-installation, eval = FALSE}
 # install.packages("remotes")
 remotes::install_github("mitchelloharawild/fable.prophet")
 ```
