@@ -36,6 +36,9 @@ jobs:
           install.packages("pkgdown")
         shell: Rscript {0}
 
+      - name: Install prophet from sources
+        run: Rscript -e "install.packages('prophet', type = 'source')"
+
       - name: Install package
         run: R CMD INSTALL .
 

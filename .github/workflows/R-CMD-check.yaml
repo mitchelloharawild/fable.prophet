@@ -57,6 +57,9 @@ jobs:
       - name: Install dependencies
         run: Rscript -e "install.packages('remotes')" -e "remotes::install_deps(dependencies = TRUE)" -e "remotes::install_cran('rcmdcheck')"
 
+      - name: Install prophet from sources
+        run: Rscript -e "install.packages('prophet', type = 'source')"
+
       - name: Check
         run: Rscript -e "rcmdcheck::rcmdcheck(args = '--no-manual', error_on = 'warning', check_dir = 'check')"
 
