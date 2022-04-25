@@ -13,7 +13,7 @@
 
 \item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
 
-\item{times}{The number of sample paths to use in estimating the forecast distribution when \code{boostrap = TRUE}.}
+\item{times}{The number of sample paths to use in estimating the forecast distribution when \code{bootstrap = TRUE}.}
 
 \item{...}{Additional arguments passed to \code{\link[prophet:predict.prophet]{prophet::predict.prophet()}}.}
 }
