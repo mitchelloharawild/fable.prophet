@@ -1,7 +1,9 @@
 template:
   params:
     bootswatch: cosmo
-    ganalytics: UA-149365901-1
+  includes:
+    in_header: |
+      <script defer data-domain="pkg.mitchelloharawild.com/fable.prophet" src="https://track.mitchelloharawild.com/js/plausible.js"></script>
 
 authors:
   Mitchell O'Hara-Wild:
