@@ -11,7 +11,7 @@ train_prophet <- function(.data, specials, ...){
   }
 
   # Prepare data for modelling
-  model_data <- as_tibble(.data)[c(expr_text(index(.data)), measured_vars(.data))]
+  model_data <- as_tibble(.data)[c(index_var(.data), measured_vars(.data))]
   colnames(model_data) <- c("ds", "y")
 
   # Growth

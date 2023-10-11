@@ -1,5 +1,7 @@
 # fable.prophet (development version)
 
+* Fixed error with non-syntactically valid index variable names.
+
 # fable.prophet 0.1.0
 
 * First release.
