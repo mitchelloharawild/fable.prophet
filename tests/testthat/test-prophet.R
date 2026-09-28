@@ -3,7 +3,7 @@ library(dplyr)
 
 test_that("Prophet simple", {
   default <- model(tsibble::as_tsibble(USAccDeaths), prophet(value ~ season("year")))
-  expect_s3_class(default, "mdl_df")
+  expect_true(is_mable(default))
   default_mdl <- default[[1]][[1]]$fit$model
   expect_length(default_mdl$seasonalities, 1)
   expect_length(default_mdl$changepoints, 25)
@@ -31,7 +31,7 @@ test_that("Prophet complex", {
                                    holiday(aus_holidays))
   )
 
-  expect_s3_class(complex, "mdl_df")
+  expect_true(is_mable(complex))
   complex_mdl <- complex[["fit"]][[1]]$fit$model
   expect_named(complex_mdl$seasonalities, c("week", "year"))
   expect_length(complex_mdl$changepoints, 25)
