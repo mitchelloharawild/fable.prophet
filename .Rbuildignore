@@ -14,3 +14,4 @@ fable.prophet.Rproj
 ^data-raw$
 ^doc$
 ^Meta$
+^CRAN-SUBMISSION$
