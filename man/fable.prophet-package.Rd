@@ -19,6 +19,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Mitchell O'Hara-Wild \email{mail@mitchelloharawild.com}
 
+Authors:
+\itemize{
+  \item Mitchell O'Hara-Wild \email{mail@mitchelloharawild.com}
+}
+
 Other contributors:
 \itemize{
   \item Sean Taylor (Prophet library, https://facebook.github.io/prophet/) [contributor]

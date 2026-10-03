@@ -7,11 +7,11 @@
 \method{forecast}{fbl_prophet}(object, new_data, specials = NULL, times = 1000, ...)
 }
 \arguments{
-\item{object}{The time series model used to produce the forecasts}
+\item{object}{A model for which forecasts are required.}
 
-\item{new_data}{A \code{tsibble} containing future information used to forecast.}
+\item{new_data}{A tsibble containing the time points and exogenous regressors to produce forecasts for.}
 
-\item{specials}{(passed by \code{\link[fabletools:forecast]{fabletools::forecast.mdl_df()}}).}
+\item{specials}{(passed by \code{\link[fabletools:forecast.mdl_df]{fabletools::forecast.mdl_df()}}).}
 
 \item{times}{The number of sample paths to use in estimating the forecast distribution when \code{bootstrap = TRUE}.}
 
