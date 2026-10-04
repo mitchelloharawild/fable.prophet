@@ -32,3 +32,4 @@ Small patch for compatibility with fabletools v1.0.0.
 * Added prophet model methods for: `forecast()`, `components()`, `fitted()`, `residuals()`.
 * Added package introduction vignette.
 * Added `refit()` for prophet models (#30). By default the estimated parameters are kept and the fitted values, residuals and components are recomputed for the new data; `reestimate = TRUE` fits the model again on the new data using the original estimation arguments. Prophet cannot be updated incrementally, so there is no `stream()` method.
+* Added `generate()` for prophet models (#4), simulating sample paths (trend including future changepoints, seasonality, holidays and regressors) with normally distributed or, with `bootstrap = TRUE`, resampled-residual observation noise. Works in-sample and out-of-sample, including with MCMC estimation and transformed responses.

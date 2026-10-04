@@ -303,3 +303,64 @@ test_that("refit() works with regressors, logistic growth and training arguments
   expect_equal(re[[1]][[1]]$fit$args, fit[[1]][[1]]$fit$args)
   expect_true("x" %in% names(re[[1]][[1]]$fit$model$extra_regressors))
 })
+
+test_that("generate() simulates sample paths (#4)", {
+  usacc <- tsibble::as_tsibble(USAccDeaths)
+  fit <- model(usacc, p = prophet(log(value) ~ season("year", 4)))
+
+  gen <- generate(fit, h = 12, times = 5)
+  expect_s3_class(gen, "tbl_ts")
+  expect_equal(NROW(gen), 60)
+  expect_equal(unique(gen$.rep), as.character(1:5))
+  expect_true(all(c(".model", ".rep", ".sim") %in% names(gen)))
+  # Back-transformed by the framework (log response)
+  expect_true(all(gen$.sim > 100))
+
+  # Reproducibility, and paths differ
+  set.seed(2)
+  g1 <- generate(fit, h = 12, times = 3)
+  set.seed(2)
+  g2 <- generate(fit, h = 12, times = 3)
+  expect_equal(g1$.sim, g2$.sim)
+  expect_false(isTRUE(all.equal(g1$.sim[1:12], g1$.sim[13:24])))
+
+  # Bootstrapped noise differs
+  set.seed(2)
+  gb <- generate(fit, h = 12, times = 3, bootstrap = TRUE)
+  expect_equal(NROW(gb), 36)
+  expect_false(isTRUE(all.equal(gb$.sim, g1$.sim)))
+
+  # Means are close to the forecast means
+  set.seed(3)
+  big <- generate(fit, h = 12, times = 1000)
+  fc <- forecast(fit, h = 12, times = 1000)
+  sim_mean <- tapply(big$.sim, big$index, mean)
+  expect_equal(as.numeric(sim_mean), mean(fc$value), tolerance = 0.03)
+
+  # In-sample
+  ins <- generate(fit, new_data = usacc, times = 2)
+  expect_equal(NROW(ins), 2 * NROW(usacc))
+})
+
+test_that("generate() uses regressors and growth limits", {
+  set.seed(1)
+  d <- tsibble::tsibble(
+    date = as.Date("2020-01-01") + 0:149, x = rnorm(150),
+    y = 20 + 2 * rnorm(150), index = date)
+  fit <- model(d, prophet(y ~ growth("logistic", capacity = 30, floor = 10) + x))
+  nd <- tsibble::new_data(d, 10) %>% mutate(x = 0)
+  expect_error(generate(fit, tsibble::new_data(d, 10), times = 2))
+  gen <- generate(fit, nd, times = 3)
+  expect_equal(NROW(gen), 30)
+  expect_false(anyNA(gen$.sim))
+})
+
+test_that("generate() uses MCMC draws", {
+  skip_on_cran()
+  usacc <- tsibble::as_tsibble(USAccDeaths)
+  utils::capture.output(suppressWarnings(suppressMessages(
+    fit <- model(usacc, prophet(value ~ season("year", 4), mcmc.samples = 40))
+  )))
+  gen <- suppressWarnings(generate(fit, h = 3, times = 4))
+  expect_equal(NROW(gen), 12)
+})
