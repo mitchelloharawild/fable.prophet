@@ -310,6 +310,16 @@ prophet <- function(formula, ...){
 #' of the `new_data` argument.
 #'
 #' @inheritParams fable::forecast.ARIMA
+#' @param times The number of sample paths simulated from the model's predictive
+#'   distribution (default 1000). Each forecast is a sample distribution
+#'   ([`distributional::dist_sample()`]) of this many paths, so `times` directly
+#'   controls the time and memory used when forecasting many series or horizons
+#'   (for example, with parallel workers via the \pkg{future} package).
+#'   Reducing `times` (e.g. `times = 100`) speeds up forecasting and reduces the
+#'   size of the forecast object, at the cost of noisier intervals. If
+#'   `times = 0`, no paths are simulated and a point forecast is returned as a
+#'   degenerate distribution ([`distributional::dist_degenerate()`]) of the
+#'   model's predicted values, so prediction intervals are not available.
 #' @param ... Currently unused and ignored.
 #'
 #' @seealso [`prophet::predict.prophet()`]
@@ -360,6 +370,12 @@ forecast.fbl_prophet <- function(object, new_data, specials = NULL, times = 1000
       i <- i + 1L
       new_data[xreg_names[[i]]] <- regressor$xreg[,j]
     }
+  }
+
+  # Point forecasts without simulation
+  if(times == 0){
+    mdl$uncertainty.samples <- 0
+    return(distributional::dist_degenerate(predict(mdl, new_data)$yhat))
   }
 
   # Simulate future paths

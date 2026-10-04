@@ -13,7 +13,16 @@
 
 \item{specials}{(passed by \code{\link[fabletools:forecast.mdl_df]{fabletools::forecast.mdl_df()}}).}
 
-\item{times}{The number of sample paths to use in estimating the forecast distribution when \code{bootstrap = TRUE}.}
+\item{times}{The number of sample paths simulated from the model's predictive
+distribution (default 1000). Each forecast is a sample distribution
+(\code{\link[distributional:dist_sample]{distributional::dist_sample()}}) of this many paths, so \code{times} directly
+controls the time and memory used when forecasting many series or horizons
+(for example, with parallel workers via the \pkg{future} package).
+Reducing \code{times} (e.g. \code{times = 100}) speeds up forecasting and reduces the
+size of the forecast object, at the cost of noisier intervals. If
+\code{times = 0}, no paths are simulated and a point forecast is returned as a
+degenerate distribution (\code{\link[distributional:dist_degenerate]{distributional::dist_degenerate()}}) of the
+model's predicted values, so prediction intervals are not available.}
 
 \item{...}{Currently unused and ignored.}
 }

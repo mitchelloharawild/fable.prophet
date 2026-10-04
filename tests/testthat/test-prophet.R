@@ -178,3 +178,17 @@ test_that("components include holiday and regressor terms", {
   cmp0 <- components(model(dat, prophet(value ~ season("year"))))
   expect_false(any(c("holidays", "extra_regressors_additive") %in% colnames(cmp0)))
 })
+
+test_that("forecast with times = 0 gives point forecasts", {
+  fit <- model(tsibble::as_tsibble(USAccDeaths), prophet(value ~ season("year")))
+  fc <- forecast(fit, h = 6, times = 0)
+  expect_s3_class(fc, "fbl_ts")
+  expect_equal(NROW(fc), 6)
+  expect_true(distributional::is_distribution(fc$value))
+  expect_true(all(distributional::variance(fc$value) == 0))
+  expect_false(anyNA(mean(fc$value)))
+
+  # Close to the mean of simulated paths
+  fc_sim <- forecast(fit, h = 6, times = 500)
+  expect_equal(mean(fc$value), mean(fc_sim$value), tolerance = 0.1)
+})

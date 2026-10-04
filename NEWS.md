@@ -1,5 +1,6 @@
 # fable.prophet (development version)
 
+* `forecast()` now supports `times = 0`, which returns point forecasts (as degenerate distributions) without simulating sample paths. The `times` argument is now documented, including its speed and memory trade-off (#26).
 * `components()` now includes the `holidays`, `extra_regressors_additive` and `extra_regressors_multiplicative` terms when they are present in the model.
 * `tidy()` now reports extra regressor estimates as coefficients on the original data scale (additive regressors in units of the response, multiplicative regressors as proportional effects), rather than prophet's internal scaled parameters. Other terms remain on the internal scale, as documented in `?tidy.fbl_prophet`.
 * `season()` gains a `condition` argument (a bare logical column name) for conditional seasonality (via `prophet::add_seasonality(condition.name = )`). The column must also be present in `new_data` when forecasting.
