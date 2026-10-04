@@ -1,5 +1,6 @@
 # fable.prophet (development version)
 
+* `tidy()` now reports extra regressor estimates as coefficients on the original data scale (additive regressors in units of the response, multiplicative regressors as proportional effects), rather than prophet's internal scaled parameters. Other terms remain on the internal scale, as documented in `?tidy.fbl_prophet`.
 * `season()` gains a `condition` argument (a bare logical column name) for conditional seasonality (via `prophet::add_seasonality(condition.name = )`). The column must also be present in `new_data` when forecasting.
 * `holiday()` gains a `country` argument to include prophet's built-in country holidays (via `prophet::add_country_holidays()`), with or without a `holidays` table. `tidy()` now names (and orders) holiday terms from the fitted model, so country holidays and repeated holiday dates are supported.
 * `growth()` now supports `type = "flat"`, for a constant trend without changepoints.

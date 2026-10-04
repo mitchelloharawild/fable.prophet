@@ -477,6 +477,16 @@ glance.fbl_prophet <- function(x, ...){
 #'
 #' @inheritParams fable::tidy.ARIMA
 #'
+#' @details
+#' The `estimate` of the growth (`base_growth`, `trend_offset`), seasonal and
+#' holiday terms are the model's parameters on prophet's internal (scaled)
+#' scale. For extra regressors, the estimate is instead the coefficient on the
+#' scale of the original data: additive regressors are reported in units of the
+#' response per unit of the regressor, and multiplicative regressors as the
+#' proportional change in the trend per unit of the regressor. This is the
+#' same quantity described by [`prophet::regressor_coefficients()`] (whose
+#' returned `coef`, in prophet 1.1.7, is not yet rescaled).
+#'
 #' @return A tibble containing the model's estimated parameters.
 #'
 #' @examples
@@ -510,9 +520,21 @@ tidy.fbl_prophet <- function(x, ...){
 
   xreg_terms <- names(x$model$extra_regressors)
 
+  estimate <- c(x$model$params$k, x$model$params$m, colMeans(x$model$params$beta))
+
+  # Report regressor coefficients on the scale of the original data
+  if(length(xreg_terms) > 0){
+    regr <- x$model$extra_regressors
+    idx <- length(estimate) - length(xreg_terms) + seq_along(xreg_terms)
+    modes <- map_chr(regr, function(r) r$mode)
+    stds <- map_dbl(regr, function(r) r$std)
+    scale <- ifelse(modes == "additive", x$model$y.scale, 1)
+    estimate[idx] <- estimate[idx] * scale / stds
+  }
+
   tibble(
     term = unlist(c(growth_terms, seas_terms, hol_terms, xreg_terms), use.names = FALSE),
-    estimate = c(x$model$params$k, x$model$params$m, x$model$params$beta)
+    estimate = estimate
   )
 }
 

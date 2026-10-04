@@ -132,3 +132,22 @@ test_that("Prophet conditional seasonality", {
     "conditional seasonality column `nope`"
   )
 })
+
+test_that("tidy reports regressor coefficients on the original scale", {
+  set.seed(1)
+  dat <- tsibble::tsibble(
+    date = as.Date("2019-01-01") + 0:299,
+    x = runif(300, 0, 10),
+    index = date
+  )
+  dat$value <- 100 + 3 * dat$x + rnorm(300)
+  fit <- model(dat, prophet(value ~ x + growth(n_changepoints = 5)))
+  tdy <- tidy(fit)
+  expect_equal(tdy$term[nrow(tdy)], "x")
+  expect_equal(tdy$estimate[nrow(tdy)], 3, tolerance = 0.1)
+  mdl <- fit[[1]][[1]]$fit$model
+  expect_equal(
+    tdy$estimate[nrow(tdy)],
+    c(mdl$params$beta) * mdl$y.scale / mdl$extra_regressors$x$std
+  )
+})

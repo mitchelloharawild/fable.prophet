@@ -17,6 +17,16 @@ A tibble containing the model's estimated parameters.
 \description{
 Extract estimated coefficients from a prophet model
 }
+\details{
+The \code{estimate} of the growth (\code{base_growth}, \code{trend_offset}), seasonal and
+holiday terms are the model's parameters on prophet's internal (scaled)
+scale. For extra regressors, the estimate is instead the coefficient on the
+scale of the original data: additive regressors are reported in units of the
+response per unit of the regressor, and multiplicative regressors as the
+proportional change in the trend per unit of the regressor. This is the
+same quantity described by \code{\link[prophet:regressor_coefficients]{prophet::regressor_coefficients()}} (whose
+returned \code{coef}, in prophet 1.1.7, is not yet rescaled).
+}
 \examples{
 
 \donttest{
