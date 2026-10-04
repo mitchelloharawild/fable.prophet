@@ -77,3 +77,31 @@ test_that("Prophet flat growth", {
   expect_s3_class(fc, "fbl_ts")
   expect_equal(NROW(fc), 6)
 })
+
+test_that("Prophet country holidays", {
+  dat <- tsibble::tsibble(
+    date = as.Date("2019-01-01") + 0:799,
+    value = sin(0:799 / 30) + rnorm(800, sd = 0.1),
+    index = date
+  )
+  fit <- model(dat, prophet(value ~ holiday(country = "AU")))
+  mdl <- fit[[1]][[1]]$fit$model
+  expect_equal(mdl$country_holidays, "AU")
+  tdy <- tidy(fit)
+  expect_equal(nrow(tdy), length(unlist(mdl$params[c("k", "m", "beta")])))
+  expect_true(all(c("Christmas Day", "Anzac Day") %in% tdy$term))
+  expect_false(anyNA(tdy$term))
+
+  # Combined with a holiday table with windows
+  hols <- tsibble::tsibble(
+    holiday = "Party", date = as.Date(c("2019-06-01", "2020-06-01")),
+    lower_window = -1, upper_window = 1, index = date
+  )
+  fit2 <- model(dat, prophet(value ~ holiday(hols, country = "AU")))
+  tdy2 <- tidy(fit2)
+  expect_equal(nrow(tdy2), length(unlist(fit2[[1]][[1]]$fit$model$params[c("k", "m", "beta")])))
+  expect_true(all(c("Party_-1", "Party", "Party_+1") %in% tdy2$term))
+
+  fc <- forecast(fit, h = 5)
+  expect_equal(NROW(fc), 5)
+})

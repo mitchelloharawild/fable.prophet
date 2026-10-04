@@ -69,14 +69,15 @@ season(period = NULL, order = NULL, prior_scale = 10,
 }
 
 \subsection{holiday}{
-The \code{holiday} special is used to specify a \code{tsibble} containing holidays for the model.
+The \code{holiday} special is used to specify a \code{tsibble} containing holidays for the model, and/or a country whose built-in holidays are included.
 \preformatted{
-holiday(holidays = NULL, prior_scale = 10L)
+holiday(holidays = NULL, prior_scale = 10L, country = NULL)
 }
 
 \tabular{ll}{
 \code{holidays}    \tab A \href{https://tsibble.tidyverts.org/}{\code{tsibble}} containing a set of holiday events. The event name is given in the 'holiday' column, and the event date is given via the index. Additionally, "lower_window" and "upper_window" columns can be used to include days before and after the holiday.\cr
 \code{prior_scale} \tab Used to control the amount of regularisation applied. Reducing this will dampen the holiday effect.\cr
+\code{country}     \tab A country name or code (e.g. "AU") for which to include prophet's built-in holidays, see \code{\link[prophet:add_country_holidays]{prophet::add_country_holidays()}}. Can be used with or without \code{holidays}.\cr
 }
 }
 

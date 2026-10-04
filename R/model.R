@@ -37,6 +37,10 @@ train_prophet <- function(.data, specials, ...){
     uncertainty_samples = 0
   )
 
+  if(!is.null(holiday$country)){
+    mdl <- prophet::add_country_holidays(mdl, holiday$country)
+  }
+
   # Seasonality
   for (season in specials$season){
     mdl <- prophet::add_seasonality(
@@ -77,6 +81,26 @@ train_prophet <- function(.data, specials, ...){
 # Applied jointly over all xreg specials so train and forecast agree.
 xreg_safe_names <- function(xreg){
   make.names(unlist(lapply(xreg, function(x) colnames(x$xreg))), unique = TRUE)
+}
+
+# Names of the holiday terms (one per holiday feature, in the order prophet
+# stores their coefficients). Includes holidays from `add_country_holidays()`.
+holiday_term_names <- function(mdl){
+  hols <- mdl$holidays
+  nms <- unique(c(hols$holiday, mdl$train.holiday.names))
+  if(length(nms) == 0) return(NULL)
+  keys <- character()
+  labs <- character()
+  for(nm in nms){
+    h <- hols[hols$holiday == nm, , drop = FALSE]
+    lower <- if(is.null(h$lower_window) || all(is.na(h$lower_window))) 0 else h$lower_window[!is.na(h$lower_window)][1]
+    upper <- if(is.null(h$upper_window) || all(is.na(h$upper_window))) 0 else h$upper_window[!is.na(h$upper_window)][1]
+    offsets <- seq(lower, upper)
+    keys <- c(keys, paste0(nm, "_delim_", ifelse(offsets < 0, "-", "+"), abs(offsets)))
+    labs <- c(labs, paste0(nm, ifelse(offsets > 0, paste0("_+", offsets), ifelse(offsets < 0, paste0("_", offsets), ""))))
+  }
+  # Prophet sorts holiday features by name
+  labs[order(keys)]
 }
 
 specials_prophet <- new_specials(
@@ -123,7 +147,7 @@ specials_prophet <- new_specials(
     type <- match.arg(type)
     as.list(environment())
   },
-  holiday = function(holidays = NULL, prior_scale = 10L){
+  holiday = function(holidays = NULL, prior_scale = 10L, country = NULL){
     if(tsibble::is_tsibble(holidays)){
       holidays <- rename(as_tibble(holidays), ds = !!index(holidays))
     }
@@ -203,14 +227,15 @@ specials_prophet <- new_specials(
 #' }
 #'
 #' \subsection{holiday}{
-#' The `holiday` special is used to specify a `tsibble` containing holidays for the model.
+#' The `holiday` special is used to specify a `tsibble` containing holidays for the model, and/or a country whose built-in holidays are included.
 #' \preformatted{
-#' holiday(holidays = NULL, prior_scale = 10L)
+#' holiday(holidays = NULL, prior_scale = 10L, country = NULL)
 #' }
 #'
 #' \tabular{ll}{
 #'   `holidays`    \tab A [`tsibble`](https://tsibble.tidyverts.org/) containing a set of holiday events. The event name is given in the 'holiday' column, and the event date is given via the index. Additionally, "lower_window" and "upper_window" columns can be used to include days before and after the holiday.\cr
 #'   `prior_scale` \tab Used to control the amount of regularisation applied. Reducing this will dampen the holiday effect.\cr
+#'   `country`     \tab A country name or code (e.g. "AU") for which to include prophet's built-in holidays, see [`prophet::add_country_holidays()`]. Can be used with or without `holidays`.\cr
 #' }
 #' }
 #'
@@ -450,23 +475,12 @@ tidy.fbl_prophet <- function(x, ...){
     }
   )
 
-  hol_terms <- if (is.null(x$model$holidays)) {
-    NULL
-    } else {
-      map2(
-        x$model$holidays$holiday,
-        map2(x$model$holidays[["lower_window"]]%||%0, x$model$holidays[["upper_window"]]%||%0, seq),
-        function(nm, window){
-          window <- ifelse(sign(window) == 1, paste0("_+", window), ifelse(sign(window) == -1, paste0("_", window), ""))
-          paste0(nm, window)
-        }
-      )
-    }
+  hol_terms <- holiday_term_names(x$model)
 
   xreg_terms <- names(x$model$extra_regressors)
 
   tibble(
-    term = invoke(c, c(growth_terms, seas_terms, hol_terms, xreg_terms)),
+    term = unlist(c(growth_terms, seas_terms, hol_terms, xreg_terms), use.names = FALSE),
     estimate = c(x$model$params$k, x$model$params$m, x$model$params$beta)
   )
 }
