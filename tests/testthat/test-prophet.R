@@ -42,3 +42,10 @@ test_that("Prophet complex", {
   expect_s3_class(complex_fc, "fbl_ts")
   expect_equal(NROW(complex_fc), 24*7*2)
 })
+
+test_that("forecast ignores additional arguments", {
+  fit <- model(tsibble::as_tsibble(USAccDeaths), prophet(value ~ season("year")))
+  fc <- forecast(fit, h = 3, foo = 1)
+  expect_s3_class(fc, "fbl_ts")
+  expect_equal(NROW(fc), 3)
+})

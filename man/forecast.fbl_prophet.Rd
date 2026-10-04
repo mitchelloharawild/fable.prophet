@@ -15,7 +15,7 @@
 
 \item{times}{The number of sample paths to use in estimating the forecast distribution when \code{bootstrap = TRUE}.}
 
-\item{...}{Additional arguments passed to \code{\link[prophet:predict.prophet]{prophet::predict.prophet()}}.}
+\item{...}{Currently unused and ignored.}
 }
 \value{
 A list of forecasts.

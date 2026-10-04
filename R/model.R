@@ -245,7 +245,7 @@ prophet <- function(formula, ...){
 #' of the `new_data` argument.
 #'
 #' @inheritParams fable::forecast.ARIMA
-#' @param ... Additional arguments passed to [`prophet::predict.prophet()`].
+#' @param ... Currently unused and ignored.
 #'
 #' @seealso [`prophet::predict.prophet()`]
 #'
@@ -289,7 +289,7 @@ forecast.fbl_prophet <- function(object, new_data, specials = NULL, times = 1000
 
   # Simulate future paths
   mdl$uncertainty.samples <- times
-  sim <- prophet::predictive_samples(mdl, new_data, ...)$yhat
+  sim <- prophet::predictive_samples(mdl, new_data)$yhat
   sim <- split(sim, row(sim))
 
   # Return forecasts
