@@ -1,5 +1,6 @@
 # fable.prophet (development version)
 
+* Modernised dependencies: R >= 4.1.0 and fabletools >= 0.5.0 are now required, and Rcpp is no longer attached by this package (prophet still loads it).
 * Documentation: added "Non-daily data" (#28), "Performance and memory" (#26) and model evaluation sections to `?prophet` and the introduction vignette.
 * `prophet()` now documents and supports the `mcmc.samples` and `backend` arguments (passed to `prophet::prophet()`) for MCMC estimation and choosing the `"rstan"` or `"cmdstanr"` Stan backend. `tidy()` and `glance()` summarise MCMC draws by their posterior means.
 * The model is now fit with `uncertainty.samples = 0` (previously the argument was misspelt and ignored).
