@@ -159,3 +159,45 @@ accuracy(fit)
 When comparing accuracy between series on different scales, it is important to use a scale independent accuracy measure. A summary of accuracy measures can be found in the [*Forecasting: Principles and Practice* - Evaluating forecast accuracy](https://otexts.com/fpp3/accuracy.html). An appropriate accuracy measure for comparing these models is the mean absolute scaled error (MASE). We can interpret the model for domestic passenger counts as being slightly more accurate on the training data as it has a slightly lower MASE.
 
 Comparing in-sample (training) accuracy may misrepresent the accuracy of a model, as it is based on predicting one-step ahead using all available data. In many senses this is unrealistic, and there are other approaches such as out-of-sample (test) accuracy and cross-validation which can be used. The freely available online textbook also details how to compute these more realistic accuracy measures.
+
+Instead of prophet's `cross_validation()` and `performance_metrics()`, cross-validation is done with the fable framework: `stretch_tsibble()` creates the training sets, and `accuracy()` evaluates the forecasts.
+
+```{r cv, eval = FALSE}
+lax_passengers %>%
+  stretch_tsibble(.init = 48, .step = 12) %>%
+  model(prophet(passengers ~ season("year", type = "multiplicative"))) %>%
+  forecast(h = "1 year") %>%
+  accuracy(lax_passengers)
+```
+
+## Non-daily data
+
+A bare response with no model terms, `prophet(passengers)`, enables the yearly, weekly and daily seasonalities, as in `prophet::prophet()`. Unlike prophet's `"auto"` default, they are switched on whatever the frequency of the data. For data that is coarser than daily, such as the monthly passengers above, the weekly and daily terms are not meaningful, so a bare `prophet(y)` is not recommended. Any model with a formula uses only the seasonalities that you specify.
+
+For monthly or quarterly data, specify the seasonality explicitly using `season()`. The `period` can be a string (converted using the data's interval) or the number of observations per period, and `order` is the number of Fourier terms.
+
+```{r nondaily, eval = FALSE}
+# Quarterly data: four observations per year
+prophet(y ~ season(period = "year", order = 2))
+
+# Monthly data
+prophet(y ~ season(period = "year", order = 6))
+
+# Equivalent, using the number of observations in each period
+prophet(y ~ season(period = 12, order = 6, name = "year"))
+```
+
+## Performance and memory
+
+Forecasts from a prophet model are stored as a set of simulated future paths. The number of paths is controlled by the `times` argument of `forecast()`, which is 1000 by default. When forecasting many series, or when using parallel workers, this can use considerable time and memory. Reducing `times` (at the cost of noisier prediction intervals) helps, and `times = 0` returns point forecasts only.
+
+```{r times}
+fit %>%
+  forecast(h = "3 years", times = 100)
+```
+
+Prophet models are independent of each other, so many series can be fit and forecast in parallel using the [future](https://cran.r-project.org/package=future) package, e.g. `future::plan(future::multisession)`. Model estimation can also be adjusted using additional arguments of `prophet()`, which are passed to `prophet::prophet()` and `prophet::fit.prophet()`. This includes `mcmc.samples` for MCMC estimation (which is slower), `backend` to select the Stan backend (`"rstan"` or `"cmdstanr"`), and Stan options such as `algorithm`, `iter` and `init`.
+
+```{r extra, eval = FALSE}
+model(data, prophet(y ~ season("year"), algorithm = "Newton"))
+```

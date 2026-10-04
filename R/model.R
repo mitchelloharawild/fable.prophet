@@ -220,7 +220,9 @@ specials_prophet <- new_specials(
 #' @param ... Additional arguments for estimating the model. These are
 #'   `mcmc.samples` and `backend` (described below), with any others passed on to
 #'   [`prophet::fit.prophet()`] and then to the Stan algorithm (for example
-#'   `algorithm`, `control` or `init`).
+#'   `algorithm`, `iter` or `init` for optimisation, or `control` when
+#'   `mcmc.samples > 0`), for example
+#'   `prophet(y ~ season("year"), algorithm = "Newton")`.
 #'
 #' @section Estimation:
 #' By default the model is estimated by maximum a posteriori (MAP) optimisation.
@@ -305,6 +307,46 @@ specials_prophet <- new_specials(
 #'   `type`        \tab Does the effect of the regressor vary proportionally to the level of the series? If so, "multiplicative" is best. Otherwise, use "additive"\cr
 #' }
 #' }
+#'
+#' @section Non-daily data:
+#' A model without any terms (`prophet(y)`, a bare response with no right hand
+#' side) enables prophet's yearly, weekly and daily seasonalities, as in
+#' [`prophet::prophet()`]. Unlike prophet's default (`"auto"`), these are
+#' switched on regardless of the data's frequency or length, so for monthly or
+#' quarterly data (or any data coarser than daily) the weekly and daily
+#' seasonal terms are not meaningful and `prophet(y)` is not recommended.
+#' Instead, specify the seasonality explicitly with `season()`. Any formula
+#' (such as `prophet(y ~ season(...))`) uses only the seasonalities that you
+#' specify, with no automatic seasonalities. For example, use
+#' `prophet(y ~ season(period = "year", order = 4))` for quarterly data, or
+#' `order = 6` for monthly data. A `season()` period given as a string is
+#' converted using the data's interval, and a number is the count of
+#' observations per period. A Fourier `order` is required for periods other
+#' than a year, week or day.
+#'
+#' @section Performance and memory:
+#' Fitting prophet models is relatively slow, and each forecast stores
+#' `times` simulated sample paths (see [`forecast.fbl_prophet()`]). When
+#' modelling many series, consider the following:
+#' \itemize{
+#'   \item Reduce `times` in `forecast()` (for example `times = 100`), or use
+#'   `times = 0` for point forecasts only. This reduces time and the size of the
+#'   forecast object.
+#'   \item Fitted models drop the raw Stan output, but keep the data used to fit
+#'   the model, so very large mables can be made smaller by
+#'   forecasting then discarding the models.
+#'   \item Models are independent, so series can be fit and forecast in
+#'   parallel using the \pkg{future} package, for example with
+#'   `future::plan(future::multisession)`.
+#'   \item MCMC estimation (`mcmc.samples`) is much slower than the default
+#'   optimisation.
+#' }
+#'
+#' @section Model evaluation:
+#' Prophet's `cross_validation()` and `performance_metrics()` are not needed
+#' for this interface. Use [`tsibble::stretch_tsibble()`] to create
+#' cross-validation folds, fit models on them and
+#' [`fabletools::accuracy()`] to evaluate the forecasts.
 #'
 #' @seealso
 #' - [`prophet::prophet()`]

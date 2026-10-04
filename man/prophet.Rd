@@ -12,7 +12,9 @@ prophet(formula, ...)
 \item{...}{Additional arguments for estimating the model. These are
 \code{mcmc.samples} and \code{backend} (described below), with any others passed on to
 \code{\link[prophet:fit.prophet]{prophet::fit.prophet()}} and then to the Stan algorithm (for example
-\code{algorithm}, \code{control} or \code{init}).}
+\code{algorithm}, \code{iter} or \code{init} for optimisation, or \code{control} when
+\code{mcmc.samples > 0}), for example
+\code{prophet(y ~ season("year"), algorithm = "Newton")}.}
 }
 \description{
 Prepares a prophet model specification for use within the \code{fable} package.
@@ -115,6 +117,52 @@ xreg(..., prior_scale = NULL, standardize = "auto", type = NULL)
 \code{type}        \tab Does the effect of the regressor vary proportionally to the level of the series? If so, "multiplicative" is best. Otherwise, use "additive"\cr
 }
 }
+}
+
+\section{Non-daily data}{
+
+A model without any terms (\code{prophet(y)}, a bare response with no right hand
+side) enables prophet's yearly, weekly and daily seasonalities, as in
+\code{\link[prophet:prophet]{prophet::prophet()}}. Unlike prophet's default (\code{"auto"}), these are
+switched on regardless of the data's frequency or length, so for monthly or
+quarterly data (or any data coarser than daily) the weekly and daily
+seasonal terms are not meaningful and \code{prophet(y)} is not recommended.
+Instead, specify the seasonality explicitly with \code{season()}. Any formula
+(such as \code{prophet(y ~ season(...))}) uses only the seasonalities that you
+specify, with no automatic seasonalities. For example, use
+\code{prophet(y ~ season(period = "year", order = 4))} for quarterly data, or
+\code{order = 6} for monthly data. A \code{season()} period given as a string is
+converted using the data's interval, and a number is the count of
+observations per period. A Fourier \code{order} is required for periods other
+than a year, week or day.
+}
+
+\section{Performance and memory}{
+
+Fitting prophet models is relatively slow, and each forecast stores
+\code{times} simulated sample paths (see \code{\link[=forecast.fbl_prophet]{forecast.fbl_prophet()}}). When
+modelling many series, consider the following:
+\itemize{
+\item Reduce \code{times} in \code{forecast()} (for example \code{times = 100}), or use
+\code{times = 0} for point forecasts only. This reduces time and the size of the
+forecast object.
+\item Fitted models drop the raw Stan output, but keep the data used to fit
+the model, so very large mables can be made smaller by
+forecasting then discarding the models.
+\item Models are independent, so series can be fit and forecast in
+parallel using the \pkg{future} package, for example with
+\code{future::plan(future::multisession)}.
+\item MCMC estimation (\code{mcmc.samples}) is much slower than the default
+optimisation.
+}
+}
+
+\section{Model evaluation}{
+
+Prophet's \code{cross_validation()} and \code{performance_metrics()} are not needed
+for this interface. Use \code{\link[tsibble:stretch_tsibble]{tsibble::stretch_tsibble()}} to create
+cross-validation folds, fit models on them and
+\code{\link[fabletools:accuracy]{fabletools::accuracy()}} to evaluate the forecasts.
 }
 
 \examples{
