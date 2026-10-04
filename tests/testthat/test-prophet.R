@@ -1,4 +1,3 @@
-context("test-prophet")
 library(dplyr)
 
 test_that("Prophet simple", {
