@@ -69,3 +69,11 @@ test_that("Prophet regressors with non-syntactic names", {
   expect_s3_class(fc, "fbl_ts")
   expect_equal(NROW(fc), 5)
 })
+
+test_that("Prophet flat growth", {
+  fit <- model(tsibble::as_tsibble(USAccDeaths), prophet(value ~ growth("flat") + season("year")))
+  expect_equal(fit[[1]][[1]]$fit$model$growth, "flat")
+  fc <- forecast(fit, h = 6)
+  expect_s3_class(fc, "fbl_ts")
+  expect_equal(NROW(fc), 6)
+})

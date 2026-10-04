@@ -33,13 +33,13 @@ using this interface to prophet: \code{vignette("intro", package="fable.prophet"
 \subsection{growth}{
 The \code{growth} special is used to specify the trend parameters.
 \preformatted{
-growth(type = c("linear", "logistic"), capacity = NULL, floor = NULL,
+growth(type = c("linear", "logistic", "flat"), capacity = NULL, floor = NULL,
        changepoints = NULL, n_changepoints = 25, changepoint_range = 0.8,
        changepoint_prior_scale = 0.05)
 }
 
 \tabular{ll}{
-\code{type}                    \tab The type of trend (linear or logistic).\cr
+\code{type}                    \tab The type of trend (linear, logistic or flat). A flat trend is a constant level with no changepoints.\cr
 \code{capacity}                \tab The carrying capacity for when \code{type} is "logistic".\cr
 \code{floor}                   \tab The saturating minimum for when \code{type} is "logistic".\cr
 \code{changepoints}            \tab A vector of dates/times for changepoints. If \code{NULL}, changepoints are automatically selected.\cr

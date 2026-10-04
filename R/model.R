@@ -80,7 +80,7 @@ xreg_safe_names <- function(xreg){
 }
 
 specials_prophet <- new_specials(
-  growth = function(type = c("linear", "logistic"),
+  growth = function(type = c("linear", "logistic", "flat"),
                    capacity = NULL, floor = NULL,
                    changepoints = NULL, n_changepoints = 25,
                    changepoint_range = 0.8, changepoint_prior_scale = 0.05){
@@ -167,13 +167,13 @@ specials_prophet <- new_specials(
 #' \subsection{growth}{
 #' The `growth` special is used to specify the trend parameters.
 #' \preformatted{
-#' growth(type = c("linear", "logistic"), capacity = NULL, floor = NULL,
+#' growth(type = c("linear", "logistic", "flat"), capacity = NULL, floor = NULL,
 #'        changepoints = NULL, n_changepoints = 25, changepoint_range = 0.8,
 #'        changepoint_prior_scale = 0.05)
 #' }
 #'
 #' \tabular{ll}{
-#'   `type`                    \tab The type of trend (linear or logistic).\cr
+#'   `type`                    \tab The type of trend (linear, logistic or flat). A flat trend is a constant level with no changepoints.\cr
 #'   `capacity`                \tab The carrying capacity for when `type` is "logistic".\cr
 #'   `floor`                   \tab The saturating minimum for when `type` is "logistic".\cr
 #'   `changepoints`            \tab A vector of dates/times for changepoints. If `NULL`, changepoints are automatically selected.\cr

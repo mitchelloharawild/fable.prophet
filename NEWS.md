@@ -1,5 +1,6 @@
 # fable.prophet (development version)
 
+* `growth()` now supports `type = "flat"`, for a constant trend without changepoints.
 * Regressors with non-syntactic names (e.g. `log(x)` or `I(x^2)`) are now supported, using `make.names()` to name them in the model and in `tidy()` (#32).
 * Removed an unused prediction in `forecast()` (#33).
 * `forecast()` no longer forwards `...` to `prophet::predictive_samples()`, which doesn't accept additional arguments. `...` is now documented as unused.
