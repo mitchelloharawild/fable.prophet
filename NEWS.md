@@ -31,3 +31,4 @@ Small patch for compatibility with fabletools v1.0.0.
 * Added interface for the Prophet model (via the 'prophet' R package) to the fable framework.
 * Added prophet model methods for: `forecast()`, `components()`, `fitted()`, `residuals()`.
 * Added package introduction vignette.
+* Added `refit()` for prophet models (#30). By default the estimated parameters are kept and the fitted values, residuals and components are recomputed for the new data; `reestimate = TRUE` fits the model again on the new data using the original estimation arguments. Prophet cannot be updated incrementally, so there is no `stream()` method.

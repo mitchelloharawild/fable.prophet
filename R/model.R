@@ -10,14 +10,26 @@ train_prophet <- function(.data, specials, mcmc.samples = 0, backend = NULL, ...
     abort("Only univariate responses are supported by Prophet")
   }
 
+  # The training arguments are kept on the fit, so that refit() can reuse them
+  args <- list(
+    auto_seasonality = is.name(self$formula),
+    mcmc.samples = mcmc.samples, backend = backend, fit_args = list(...)
+  )
+  fit_prophet(.data, specials, args)
+}
+
+# Specify and estimate a prophet model (shared by training and refitting)
+fit_prophet <- function(.data, specials, args){
+  if(length(tsibble::measured_vars(.data)) > 1){
+    abort("Only univariate responses are supported by Prophet")
+  }
+
   # Prepare data for modelling
   model_data <- as_tibble(.data)[c(index_var(.data), measured_vars(.data))]
   colnames(model_data) <- c("ds", "y")
 
   # Growth
   growth <- specials$growth[[1]]
-  model_data$cap <- growth$capacity
-  model_data$floor <- growth$floor
 
   # Holidays
   holiday <- specials$holiday[[1]]
@@ -31,12 +43,12 @@ train_prophet <- function(.data, specials, mcmc.samples = 0, backend = NULL, ...
     changepoint.prior.scale = growth$changepoint_prior_scale,
     holidays = holiday$holidays,
     holidays.prior.scale = holiday$prior_scale,
-    yearly.seasonality = is.name(self$formula),
-    weekly.seasonality = is.name(self$formula),
-    daily.seasonality = is.name(self$formula),
-    mcmc.samples = mcmc.samples,
+    yearly.seasonality = args$auto_seasonality,
+    weekly.seasonality = args$auto_seasonality,
+    daily.seasonality = args$auto_seasonality,
+    mcmc.samples = args$mcmc.samples,
     uncertainty.samples = 0,
-    backend = backend
+    backend = args$backend
   )
 
   if(!is.null(holiday$country)){
@@ -49,9 +61,6 @@ train_prophet <- function(.data, specials, mcmc.samples = 0, backend = NULL, ...
       mdl, name = season$name, period = season$period,
       fourier.order = season$order, prior.scale = season$prior_scale,
       mode = season$type, condition.name = season$condition_name)
-    if(!is.null(season$condition_name)){
-      model_data[[season$condition_name]] <- season$condition_values
-    }
   }
 
   # Exogenous Regressors
@@ -60,19 +69,62 @@ train_prophet <- function(.data, specials, mcmc.samples = 0, backend = NULL, ...
   for(regressor in specials$xreg){
     for(j in seq_len(ncol(regressor$xreg))){
       i <- i + 1L
-      nm <- xreg_names[[i]]
-      model_data[nm] <- regressor$xreg[,j]
       mdl <- prophet::add_regressor(
-        mdl, name = nm, prior.scale = regressor$prior_scale,
+        mdl, name = xreg_names[[i]], prior.scale = regressor$prior_scale,
         standardize = regressor$standardize, mode = regressor$mode)
     }
   }
 
+  # Predictors (growth, conditional seasonality and regressors)
+  model_data <- prophet_predictors(model_data, specials)
+
   # Train model
-  mdl <- prophet::fit.prophet(mdl, model_data, ...)
+  mdl <- do.call(prophet::fit.prophet, c(list(mdl, model_data), args$fit_args))
   mdl$uncertainty.samples <- 0
   # The raw Stan output is not used after fitting (parameters are in `$params`)
   mdl$stan.fit <- NULL
+
+  structure(
+    c(list(model = mdl), prophet_fitted(mdl, model_data, .data), list(args = args)),
+    class = "fbl_prophet")
+}
+
+# Add the prophet predictor columns (carrying capacity and floor, conditional
+# seasonality conditions and regressors) from the specials to a data frame
+# containing the time index as `ds`.
+prophet_predictors <- function(data, specials){
+  ## Growth
+  growth <- specials$growth[[1]]
+  if(!is.null(growth$capacity)){
+    data$cap <- growth$capacity
+  }
+  if(!is.null(growth$floor)){
+    data$floor <- growth$floor
+  }
+
+  ## Conditional seasonality
+  for(season in specials$season){
+    if(!is.null(season$condition_name)){
+      data[[season$condition_name]] <- season$condition_values
+    }
+  }
+
+  ## Exogenous Regressors
+  xreg_names <- xreg_safe_names(specials$xreg)
+  i <- 0L
+  for(regressor in specials$xreg){
+    for(j in seq_len(ncol(regressor$xreg))){
+      i <- i + 1L
+      data[xreg_names[[i]]] <- regressor$xreg[,j]
+    }
+  }
+  data
+}
+
+# Fitted values, residuals and components of a fitted prophet model over the
+# data it was (or is to be) evaluated on. `model_data` has the `ds` and `y`
+# columns and predictors, and `.data` is the tsibble the components are for.
+prophet_fitted <- function(mdl, model_data, .data){
   fits <- predict(mdl, model_data)
 
   # Components to decompose: holiday and regressor terms exist when in the model
@@ -81,13 +133,10 @@ train_prophet <- function(.data, specials, mcmc.samples = 0, backend = NULL, ...
     names(fits)
   )
 
-  # Return model
-  structure(
-    list(
-      model = mdl,
-      est = list(.fitted = fits$yhat, .resid = model_data[["y"]] - fits$yhat),
-      components = .data %>% mutate(!!!(fits[c("additive_terms", "multiplicative_terms", "trend", names(mdl$seasonalities), cmp_names)]))),
-    class = "fbl_prophet")
+  list(
+    est = list(.fitted = fits$yhat, .resid = model_data[["y"]] - fits$yhat),
+    components = .data %>% mutate(!!!(fits[c("additive_terms", "multiplicative_terms", "trend", names(mdl$seasonalities), cmp_names)]))
+  )
 }
 
 # Prophet requires syntactically valid regressor names (e.g. `log(x)` is not).
@@ -409,32 +458,7 @@ forecast.fbl_prophet <- function(object, new_data, specials = NULL, times = 1000
 
   # Prepare data
   new_data <- rename(as.data.frame(new_data), ds = !!index(new_data))
-
-  ## Growth
-  growth <- specials$growth[[1]]
-  if(!is.null(growth$capacity)){
-    new_data$cap <- growth$capacity
-  }
-  if(!is.null(growth$floor)){
-    new_data$floor <- growth$floor
-  }
-
-  ## Conditional seasonality
-  for(season in specials$season){
-    if(!is.null(season$condition_name)){
-      new_data[[season$condition_name]] <- season$condition_values
-    }
-  }
-
-  ## Exogenous Regressors
-  xreg_names <- xreg_safe_names(specials$xreg)
-  i <- 0L
-  for(regressor in specials$xreg){
-    for(j in seq_len(ncol(regressor$xreg))){
-      i <- i + 1L
-      new_data[xreg_names[[i]]] <- regressor$xreg[,j]
-    }
-  }
+  new_data <- prophet_predictors(new_data, specials)
 
   # Point forecasts without simulation
   if(times == 0){
@@ -449,6 +473,57 @@ forecast.fbl_prophet <- function(object, new_data, specials = NULL, times = 1000
 
   # Return forecasts
   distributional::dist_sample(sim)
+}
+
+#' Refit a prophet model
+#'
+#' Applies a prophet model to a new dataset. By default (`reestimate = FALSE`)
+#' the estimated parameters (including the trend changepoints and the scaling
+#' of the data) are kept, and only the fitted values, residuals and components
+#' are recomputed for `new_data`. If `reestimate = TRUE`, the model is instead
+#' estimated again on `new_data`, using the same specification and estimation
+#' arguments (such as `mcmc.samples`, `backend` and any others given to
+#' [`prophet()`]) as the original model.
+#'
+#' Prophet does not support updating a fitted model with new observations, so
+#' re-estimating is a fresh fit (the previous parameters are not used to
+#' initialise it), and no `stream()` method is defined.
+#'
+#' With `reestimate = FALSE`, the data should span the time period that the
+#' model is to be evaluated over, and any variables required by the model
+#' (regressors, carrying capacities and conditions) must be in `new_data`.
+#'
+#' @inheritParams fable::refit.ARIMA
+#' @param ... Currently unused and ignored.
+#'
+#' @return A refitted model.
+#'
+#' @examples
+#' library(tsibble)
+#' fit <- as_tsibble(USAccDeaths) %>%
+#'   dplyr::filter(index < yearmonth("1977 Jan")) %>%
+#'   model(prophet(value ~ season("year", 4)))
+#'
+#' # Evaluate the estimated model on the full series
+#' refit(fit, as_tsibble(USAccDeaths))
+#'
+#' # Estimate the model again on the full series
+#' refit(fit, as_tsibble(USAccDeaths), reestimate = TRUE)
+#'
+#' @export
+refit.fbl_prophet <- function(object, new_data, specials = NULL, reestimate = FALSE, ...){
+  if(reestimate){
+    return(fit_prophet(new_data, specials, object$args))
+  }
+
+  mdl <- object$model
+  model_data <- as_tibble(new_data)[c(index_var(new_data), measured_vars(new_data))]
+  colnames(model_data) <- c("ds", "y")
+  model_data <- prophet_predictors(model_data, specials)
+
+  structure(
+    c(list(model = mdl), prophet_fitted(mdl, model_data, new_data), list(args = object$args)),
+    class = "fbl_prophet")
 }
 
 #' Extract fitted values

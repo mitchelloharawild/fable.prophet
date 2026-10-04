@@ -255,3 +255,51 @@ test_that("holiday() works with parallel workers (#17)", {
   expect_false(any(vapply(fit[[2]], is.null, logical(1))))
   expect_equal(NROW(forecast(fit, h = 5, times = 50)), 10)
 })
+
+test_that("refit() keeps estimated parameters unless reestimating (#30)", {
+  usacc <- tsibble::as_tsibble(USAccDeaths)
+  train <- usacc[1:48,]
+  fit <- model(train, prophet(value ~ season("year", 4)))
+
+  # Evaluate on the full series without re-estimating
+  rf <- refit(fit, usacc)
+  expect_true(is_mable(rf))
+  mdl <- fit[[1]][[1]]$fit
+  rmdl <- rf[[1]][[1]]$fit
+  expect_s3_class(rmdl, "fbl_prophet")
+  expect_identical(rmdl$model$params, mdl$model$params)
+  expect_identical(rmdl$model$changepoints, mdl$model$changepoints)
+  expect_identical(rmdl$model$y.scale, mdl$model$y.scale)
+  expect_length(fitted(rmdl), NROW(usacc))
+  expect_length(residuals(rmdl), NROW(usacc))
+  expect_equal(fitted(rmdl)[1:48], fitted(mdl))
+  expect_equal(rmdl$model$uncertainty.samples, 0)
+  expect_equal(NROW(rf %>% components()), NROW(usacc))
+  expect_equal(NROW(forecast(rf, h = 6)), 6)
+
+  # Re-estimate on the full series
+  re <- refit(fit, usacc, reestimate = TRUE)
+  remdl <- re[[1]][[1]]$fit
+  expect_length(fitted(remdl), NROW(usacc))
+  expect_false(identical(remdl$model$params$k, mdl$model$params$k))
+  expect_equal(NROW(forecast(re, h = 6)), 6)
+  direct <- model(usacc, prophet(value ~ season("year", 4)))
+  expect_equal(fitted(remdl), fitted(direct[[1]][[1]]$fit))
+})
+
+test_that("refit() works with regressors, logistic growth and training arguments", {
+  set.seed(1)
+  d <- tsibble::tsibble(
+    date = as.Date("2020-01-01") + 0:199, x = rnorm(200),
+    y = 5 + cumsum(rnorm(200, 0.05)) , index = date)
+  d$y <- d$y + d$x
+  fit <- model(d[1:150,], prophet(y ~ growth("logistic", capacity = 50, floor = 0) +
+                                   x + season("week", 2), algorithm = "Newton"))
+  expect_equal(fit[[1]][[1]]$fit$args$fit_args, list(algorithm = "Newton"))
+  rf <- refit(fit, d)
+  expect_length(residuals(rf[[1]][[1]]$fit), 200)
+  re <- refit(fit, d, reestimate = TRUE)
+  expect_length(residuals(re[[1]][[1]]$fit), 200)
+  expect_equal(re[[1]][[1]]$fit$args, fit[[1]][[1]]$fit$args)
+  expect_true("x" %in% names(re[[1]][[1]]$fit$model$extra_regressors))
+})
