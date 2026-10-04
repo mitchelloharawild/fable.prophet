@@ -56,7 +56,7 @@ The \code{season} special is used to specify a seasonal component. This special 
 
 \preformatted{
 season(period = NULL, order = NULL, prior_scale = 10,
-       type = c("additive", "multiplicative"), name = NULL)
+       type = c("additive", "multiplicative"), name = NULL, condition = NULL)
 }
 
 \tabular{ll}{
@@ -65,6 +65,7 @@ season(period = NULL, order = NULL, prior_scale = 10,
 \code{prior_scale} \tab Used to control the amount of regularisation applied. Reducing this will dampen the seasonal effect.\cr
 \code{type}        \tab The nature of the seasonality. If "additive", the variability in the seasonal pattern is fixed. If "multiplicative", the seasonal pattern varies proportionally to the level of the series.\cr
 \code{name}        \tab The name of the seasonal term (allowing you to name an annual pattern as 'annual' instead of 'year' or \code{365.25} for example).\cr
+\code{condition}   \tab A bare column name of a logical variable, for conditional seasonality (see \code{\link[prophet:add_seasonality]{prophet::add_seasonality()}}). The seasonality is only applied when the condition is \code{TRUE}, and the column must be present (without missing values) in the data and in \code{new_data} when forecasting.\cr
 }
 }
 

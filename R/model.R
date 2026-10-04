@@ -46,7 +46,10 @@ train_prophet <- function(.data, specials, ...){
     mdl <- prophet::add_seasonality(
       mdl, name = season$name, period = season$period,
       fourier.order = season$order, prior.scale = season$prior_scale,
-      mode = season$type)
+      mode = season$type, condition.name = season$condition_name)
+    if(!is.null(season$condition_name)){
+      model_data[[season$condition_name]] <- season$condition_values
+    }
   }
 
   # Exogenous Regressors
@@ -115,7 +118,27 @@ specials_prophet <- new_specials(
   },
   season = function(period = NULL, order = NULL, prior_scale = 10,
                     type = c("additive", "multiplicative"),
-                    name = NULL){
+                    name = NULL, condition = NULL){
+    # Conditional seasonality column (a bare column name)
+    condition_name <- NULL
+    condition_values <- NULL
+    if(!is.null(enexpr(condition))){
+      condition_expr <- enexpr(condition)
+      if(!is.name(condition_expr)){
+        abort("The `condition` of `season()` must be a bare column name of the data.")
+      }
+      condition_name <- as_string(condition_expr)
+      if(!(condition_name %in% colnames(self$data))){
+        abort(sprintf(
+          "The conditional seasonality column `%s` was not found in the data. It must be a logical column in both the training data and `new_data`.",
+          condition_name))
+      }
+      condition_values <- self$data[[condition_name]]
+      if(!is.logical(condition_values) || anyNA(condition_values)){
+        abort(sprintf("The conditional seasonality column `%s` must be logical without missing values.", condition_name))
+      }
+    }
+
     # Extract data interval
     interval <- tsibble::interval(self$data)
     interval <- interval_to_period(interval)
@@ -214,7 +237,7 @@ specials_prophet <- new_specials(
 #'
 #' \preformatted{
 #' season(period = NULL, order = NULL, prior_scale = 10,
-#'        type = c("additive", "multiplicative"), name = NULL)
+#'        type = c("additive", "multiplicative"), name = NULL, condition = NULL)
 #' }
 #'
 #' \tabular{ll}{
@@ -223,6 +246,7 @@ specials_prophet <- new_specials(
 #'   `prior_scale` \tab Used to control the amount of regularisation applied. Reducing this will dampen the seasonal effect.\cr
 #'   `type`        \tab The nature of the seasonality. If "additive", the variability in the seasonal pattern is fixed. If "multiplicative", the seasonal pattern varies proportionally to the level of the series.\cr
 #'   `name`        \tab The name of the seasonal term (allowing you to name an annual pattern as 'annual' instead of 'year' or `365.25` for example).\cr
+#'   `condition`   \tab A bare column name of a logical variable, for conditional seasonality (see [`prophet::add_seasonality()`]). The seasonality is only applied when the condition is `TRUE`, and the column must be present (without missing values) in the data and in `new_data` when forecasting.\cr
 #' }
 #' }
 #'
@@ -313,6 +337,13 @@ forecast.fbl_prophet <- function(object, new_data, specials = NULL, times = 1000
   }
   if(!is.null(growth$floor)){
     new_data$floor <- growth$floor
+  }
+
+  ## Conditional seasonality
+  for(season in specials$season){
+    if(!is.null(season$condition_name)){
+      new_data[[season$condition_name]] <- season$condition_values
+    }
   }
 
   ## Exogenous Regressors

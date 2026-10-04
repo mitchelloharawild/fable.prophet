@@ -105,3 +105,30 @@ test_that("Prophet country holidays", {
   fc <- forecast(fit, h = 5)
   expect_equal(NROW(fc), 5)
 })
+
+test_that("Prophet conditional seasonality", {
+  dat <- tsibble::tsibble(
+    date = as.Date("2020-01-01") + 0:199,
+    index = date
+  )
+  dat$on <- as.numeric(format(dat$date, "%m")) <= 4
+  dat$value <- ifelse(dat$on, sin(2 * pi * (0:199) / 7), 0) + rnorm(200, sd = 0.1)
+
+  fit <- model(dat, prophet(value ~ season(7, 3, name = "cond_week", condition = on)))
+  mdl <- fit[[1]][[1]]$fit$model
+  expect_equal(mdl$seasonalities$cond_week$condition.name, "on")
+
+  new_dat <- tsibble::new_data(dat, 7)
+  new_dat$on <- c(TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE)
+  fc <- forecast(fit, new_data = new_dat)
+  expect_s3_class(fc, "fbl_ts")
+  expect_equal(NROW(fc), 7)
+
+  # Missing from new_data
+  expect_error(forecast(fit, h = 3), "conditional seasonality column `on`")
+  # Not a column of the data
+  expect_warning(
+    model(dat, prophet(value ~ season(7, 3, name = "cw", condition = nope))),
+    "conditional seasonality column `nope`"
+  )
+})

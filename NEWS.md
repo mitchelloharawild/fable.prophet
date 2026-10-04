@@ -1,5 +1,6 @@
 # fable.prophet (development version)
 
+* `season()` gains a `condition` argument (a bare logical column name) for conditional seasonality (via `prophet::add_seasonality(condition.name = )`). The column must also be present in `new_data` when forecasting.
 * `holiday()` gains a `country` argument to include prophet's built-in country holidays (via `prophet::add_country_holidays()`), with or without a `holidays` table. `tidy()` now names (and orders) holiday terms from the fitted model, so country holidays and repeated holiday dates are supported.
 * `growth()` now supports `type = "flat"`, for a constant trend without changepoints.
 * Regressors with non-syntactic names (e.g. `log(x)` or `I(x^2)`) are now supported, using `make.names()` to name them in the model and in `tidy()` (#32).
