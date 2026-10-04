@@ -1,3 +1,5 @@
+# fable.prophet (development version)
+
 # fable.prophet 0.1.1
 
 Small patch for compatibility with fabletools v1.0.0.
