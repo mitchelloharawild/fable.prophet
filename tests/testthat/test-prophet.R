@@ -232,3 +232,26 @@ test_that("cmdstanr backend errors informatively when unavailable", {
     "cmdstanr"
   )
 })
+
+test_that("holiday() works with parallel workers (#17)", {
+  skip_on_cran()
+  skip_if_not_installed("future")
+  old_plan <- future::plan(future::multisession, workers = 2)
+  on.exit(future::plan(old_plan), add = TRUE)
+
+  dat <- tsibble::tsibble(
+    date = rep(as.Date("2019-01-01") + 0:399, 2),
+    series = rep(c("a", "b"), each = 400),
+    value = rnorm(800),
+    index = date,
+    key = series
+  )
+  hols <- tsibble::tsibble(
+    holiday = c("Party", "Party"),
+    date = as.Date(c("2019-06-01", "2020-06-01")),
+    index = date
+  )
+  fit <- model(dat, prophet(value ~ holiday(hols)))
+  expect_false(any(vapply(fit[[2]], is.null, logical(1))))
+  expect_equal(NROW(forecast(fit, h = 5, times = 50)), 10)
+})
