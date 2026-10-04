@@ -71,12 +71,18 @@ train_prophet <- function(.data, specials, ...){
   mdl$uncertainty.samples <- 0
   fits <- predict(mdl, model_data)
 
+  # Components to decompose: holiday and regressor terms exist when in the model
+  cmp_names <- intersect(
+    c("holidays", "extra_regressors_additive", "extra_regressors_multiplicative"),
+    names(fits)
+  )
+
   # Return model
   structure(
     list(
       model = mdl,
       est = list(.fitted = fits$yhat, .resid = model_data[["y"]] - fits$yhat),
-      components = .data %>% mutate(!!!(fits[c("additive_terms", "multiplicative_terms", "trend", names(mdl$seasonalities))]))),
+      components = .data %>% mutate(!!!(fits[c("additive_terms", "multiplicative_terms", "trend", names(mdl$seasonalities), cmp_names)]))),
     class = "fbl_prophet")
 }
 
@@ -396,6 +402,11 @@ residuals.fbl_prophet <- function(object, ...){
 #' A prophet model consists of terms which are additively or multiplicatively
 #' included in the model. Multiplicative terms are scaled proportionally to the
 #' estimated trend, while additive terms are not.
+#'
+#' Holiday effects (`holidays`) and exogenous regressor effects
+#' (`extra_regressors_additive` and `extra_regressors_multiplicative`) are
+#' included when they are part of the model. Like the seasonal terms, these are
+#' contained within the model's `additive_terms` or `multiplicative_terms`.
 #'
 #' Extracting a prophet model's components using this function allows you to
 #' visualise the components in a similar way to [`prophet::prophet_plot_components()`].

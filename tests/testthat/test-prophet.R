@@ -151,3 +151,30 @@ test_that("tidy reports regressor coefficients on the original scale", {
     c(mdl$params$beta) * mdl$y.scale / mdl$extra_regressors$x$std
   )
 })
+
+test_that("components include holiday and regressor terms", {
+  set.seed(1)
+  dat <- tsibble::tsibble(
+    date = as.Date("2019-01-01") + 0:499,
+    x = runif(500, 0, 10),
+    z = rbinom(500, 1, 0.5),
+    index = date
+  )
+  dat$value <- 100 + 3 * dat$x + sin(0:499 / 20) + rnorm(500)
+  fit <- model(dat, prophet(value ~ x + xreg(z, type = "multiplicative") + holiday(country = "AU")))
+  cmp <- components(fit)
+  expect_true(all(
+    c("holidays", "extra_regressors_additive", "extra_regressors_multiplicative") %in% colnames(cmp)
+  ))
+  expect_equal(
+    cmp$trend * (1 + cmp$multiplicative_terms) + cmp$additive_terms + cmp$.resid,
+    cmp$value
+  )
+  expect_equal(cmp$additive_terms, cmp$holidays + cmp$extra_regressors_additive)
+  expect_equal(cmp$multiplicative_terms, cmp$extra_regressors_multiplicative)
+  expect_s3_class(cmp, "dcmp_ts")
+
+  # Models without them are unchanged
+  cmp0 <- components(model(dat, prophet(value ~ season("year"))))
+  expect_false(any(c("holidays", "extra_regressors_additive") %in% colnames(cmp0)))
+})

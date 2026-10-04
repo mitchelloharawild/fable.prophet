@@ -20,6 +20,11 @@ included in the model. Multiplicative terms are scaled proportionally to the
 estimated trend, while additive terms are not.
 }
 \details{
+Holiday effects (\code{holidays}) and exogenous regressor effects
+(\code{extra_regressors_additive} and \code{extra_regressors_multiplicative}) are
+included when they are part of the model. Like the seasonal terms, these are
+contained within the model's \code{additive_terms} or \code{multiplicative_terms}.
+
 Extracting a prophet model's components using this function allows you to
 visualise the components in a similar way to \code{\link[prophet:prophet_plot_components]{prophet::prophet_plot_components()}}.
 }
