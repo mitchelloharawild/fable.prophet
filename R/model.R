@@ -69,6 +69,8 @@ train_prophet <- function(.data, specials, ...){
   # Train model
   mdl <- prophet::fit.prophet(mdl, model_data, ...)
   mdl$uncertainty.samples <- 0
+  # The raw Stan output is not used after fitting (parameters are in `$params`)
+  mdl$stan.fit <- NULL
   fits <- predict(mdl, model_data)
 
   # Components to decompose: holiday and regressor terms exist when in the model

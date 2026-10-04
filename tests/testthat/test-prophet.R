@@ -192,3 +192,13 @@ test_that("forecast with times = 0 gives point forecasts", {
   fc_sim <- forecast(fit, h = 6, times = 500)
   expect_equal(mean(fc$value), mean(fc_sim$value), tolerance = 0.1)
 })
+
+test_that("fitted models drop the raw Stan output but still work", {
+  fit <- model(tsibble::as_tsibble(USAccDeaths), prophet(value ~ season("year")))
+  expect_null(fit[[1]][[1]]$fit$model$stan.fit)
+  expect_equal(NROW(forecast(fit, h = 3, times = 50)), 3)
+  expect_equal(NROW(forecast(fit, h = 3, times = 0)), 3)
+  expect_s3_class(components(fit), "dcmp_ts")
+  expect_equal(NROW(glance(fit)), 1)
+  expect_gt(NROW(tidy(fit)), 2)
+})
