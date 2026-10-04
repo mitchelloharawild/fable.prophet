@@ -49,3 +49,24 @@ test_that("forecast ignores additional arguments", {
   expect_s3_class(fc, "fbl_ts")
   expect_equal(NROW(fc), 3)
 })
+
+test_that("Prophet regressors with non-syntactic names", {
+  set.seed(1)
+  dat <- tsibble::tsibble(
+    date = as.Date("2020-01-01") + 0:99,
+    x = runif(100, 1, 5),
+    index = date
+  )
+  dat$value <- 2 * log(dat$x) + rnorm(100, sd = 0.1)
+
+  fit <- model(dat, prophet(value ~ log(x) + I(x^2)))
+  mdl <- fit[[1]][[1]]$fit$model
+  expect_equal(names(mdl$extra_regressors), c("log.x.", "I.x.2."))
+  expect_equal(tidy(fit)$term[-(1:2)], c("log.x.", "I.x.2."))
+
+  new_dat <- tsibble::new_data(dat, 5)
+  new_dat$x <- runif(5, 1, 5)
+  fc <- forecast(fit, new_data = new_dat)
+  expect_s3_class(fc, "fbl_ts")
+  expect_equal(NROW(fc), 5)
+})

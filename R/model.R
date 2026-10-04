@@ -46,9 +46,13 @@ train_prophet <- function(.data, specials, ...){
   }
 
   # Exogenous Regressors
+  xreg_names <- xreg_safe_names(specials$xreg)
+  i <- 0L
   for(regressor in specials$xreg){
-    for(nm in colnames(regressor$xreg)){
-      model_data[nm] <- regressor$xreg[,nm]
+    for(j in seq_len(ncol(regressor$xreg))){
+      i <- i + 1L
+      nm <- xreg_names[[i]]
+      model_data[nm] <- regressor$xreg[,j]
       mdl <- prophet::add_regressor(
         mdl, name = nm, prior.scale = regressor$prior_scale,
         standardize = regressor$standardize, mode = regressor$mode)
@@ -67,6 +71,12 @@ train_prophet <- function(.data, specials, ...){
       est = list(.fitted = fits$yhat, .resid = model_data[["y"]] - fits$yhat),
       components = .data %>% mutate(!!!(fits[c("additive_terms", "multiplicative_terms", "trend", names(mdl$seasonalities))]))),
     class = "fbl_prophet")
+}
+
+# Prophet requires syntactically valid regressor names (e.g. `log(x)` is not).
+# Applied jointly over all xreg specials so train and forecast agree.
+xreg_safe_names <- function(xreg){
+  make.names(unlist(lapply(xreg, function(x) colnames(x$xreg))), unique = TRUE)
 }
 
 specials_prophet <- new_specials(
@@ -281,9 +291,12 @@ forecast.fbl_prophet <- function(object, new_data, specials = NULL, times = 1000
   }
 
   ## Exogenous Regressors
+  xreg_names <- xreg_safe_names(specials$xreg)
+  i <- 0L
   for(regressor in specials$xreg){
-    for(nm in colnames(regressor$xreg)){
-      new_data[nm] <- regressor$xreg[,nm]
+    for(j in seq_len(ncol(regressor$xreg))){
+      i <- i + 1L
+      new_data[xreg_names[[i]]] <- regressor$xreg[,j]
     }
   }
 
