@@ -5,7 +5,7 @@
 globalVariables("self")
 
 #' @importFrom stats predict
-train_prophet <- function(.data, specials, ...){
+train_prophet <- function(.data, specials, mcmc.samples = 0, backend = NULL, ...){
   if(length(tsibble::measured_vars(.data)) > 1){
     abort("Only univariate responses are supported by Prophet")
   }
@@ -34,7 +34,9 @@ train_prophet <- function(.data, specials, ...){
     yearly.seasonality = is.name(self$formula),
     weekly.seasonality = is.name(self$formula),
     daily.seasonality = is.name(self$formula),
-    uncertainty_samples = 0
+    mcmc.samples = mcmc.samples,
+    uncertainty.samples = 0,
+    backend = backend
   )
 
   if(!is.null(holiday$country)){
@@ -215,7 +217,25 @@ specials_prophet <- new_specials(
 #' using this interface to prophet: `vignette("intro", package="fable.prophet")`.
 #'
 #' @param formula A symbolic description of the model to be fitted of class `formula`.
-#' @inheritParams prophet::fit.prophet
+#' @param ... Additional arguments for estimating the model. These are
+#'   `mcmc.samples` and `backend` (described below), with any others passed on to
+#'   [`prophet::fit.prophet()`] and then to the Stan algorithm (for example
+#'   `algorithm`, `control` or `init`).
+#'
+#' @section Estimation:
+#' By default the model is estimated by maximum a posteriori (MAP) optimisation.
+#' Two arguments of [`prophet::prophet()`] can be given in `...` of `prophet()`:
+#' \itemize{
+#'   \item `mcmc.samples`: If greater than 0, the model is estimated using this
+#'   many MCMC (Hamiltonian Monte Carlo) iterations, which is slower. Parameters
+#'   are then summarised by their posterior means in [`tidy()`][tidy.fbl_prophet()]
+#'   and [`glance()`][glance.fbl_prophet()], and forecast sample paths include
+#'   parameter uncertainty.
+#'   \item `backend`: The Stan backend, either `"rstan"` or `"cmdstanr"` (which
+#'   requires the \pkg{cmdstanr} package). If `NULL` (the default), the backend
+#'   is chosen by [`prophet::prophet()`], using `"rstan"` unless the
+#'   environment variable `R_STAN_BACKEND` is set to `"CMDSTANR"`.
+#' }
 #'
 #' @section Specials:
 #'
@@ -497,7 +517,7 @@ components.fbl_prophet <- function(object, ...){
 glance.fbl_prophet <- function(x, ...){
   changepoints <- tibble(
     changepoints = x$model$changepoints,
-    adjustment = as.numeric(x$model$params$delta)
+    adjustment = colMeans(x$model$params$delta)
   )
   tibble(sigma = stats::sd(x$est$.resid, na.rm = TRUE), changepoints = list(changepoints))
 }
@@ -549,7 +569,8 @@ tidy.fbl_prophet <- function(x, ...){
 
   xreg_terms <- names(x$model$extra_regressors)
 
-  estimate <- c(x$model$params$k, x$model$params$m, colMeans(x$model$params$beta))
+  # Posterior means (a single draw when fitted by optimisation)
+  estimate <- c(mean(x$model$params$k), mean(x$model$params$m), colMeans(x$model$params$beta))
 
   # Report regressor coefficients on the scale of the original data
   if(length(xreg_terms) > 0){

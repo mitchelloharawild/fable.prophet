@@ -9,8 +9,10 @@ prophet(formula, ...)
 \arguments{
 \item{formula}{A symbolic description of the model to be fitted of class \code{formula}.}
 
-\item{...}{Additional arguments passed to the \code{optimizing} or
-\code{sampling} functions in Stan.}
+\item{...}{Additional arguments for estimating the model. These are
+\code{mcmc.samples} and \code{backend} (described below), with any others passed on to
+\code{\link[prophet:fit.prophet]{prophet::fit.prophet()}} and then to the Stan algorithm (for example
+\code{algorithm}, \code{control} or \code{init}).}
 }
 \description{
 Prepares a prophet model specification for use within the \code{fable} package.
@@ -27,6 +29,23 @@ regressors. These can be specified using the 'specials' functions detailed
 below. The introduction vignette provides more details on how to model data
 using this interface to prophet: \code{vignette("intro", package="fable.prophet")}.
 }
+\section{Estimation}{
+
+By default the model is estimated by maximum a posteriori (MAP) optimisation.
+Two arguments of \code{\link[prophet:prophet]{prophet::prophet()}} can be given in \code{...} of \code{prophet()}:
+\itemize{
+\item \code{mcmc.samples}: If greater than 0, the model is estimated using this
+many MCMC (Hamiltonian Monte Carlo) iterations, which is slower. Parameters
+are then summarised by their posterior means in \code{\link[=tidy.fbl_prophet]{tidy()}}
+and \code{\link[=glance.fbl_prophet]{glance()}}, and forecast sample paths include
+parameter uncertainty.
+\item \code{backend}: The Stan backend, either \code{"rstan"} or \code{"cmdstanr"} (which
+requires the \pkg{cmdstanr} package). If \code{NULL} (the default), the backend
+is chosen by \code{\link[prophet:prophet]{prophet::prophet()}}, using \code{"rstan"} unless the
+environment variable \code{R_STAN_BACKEND} is set to \code{"CMDSTANR"}.
+}
+}
+
 \section{Specials}{
 
 

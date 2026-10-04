@@ -202,3 +202,33 @@ test_that("fitted models drop the raw Stan output but still work", {
   expect_equal(NROW(glance(fit)), 1)
   expect_gt(NROW(tidy(fit)), 2)
 })
+
+test_that("Prophet backend and mcmc.samples arguments", {
+  dat <- tsibble::as_tsibble(USAccDeaths)
+  fit <- model(dat, prophet(value ~ season("year"), backend = "rstan"))
+  expect_equal(fit[[1]][[1]]$fit$model$backend, "rstan")
+  expect_equal(fit[[1]][[1]]$fit$model$mcmc.samples, 0)
+
+  skip_on_cran()
+  utils::capture.output(suppressWarnings(
+    fit_mcmc <- model(dat, prophet(value ~ season("year", 2) + growth(n_changepoints = 5), mcmc.samples = 50))
+  ), type = "output")
+  mdl <- fit_mcmc[[1]][[1]]$fit$model
+  expect_equal(mdl$mcmc.samples, 50)
+  expect_gt(length(mdl$params$k), 1)
+  expect_equal(NROW(tidy(fit_mcmc)), 2 + 4)
+  expect_equal(NROW(glance(fit_mcmc)$changepoints[[1]]), 5)
+  expect_equal(NROW(components(fit_mcmc)), NROW(dat))
+  fc <- forecast(fit_mcmc, h = 4, times = 100)
+  expect_equal(NROW(fc), 4)
+  expect_false(anyNA(mean(fc$value)))
+  expect_equal(NROW(forecast(fit_mcmc, h = 4, times = 0)), 4)
+})
+
+test_that("cmdstanr backend errors informatively when unavailable", {
+  skip_if(requireNamespace("cmdstanr", quietly = TRUE))
+  expect_warning(
+    model(tsibble::as_tsibble(USAccDeaths), prophet(value ~ season("year"), backend = "cmdstanr")),
+    "cmdstanr"
+  )
+})

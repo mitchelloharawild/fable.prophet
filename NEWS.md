@@ -1,5 +1,7 @@
 # fable.prophet (development version)
 
+* `prophet()` now documents and supports the `mcmc.samples` and `backend` arguments (passed to `prophet::prophet()`) for MCMC estimation and choosing the `"rstan"` or `"cmdstanr"` Stan backend. `tidy()` and `glance()` summarise MCMC draws by their posterior means.
+* The model is now fit with `uncertainty.samples = 0` (previously the argument was misspelt and ignored).
 * Fitted models no longer keep prophet's raw Stan output (`stan.fit`), reducing model size (#26).
 * `forecast()` now supports `times = 0`, which returns point forecasts (as degenerate distributions) without simulating sample paths. The `times` argument is now documented, including its speed and memory trade-off (#26).
 * `components()` now includes the `holidays`, `extra_regressors_additive` and `extra_regressors_multiplicative` terms when they are present in the model.
