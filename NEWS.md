@@ -1,19 +1,32 @@
 # fable.prophet (development version)
 
-* Modernised dependencies: R >= 4.1.0 and fabletools >= 0.5.0 are now required, and Rcpp is no longer attached by this package (prophet still loads it).
-* Documentation: added "Non-daily data" (#28), "Performance and memory" (#26) and model evaluation sections to `?prophet` and the introduction vignette.
-* `prophet()` now documents and supports the `mcmc.samples` and `backend` arguments (passed to `prophet::prophet()`) for MCMC estimation and choosing the `"rstan"` or `"cmdstanr"` Stan backend. `tidy()` and `glance()` summarise MCMC draws by their posterior means.
-* The model is now fit with `uncertainty.samples = 0` (previously the argument was misspelt and ignored).
-* Fitted models no longer keep prophet's raw Stan output (`stan.fit`), reducing model size (#26).
-* `forecast()` now supports `times = 0`, which returns point forecasts (as degenerate distributions) without simulating sample paths. The `times` argument is now documented, including its speed and memory trade-off (#26).
-* `components()` now includes the `holidays`, `extra_regressors_additive` and `extra_regressors_multiplicative` terms when they are present in the model.
+## Breaking changes
+
+* R >= 4.1.0 and fabletools >= 0.5.0 are now required. Rcpp is no longer attached by this package (prophet still loads it).
 * `tidy()` now reports extra regressor estimates as coefficients on the original data scale (additive regressors in units of the response, multiplicative regressors as proportional effects), rather than prophet's internal scaled parameters. Other terms remain on the internal scale, as documented in `?tidy.fbl_prophet`.
-* `season()` gains a `condition` argument (a bare logical column name) for conditional seasonality (via `prophet::add_seasonality(condition.name = )`). The column must also be present in `new_data` when forecasting.
-* `holiday()` gains a `country` argument to include prophet's built-in country holidays (via `prophet::add_country_holidays()`), with or without a `holidays` table. `tidy()` now names (and orders) holiday terms from the fitted model, so country holidays and repeated holiday dates are supported.
-* `growth()` now supports `type = "flat"`, for a constant trend without changepoints.
-* Regressors with non-syntactic names (e.g. `log(x)` or `I(x^2)`) are now supported, using `make.names()` to name them in the model and in `tidy()` (#32).
-* Removed an unused prediction in `forecast()` (#33).
 * `forecast()` no longer forwards `...` to `prophet::predictive_samples()`, which doesn't accept additional arguments. `...` is now documented as unused.
+
+## New features
+
+* Added `generate()` for prophet models (#4), simulating sample paths (trend including future changepoints, seasonality, holidays and regressors) with normally distributed or, with `bootstrap = TRUE`, resampled-residual observation noise. Works in-sample and out-of-sample, including with MCMC estimation and transformed responses.
+* Added `refit()` for prophet models (#30). By default the estimated parameters are kept and the fitted values, residuals and components are recomputed for the new data; `reestimate = TRUE` fits the model again on the new data using the original estimation arguments. Prophet cannot be updated incrementally, so there is no `stream()` method.
+* `growth()` now supports `type = "flat"`, for a constant trend without changepoints.
+* `holiday()` gains a `country` argument to include prophet's built-in country holidays (via `prophet::add_country_holidays()`), with or without a `holidays` table. `tidy()` now names (and orders) holiday terms from the fitted model, so country holidays and repeated holiday dates are supported.
+* `season()` gains a `condition` argument (a bare logical column name) for conditional seasonality (via `prophet::add_seasonality(condition.name = )`). The column must also be present in `new_data` when forecasting.
+* `prophet()` now documents and supports the `mcmc.samples` and `backend` arguments (passed to `prophet::prophet()`) for MCMC estimation and choosing the `"rstan"` or `"cmdstanr"` Stan backend. `tidy()` and `glance()` summarise MCMC draws by their posterior means.
+* `forecast()` now supports `times = 0`, which returns point forecasts (as degenerate distributions) without simulating sample paths. The `times` argument is now documented, including its speed and memory trade-off (#26).
+
+## Improvements
+
+* `components()` now includes the `holidays`, `extra_regressors_additive` and `extra_regressors_multiplicative` terms when they are present in the model.
+* Fitted models no longer keep prophet's raw Stan output (`stan.fit`), reducing model size (#26).
+* Regressors with non-syntactic names (e.g. `log(x)` or `I(x^2)`) are now supported, using `make.names()` to name them in the model and in `tidy()` (#32).
+* Documentation: added "Non-daily data" (#28), "Performance and memory" (#26) and model evaluation sections to `?prophet` and the introduction vignette.
+
+## Bug fixes
+
+* The model is now fit with `uncertainty.samples = 0` (previously the argument was misspelt and ignored), so fitting no longer computes unused uncertainty samples.
+* Removed an unused prediction in `forecast()` (#33).
 
 # fable.prophet 0.1.1
 
@@ -31,5 +44,3 @@ Small patch for compatibility with fabletools v1.0.0.
 * Added interface for the Prophet model (via the 'prophet' R package) to the fable framework.
 * Added prophet model methods for: `forecast()`, `components()`, `fitted()`, `residuals()`.
 * Added package introduction vignette.
-* Added `refit()` for prophet models (#30). By default the estimated parameters are kept and the fitted values, residuals and components are recomputed for the new data; `reestimate = TRUE` fits the model again on the new data using the original estimation arguments. Prophet cannot be updated incrementally, so there is no `stream()` method.
-* Added `generate()` for prophet models (#4), simulating sample paths (trend including future changepoints, seasonality, holidays and regressors) with normally distributed or, with `bootstrap = TRUE`, resampled-residual observation noise. Works in-sample and out-of-sample, including with MCMC estimation and transformed responses.

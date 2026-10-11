@@ -36,3 +36,5 @@ reference:
     - residuals.fbl_prophet
     - tidy.fbl_prophet
     - glance.fbl_prophet
+    - generate.fbl_prophet
+    - refit.fbl_prophet
