@@ -14,8 +14,8 @@ knitr::opts_chunk$set(
 ```
 # fable.prophet
 
-[![R build status](https://github.com/mitchelloharawild/fable.prophet/workflows/R-CMD-check/badge.svg)](https://github.com/mitchelloharawild/fable.prophet)
-[![Codecov test coverage](https://codecov.io/gh/mitchelloharawild/fable.prophet/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mitchelloharawild/fable.prophet?branch=master)
+[![R-CMD-check](https://github.com/mitchelloharawild/fable.prophet/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mitchelloharawild/fable.prophet/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/mitchelloharawild/fable.prophet/branch/main/graph/badge.svg)](https://app.codecov.io/gh/mitchelloharawild/fable.prophet?branch=main)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/fable.prophet)](https://cran.r-project.org/package=fable.prophet)
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 

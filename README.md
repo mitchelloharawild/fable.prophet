@@ -3,11 +3,10 @@
 
 # fable.prophet
 
-[![R build
-status](https://github.com/mitchelloharawild/fable.prophet/workflows/R-CMD-check/badge.svg)](https://github.com/mitchelloharawild/fable.prophet)
+[![R-CMD-check](https://github.com/mitchelloharawild/fable.prophet/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mitchelloharawild/fable.prophet/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/mitchelloharawild/fable.prophet/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mitchelloharawild/fable.prophet?branch=master)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fable.prophet)](https://cran.r-project.org/package=fable.prophet)
+coverage](https://codecov.io/gh/mitchelloharawild/fable.prophet/branch/main/graph/badge.svg)](https://app.codecov.io/gh/mitchelloharawild/fable.prophet?branch=main)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/fable.prophet)](https://cran.r-project.org/package=fable.prophet)
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
 This package provides a tidy R interface to the prophet forecasting
@@ -46,7 +45,7 @@ cafe <- tsibbledata::aus_retail %>%
   filter(Industry == "Cafes, restaurants and catering services")
 ```
 
-<img src="man/figures/README-plot-1.png" width="100%" />
+<img src="man/figures/README-plot-1.png" alt="" width="100%" />
 
 Each series generally exhibits an increasing trend with an annual
 seasonal pattern that varies proportionally to the level of the series.
@@ -56,7 +55,6 @@ included in the model specification below.
 
 ``` r
 library(fable.prophet)
-#> Loading required package: Rcpp
 #> Loading required package: fabletools
 fit <- cafe %>% 
   model(
@@ -85,26 +83,27 @@ each of the time series. Components from this model can be extracted:
 
 ``` r
 components(fit)
-#> # A dable:               3,456 x 10 [1M]
-#> # Key:                   State, Industry, .model [8]
-#> # Prophet Decomposition: Turnover = trend * (1 + multiplicative_terms) +
-#> #   additive_terms + .resid
-#>    State Industry .model    Month Turnover additive_terms multiplicative_… trend
-#>    <chr> <chr>    <chr>     <mth>    <dbl>          <dbl>            <dbl> <dbl>
-#>  1 Aust… Cafes, … proph… 1982 Apr      4.4              0          0.0148   4.44
-#>  2 Aust… Cafes, … proph… 1982 May      3.4              0         -0.0132   4.50
-#>  3 Aust… Cafes, … proph… 1982 Jun      3.6              0          0.0104   4.57
-#>  4 Aust… Cafes, … proph… 1982 Jul      4                0         -0.0132   4.63
-#>  5 Aust… Cafes, … proph… 1982 Aug      3.6              0          0.00988  4.69
-#>  6 Aust… Cafes, … proph… 1982 Sep      4.2              0          0.0287   4.75
-#>  7 Aust… Cafes, … proph… 1982 Oct      4.8              0          0.00126  4.81
-#>  8 Aust… Cafes, … proph… 1982 Nov      5.4              0          0.0481   4.87
-#>  9 Aust… Cafes, … proph… 1982 Dec      6.9              0          0.0240   4.93
-#> 10 Aust… Cafes, … proph… 1983 Jan      3.8              0         -0.106    5.00
-#> # … with 3,446 more rows, and 2 more variables: year <dbl>, .resid <dbl>
+#> # A dable: 3,456 x 10 [1M]
+#> # Key:     State, Industry, .model [8]
+#> # :        Turnover = trend * (1 + multiplicative_terms) + additive_terms +
+#> #   .resid
+#>    State   Industry .model    Month Turnover additive_terms multiplicative_terms
+#>    <chr>   <chr>    <chr>     <mth>    <dbl>          <dbl>                <dbl>
+#>  1 Austra… Cafes, … proph… 1982 Apr      4.4              0              0.0149 
+#>  2 Austra… Cafes, … proph… 1982 May      3.4              0             -0.0132 
+#>  3 Austra… Cafes, … proph… 1982 Jun      3.6              0              0.0103 
+#>  4 Austra… Cafes, … proph… 1982 Jul      4                0             -0.0132 
+#>  5 Austra… Cafes, … proph… 1982 Aug      3.6              0              0.00987
+#>  6 Austra… Cafes, … proph… 1982 Sep      4.2              0              0.0285 
+#>  7 Austra… Cafes, … proph… 1982 Oct      4.8              0              0.00107
+#>  8 Austra… Cafes, … proph… 1982 Nov      5.4              0              0.0479 
+#>  9 Austra… Cafes, … proph… 1982 Dec      6.9              0              0.0239 
+#> 10 Austra… Cafes, … proph… 1983 Jan      3.8              0             -0.106  
+#> # ℹ 3,446 more rows
+#> # ℹ 3 more variables: trend <dbl>, year <dbl>, .resid <dbl>
 ```
 
-<img src="man/figures/README-components-plot-1.png" width="100%" /><img src="man/figures/README-components-plot-2.png" width="100%" />
+<img src="man/figures/README-components-plot-1.png" alt="" width="100%" /><img src="man/figures/README-components-plot-2.png" alt="" width="100%" />
 
 Note that the annual seasonal pattern does not change very quickly,
 although it does differ slightly between years. A very differently
@@ -118,18 +117,25 @@ fc <- fit %>%
 
     #> # A fable: 192 x 6 [1M]
     #> # Key:     State, Industry, .model [8]
-    #>    State             Industry                 .model    Month     Turnover .mean
-    #>    <chr>             <chr>                    <chr>     <mth>       <dist> <dbl>
-    #>  1 Australian Capit… Cafes, restaurants and … proph… 2019 Jan sample[1000]  40.2
-    #>  2 Australian Capit… Cafes, restaurants and … proph… 2019 Feb sample[1000]  42.9
-    #>  3 Australian Capit… Cafes, restaurants and … proph… 2019 Mar sample[1000]  47.9
-    #>  4 Australian Capit… Cafes, restaurants and … proph… 2019 Apr sample[1000]  46.2
-    #>  5 Australian Capit… Cafes, restaurants and … proph… 2019 May sample[1000]  45.3
-    #>  6 Australian Capit… Cafes, restaurants and … proph… 2019 Jun sample[1000]  46.2
-    #>  7 Australian Capit… Cafes, restaurants and … proph… 2019 Jul sample[1000]  45.5
-    #>  8 Australian Capit… Cafes, restaurants and … proph… 2019 Aug sample[1000]  46.7
-    #>  9 Australian Capit… Cafes, restaurants and … proph… 2019 Sep sample[1000]  47.7
-    #> 10 Australian Capit… Cafes, restaurants and … proph… 2019 Oct sample[1000]  46.8
-    #> # … with 182 more rows
+    #>    State                        Industry      .model    Month     Turnover .mean
+    #>    <chr>                        <chr>         <chr>     <mth>       <dist> <dbl>
+    #>  1 Australian Capital Territory Cafes, resta… proph… 2019 Jan sample[5000]  40.4
+    #>  2 Australian Capital Territory Cafes, resta… proph… 2019 Feb sample[5000]  42.9
+    #>  3 Australian Capital Territory Cafes, resta… proph… 2019 Mar sample[5000]  48.0
+    #>  4 Australian Capital Territory Cafes, resta… proph… 2019 Apr sample[5000]  46.4
+    #>  5 Australian Capital Territory Cafes, resta… proph… 2019 May sample[5000]  45.3
+    #>  6 Australian Capital Territory Cafes, resta… proph… 2019 Jun sample[5000]  46.4
+    #>  7 Australian Capital Territory Cafes, resta… proph… 2019 Jul sample[5000]  45.5
+    #>  8 Australian Capital Territory Cafes, resta… proph… 2019 Aug sample[5000]  46.7
+    #>  9 Australian Capital Territory Cafes, resta… proph… 2019 Sep sample[5000]  47.8
+    #> 10 Australian Capital Territory Cafes, resta… proph… 2019 Oct sample[5000]  46.7
+    #> # ℹ 182 more rows
+    #> Warning: `autolayer.fbl_ts()` was deprecated in fabletools 0.6.0.
+    #> ℹ Please use `ggtime::autolayer.fbl_ts()` instead.
+    #> ℹ Graphics functions have been moved to the {ggtime} package. Please use
+    #>   `library(ggtime)` instead.
+    #> This warning is displayed once per session.
+    #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+    #> generated.
 
-<img src="man/figures/README-fable-1.png" width="100%" />
+<img src="man/figures/README-fable-1.png" alt="" width="100%" />
