@@ -7,7 +7,8 @@
 [![Codecov test
 coverage](https://codecov.io/gh/mitchelloharawild/fable.prophet/branch/main/graph/badge.svg)](https://app.codecov.io/gh/mitchelloharawild/fable.prophet?branch=main)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/fable.prophet)](https://cran.r-project.org/package=fable.prophet)
-[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 This package provides a tidy R interface to the prophet forecasting
 procedure using [fable](https://github.com/tidyverts/fable). This
@@ -124,11 +125,11 @@ fc <- fit %>%
     #>  3 Australian Capital Territory Cafes, resta… proph… 2019 Mar sample[5000]  48.0
     #>  4 Australian Capital Territory Cafes, resta… proph… 2019 Apr sample[5000]  46.4
     #>  5 Australian Capital Territory Cafes, resta… proph… 2019 May sample[5000]  45.3
-    #>  6 Australian Capital Territory Cafes, resta… proph… 2019 Jun sample[5000]  46.4
-    #>  7 Australian Capital Territory Cafes, resta… proph… 2019 Jul sample[5000]  45.5
+    #>  6 Australian Capital Territory Cafes, resta… proph… 2019 Jun sample[5000]  46.5
+    #>  7 Australian Capital Territory Cafes, resta… proph… 2019 Jul sample[5000]  45.6
     #>  8 Australian Capital Territory Cafes, resta… proph… 2019 Aug sample[5000]  46.7
     #>  9 Australian Capital Territory Cafes, resta… proph… 2019 Sep sample[5000]  47.8
-    #> 10 Australian Capital Territory Cafes, resta… proph… 2019 Oct sample[5000]  46.7
+    #> 10 Australian Capital Territory Cafes, resta… proph… 2019 Oct sample[5000]  46.6
     #> # ℹ 182 more rows
     #> Warning: `autolayer.fbl_ts()` was deprecated in fabletools 0.6.0.
     #> ℹ Please use `ggtime::autolayer.fbl_ts()` instead.

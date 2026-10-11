@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/mitchelloharawild/fable.prophet/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mitchelloharawild/fable.prophet/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/mitchelloharawild/fable.prophet/branch/main/graph/badge.svg)](https://app.codecov.io/gh/mitchelloharawild/fable.prophet?branch=main)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/fable.prophet)](https://cran.r-project.org/package=fable.prophet)
-[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 This package provides a tidy R interface to the prophet forecasting procedure using [fable](https://github.com/tidyverts/fable). This package makes use of the [prophet package](https://cran.r-project.org/package=prophet) for R.
 
