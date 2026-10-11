@@ -1,9 +1,8 @@
 ^\.github$
 ^\.travis\.yml$
 ^README\.Rmd$
-^fable\.Rproj$
+^fable\.prophet\.Rproj$
 ^\.Rproj\.user$
-fable.prophet.Rproj
 ^codecov\.yml$
 ^appveyor\.yml$
 ^tic\.R$
@@ -15,3 +14,4 @@ fable.prophet.Rproj
 ^doc$
 ^Meta$
 ^CRAN-SUBMISSION$
+^_dev$
