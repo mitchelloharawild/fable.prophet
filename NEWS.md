@@ -1,4 +1,4 @@
-# fable.prophet (development version)
+# fable.prophet 1.0.0
 
 ## Breaking changes
 
