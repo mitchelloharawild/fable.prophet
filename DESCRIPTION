@@ -31,7 +31,7 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets=c('rd', 'collate', 'namespace'))
 Language: en-GB
-URL: https://pkg.mitchelloharawild.com/fable.prophet/
+URL: https://pkg.mitchelloharawild.com/fable.prophet/, https://github.com/mitchelloharawild/fable.prophet
 BugReports: https://github.com/mitchelloharawild/fable.prophet/issues
 VignetteBuilder: knitr
 Config/roxygen2/version: 8.0.0
